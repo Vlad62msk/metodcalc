@@ -200,9 +200,70 @@
         }
         
         .preset-item.active {
-            background: #ede9fe;
-            border-color: #7c3aed;
-        }
+    /* Стили будут переопределены цветовым кодированием выше */
+}
+
+/* Цветовое кодирование пресетов при ховере */
+.preset-item[data-preset="textLesson"]:hover {
+    border-color: #64748b;
+    background: rgba(59, 130, 246, 0.08);
+}
+
+.preset-item[data-preset="videoLesson"]:hover {
+    border-color: #7c3aed;
+    background: rgba(139, 92, 246, 0.08);
+}
+
+.preset-item[data-preset="webinar"]:hover {
+    border-color: #be185d;
+    background: rgba(236, 72, 153, 0.08);
+}
+
+.preset-item[data-preset="workshop"]:hover {
+    border-color: #047857;
+    background: rgba(16, 185, 129, 0.08);
+}
+
+.preset-item[data-preset="caseStudy"]:hover {
+    border-color: #d97706;
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.preset-item[data-preset="masterClass"]:hover {
+    border-color: #dc2626;
+    background: rgba(239, 68, 68, 0.08);
+}
+
+/* Активное состояние с цветовым кодированием */
+.preset-item[data-preset="textLesson"].active {
+    border-color: #64748b;
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.preset-item[data-preset="videoLesson"].active {
+    border-color: #7c3aed;
+    background: rgba(139, 92, 246, 0.12);
+}
+
+.preset-item[data-preset="webinar"].active {
+    border-color: #be185d;
+    background: rgba(236, 72, 153, 0.12);
+}
+
+.preset-item[data-preset="workshop"].active {
+    border-color: #047857;
+    background: rgba(16, 185, 129, 0.12);
+}
+
+.preset-item[data-preset="caseStudy"].active {
+    border-color: #d97706;
+    background: rgba(245, 158, 11, 0.12);
+}
+
+.preset-item[data-preset="masterClass"].active {
+    border-color: #dc2626;
+    background: rgba(239, 68, 68, 0.12);
+}
         
         .preset-header {
             display: flex;
@@ -571,12 +632,52 @@
             color: white;
         }
 
-        .preset-tag.textLesson { background: #3b82f6; }
-        .preset-tag.videoLesson { background: #8b5cf6; }
-        .preset-tag.webinar { background: #ec4899; }
-        .preset-tag.workshop { background: #10b981; }
-        .preset-tag.caseStudy { background: #f59e0b; }
-        .preset-tag.masterClass { background: #ef4444; }
+.preset-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-right: 4px;
+    margin-bottom: 3px;
+    border: 1px solid transparent;
+}
+
+.preset-tag.textLesson { 
+    background: rgba(59, 130, 246, 0.15);
+    color: #64748b;
+    border-color: rgba(59, 130, 246, 0.25);
+}
+
+.preset-tag.videoLesson { 
+    background: rgba(139, 92, 246, 0.15);
+    color: #7c3aed;
+    border-color: rgba(139, 92, 246, 0.25);
+}
+
+.preset-tag.webinar { 
+    background: rgba(236, 72, 153, 0.15);
+    color: #be185d;
+    border-color: rgba(236, 72, 153, 0.25);
+}
+
+.preset-tag.workshop { 
+    background: rgba(16, 185, 129, 0.15);
+    color: #047857;
+    border-color: rgba(16, 185, 129, 0.25);
+}
+
+.preset-tag.caseStudy { 
+    background: rgba(245, 158, 11, 0.15);
+    color: #d97706;
+    border-color: rgba(245, 158, 11, 0.25);
+}
+
+.preset-tag.masterClass { 
+    background: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+    border-color: rgba(239, 68, 68, 0.25);
+}
 
 .copy-button {
     width: 100%;
