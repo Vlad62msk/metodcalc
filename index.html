@@ -701,6 +701,50 @@
     transform: translateY(0);
 }
 
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-content {
+    visibility: hidden;
+    width: 200px;
+    background-color: #1f2937;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+.tooltip-content::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #1f2937 transparent transparent transparent;
+}
+
+.tooltip.show .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+}
+
+.slider-container {
+    position: relative;
+}
+
     </style>
 </head>
 
@@ -1366,6 +1410,41 @@
                     <h4>Важно: правки касаются только контента</h4>
                     <p>Правки применяются к компонентам образовательного контента и проверкам знаний. Дополнительные услуги не подлежат правкам.</p>
                 </div>
+
+<div class="section-title">Финансовые настройки</div>
+
+<div class="slider-group">
+    <label for="discountRate">Скидка/Наценка (%):</label>
+    <div class="slider-container">
+        <div class="tooltip" id="discountTooltip">
+            <input type="range" id="discountRate" min="-50" max="50" step="5" value="0">
+            <div class="tooltip-content" id="discountTooltipContent">
+                Без изменений
+            </div>
+        </div>
+    </div>
+    <div class="slider-value" id="discountRateValue">0% (без изменений)</div>
+</div>
+
+<div class="slider-group">
+    <label for="taxRate">Налоговая ставка (%):</label>
+    <div class="slider-container">
+        <div class="tooltip" id="taxTooltip">
+            <input type="range" id="taxRate" min="0" max="30" step="1" value="13">
+            <div class="tooltip-content" id="taxTooltipContent">
+                НДФЛ для физлиц
+            </div>
+        </div>
+    </div>
+    <div class="slider-value" id="taxRateValue">13% (НДФЛ)</div>
+</div>
+
+<div class="form-group">
+    <div class="checkbox-group">
+        <input type="checkbox" id="showTaxSeparately" checked>
+        <label for="showTaxSeparately">Показывать налог отдельной строкой</label>
+    </div>
+</div>
             </div>
             
             <div class="result-section">
@@ -1663,6 +1742,85 @@ function calculateAdaptiveMultiplier(domain, project, complexity, urgency, role)
     // Отслеживание автоматически активированных компонентов и услуг
     let autoActivatedComponents = new Set();
     let autoActivatedServices = new Set();
+
+// Функции для работы с финансовыми настройками и подсказками
+function updateDiscountDisplay() {
+    const discountRate = parseInt(safeGetValue('discountRate', 0));
+    const discountRateValue = safeGetElement('discountRateValue');
+    const tooltip = safeGetElement('discountTooltipContent');
+    
+    if (discountRateValue) {
+        if (discountRate === 0) {
+            discountRateValue.textContent = '0% (без изменений)';
+        } else if (discountRate > 0) {
+            discountRateValue.textContent = `+${discountRate}% (наценка)`;
+        } else {
+            discountRateValue.textContent = `${discountRate}% (скидка)`;
+        }
+    }
+    
+    if (tooltip) {
+        if (discountRate === 0) {
+            tooltip.textContent = 'Без изменений';
+        } else if (discountRate === -10) {
+            tooltip.textContent = 'Постоянный клиент';
+        } else if (discountRate === -15) {
+            tooltip.textContent = 'Хорошие партнеры';
+        } else if (discountRate === -20) {
+            tooltip.textContent = 'Внутренний проект';
+        } else if (discountRate > 0) {
+            tooltip.textContent = 'Наценка за сложности';
+        } else {
+            tooltip.textContent = 'Индивидуальная скидка';
+        }
+    }
+}
+
+function updateTaxDisplay() {
+    const taxRate = parseInt(safeGetValue('taxRate', 13));
+    const taxRateValue = safeGetElement('taxRateValue');
+    const tooltip = safeGetElement('taxTooltipContent');
+    
+    if (taxRateValue) {
+        if (taxRate === 0) {
+            taxRateValue.textContent = '0% (без налогов)';
+        } else {
+            taxRateValue.textContent = `${taxRate}%`;
+        }
+    }
+    
+    if (tooltip) {
+        if (taxRate === 0) {
+            tooltip.textContent = 'Самозанятый без налогов';
+        } else if (taxRate === 4) {
+            tooltip.textContent = 'Самозанятый с налогом';
+        } else if (taxRate === 6) {
+            tooltip.textContent = 'УСН доходы';
+        } else if (taxRate === 13) {
+            tooltip.textContent = 'НДФЛ для физлиц';
+        } else if (taxRate === 15) {
+            tooltip.textContent = 'УСН доходы-расходы';
+        } else if (taxRate === 20) {
+            tooltip.textContent = 'НДС + налог на прибыль';
+        } else {
+            tooltip.textContent = 'Индивидуальная ставка';
+        }
+    }
+}
+
+function showTooltip(tooltipId) {
+    const tooltip = safeGetElement(tooltipId);
+    if (tooltip) {
+        tooltip.classList.add('show');
+    }
+}
+
+function hideTooltip(tooltipId) {
+    const tooltip = safeGetElement(tooltipId);
+    if (tooltip) {
+        tooltip.classList.remove('show');
+    }
+}
 
 	// Функция для безопасного получения элемента
     function safeGetElement(id) {
@@ -2072,21 +2230,37 @@ const adjustedHours = hours * multiplier;
         });
 
         // Расчет правок
-        const revisionFactor = clientType / 100;
-        const contentWithRevisions = totalContentCost * (1 + revisionFactor);
-        const assessmentsWithRevisions = totalAssessmentCost * (1 + revisionFactor);
-        const totalCost = contentWithRevisions + assessmentsWithRevisions + totalServiceCost;
-        const totalHours = totalContentHours + totalAssessmentHours + totalServiceHours;
+const revisionFactor = clientType / 100;
+const contentWithRevisions = totalContentCost * (1 + revisionFactor);
+const assessmentsWithRevisions = totalAssessmentCost * (1 + revisionFactor);
+const subtotalBeforeFinancials = contentWithRevisions + assessmentsWithRevisions + totalServiceCost;
+
+// Применяем скидку/наценку к общей сумме
+const discountRate = safeGetValue('discountRate', 0) / 100;
+const discountAmount = subtotalBeforeFinancials * discountRate;
+const afterDiscount = subtotalBeforeFinancials + discountAmount;
+
+// Применяем налог к сумме после скидки
+const taxRate = safeGetValue('taxRate', 13) / 100;
+const taxAmount = afterDiscount * taxRate;
+const totalCost = afterDiscount + taxAmount;
+
+// Для совместимости с интерфейсом
+const subtotal = subtotalBeforeFinancials;
+
+// Расчет общего времени
+const totalHours = totalContentHours + totalAssessmentHours + totalServiceHours;
 
 // Обновление цен в пресетах и компонентах
 updatePresetPrices();
 updateComponentPrices();
 
         // Обновление интерфейса
-        updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType);
+        console.log('Financial data:', { subtotal, discountAmount, afterDiscount, taxAmount, discountRate: safeGetValue('discountRate', 0), taxRate: safeGetValue('taxRate', 13) });
+updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount);
     }
 
-    function updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType) {
+    function updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount) {
         // Обновление основных результатов
         const totalCostElement = safeGetElement('totalCost');
         const totalHoursElement = safeGetElement('totalHours');
@@ -2103,7 +2277,7 @@ updateComponentPrices();
         updateProjectComposition(activePresets, componentCosts, assessmentCosts, serviceCosts);
 
         // Обновление детализации
-        updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType);
+        updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount);
     }
 
     function updateProjectComposition(activePresets, componentCosts, assessmentCosts, serviceCosts) {
@@ -2141,43 +2315,34 @@ updateComponentPrices();
         }
     }
 
-function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType) {
+function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount) {
         const breakdown = safeGetElement('breakdown');
         if (!breakdown) return;
 
         breakdown.innerHTML = '';
         
         if (totalCost > 0) {
+            // Показываем компоненты
             if (componentCosts.length > 0) {
                 breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Контент</div>';
                 componentCosts.forEach(item => {
                     const cost = Math.round(item.cost).toLocaleString('ru-RU');
                     breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + ' (' + item.count + ' шт.)</span><span class="breakdown-right">' + cost + ' ₽</span></div>';
                 });
-                
-                if (revisionFactor > 0) {
-                    const totalContentCost = componentCosts.reduce((sum, item) => sum + item.cost, 0);
-                    const revisionCost = Math.round(totalContentCost * revisionFactor).toLocaleString('ru-RU');
-                    breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">Правки контента (' + clientType + '%)</span><span class="breakdown-right">' + revisionCost + ' ₽</span></div>';
-                }
                 breakdown.innerHTML += '</div>';
             }
             
+            // Показываем проверки знаний
             if (assessmentCosts.length > 0) {
                 breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Проверки знаний</div>';
                 assessmentCosts.forEach(item => {
                     const cost = Math.round(item.cost).toLocaleString('ru-RU');
                     breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + ' (' + item.count + ' шт.)</span><span class="breakdown-right">' + cost + ' ₽</span></div>';
                 });
-                
-                if (revisionFactor > 0) {
-                    const totalAssessmentCost = assessmentCosts.reduce((sum, item) => sum + item.cost, 0);
-                    const revisionCost = Math.round(totalAssessmentCost * revisionFactor).toLocaleString('ru-RU');
-                    breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">Правки проверок (' + clientType + '%)</span><span class="breakdown-right">' + revisionCost + ' ₽</span></div>';
-                }
                 breakdown.innerHTML += '</div>';
             }
             
+            // Показываем дополнительные услуги
             if (serviceCosts.length > 0) {
                 breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Дополнительные услуги</div>';
                 serviceCosts.forEach(item => {
@@ -2187,11 +2352,58 @@ function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCost
                 breakdown.innerHTML += '</div>';
             }
             
-            breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">Итого</span><span class="breakdown-right">' + Math.round(totalCost).toLocaleString('ru-RU') + ' ₽</span></div>';
+            // Показываем правки ТОЛЬКО если они есть
+            if (revisionFactor > 0 && (componentCosts.length > 0 || assessmentCosts.length > 0)) {
+                breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Правки</div>';
+                
+                if (componentCosts.length > 0) {
+                    const totalContentCost = componentCosts.reduce((sum, item) => sum + item.cost, 0);
+                    const revisionCost = Math.round(totalContentCost * revisionFactor).toLocaleString('ru-RU');
+                    breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">Правки контента (' + clientType + '%)</span><span class="breakdown-right">+' + revisionCost + ' ₽</span></div>';
+                }
+                
+                if (assessmentCosts.length > 0) {
+                    const totalAssessmentCost = assessmentCosts.reduce((sum, item) => sum + item.cost, 0);
+                    const revisionCost = Math.round(totalAssessmentCost * revisionFactor).toLocaleString('ru-RU');
+                    breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">Правки проверок (' + clientType + '%)</span><span class="breakdown-right">+' + revisionCost + ' ₽</span></div>';
+                }
+                
+                breakdown.innerHTML += '</div>';
+            }
+            
+            // Показываем финансовые расчеты ТОЛЬКО если есть скидки или налоги
+            const discountRate = safeGetValue('discountRate', 0);
+            const taxRate = safeGetValue('taxRate', 13);
+            const showTaxSeparately = safeGetElement('showTaxSeparately')?.checked || false;
+            
+            if (discountRate !== 0 || (taxRate > 0 && showTaxSeparately)) {
+                breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Финансовые расчеты</div>';
+                
+                // Подытог
+                breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">Подытог</span><span class="breakdown-right">' + Math.round(subtotal).toLocaleString('ru-RU') + ' ₽</span></div>';
+                
+                // Скидка/наценка
+                if (discountRate !== 0) {
+                    const discountText = discountRate > 0 ? `Наценка (+${discountRate}%)` : `Скидка (${discountRate}%)`;
+                    const discountSign = discountAmount > 0 ? '+' : '';
+                    breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + discountText + '</span><span class="breakdown-right">' + discountSign + Math.round(discountAmount).toLocaleString('ru-RU') + ' ₽</span></div>';
+                }
+                
+                // Налог
+                if (taxRate > 0 && showTaxSeparately) {
+                    breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">Налог (' + taxRate + '%)</span><span class="breakdown-right">+' + Math.round(taxAmount).toLocaleString('ru-RU') + ' ₽</span></div>';
+                }
+                
+                breakdown.innerHTML += '</div>';
+            }
+            
+            // Итого
+            const totalLabel = (taxRate > 0 && !showTaxSeparately) ? 'Итого (с налогом)' : 'Итого';
+            breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + totalLabel + '</span><span class="breakdown-right">' + Math.round(totalCost).toLocaleString('ru-RU') + ' ₽</span></div>';
         } else {
             breakdown.innerHTML = '<div style="color: #6b7280; font-style: italic;">Расчет появится после выбора компонентов</div>';
         }
-    }
+    }     
 
     // Добавление обработчиков событий
     function initializeEventListeners() {
@@ -2205,7 +2417,7 @@ function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCost
         }
 
         // Обработчики для основных параметров
-        const basicInputs = ['hourlyRate', 'simpleCalculation', 'methodistRole', 'domainKnowledge', 'projectType', 'contentComplexity', 'urgency', 'qualityLevel', 'clientType'];
+        const basicInputs = ['hourlyRate', 'simpleCalculation', 'methodistRole', 'domainKnowledge', 'projectType', 'contentComplexity', 'urgency', 'qualityLevel', 'clientType', 'showTaxSeparately'];
         basicInputs.forEach(inputId => {
             const element = safeGetElement(inputId);
             if (element) {
@@ -2219,6 +2431,33 @@ function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCost
                 });
             }
         });
+
+// Обработчики для финансовых ползунков
+const discountSlider = safeGetElement('discountRate');
+if (discountSlider) {
+    discountSlider.addEventListener('input', () => {
+        updateDiscountDisplay();
+        calculateCost();
+    });
+    
+    discountSlider.addEventListener('mouseenter', () => showTooltip('discountTooltip'));
+    discountSlider.addEventListener('mouseleave', () => hideTooltip('discountTooltip'));
+    discountSlider.addEventListener('focus', () => showTooltip('discountTooltip'));
+    discountSlider.addEventListener('blur', () => hideTooltip('discountTooltip'));
+}
+
+const taxSlider = safeGetElement('taxRate');
+if (taxSlider) {
+    taxSlider.addEventListener('input', () => {
+        updateTaxDisplay();
+        calculateCost();
+    });
+    
+    taxSlider.addEventListener('mouseenter', () => showTooltip('taxTooltip'));
+    taxSlider.addEventListener('mouseleave', () => hideTooltip('taxTooltip'));
+    taxSlider.addEventListener('focus', () => showTooltip('taxTooltip'));
+    taxSlider.addEventListener('blur', () => hideTooltip('taxTooltip'));
+}
 
         // Обработчики для пресетов
         document.querySelectorAll('.preset-item').forEach(preset => {
@@ -2474,7 +2713,9 @@ function copyCalculationToClipboard() {
         updateLessonDurationDisplay();
         initializeEventListeners();
         handleAutoActivation();
-        updateComponentPrices();
+        updateDiscountDisplay();
+updateTaxDisplay();
+updateComponentPrices();
 calculateCost();
     }
 
