@@ -771,11 +771,26 @@
                 </div>
                 
                 <div class="form-group">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="simpleCalculation">
-                        <label for="simpleCalculation">Упрощенный расчет (без коэффициентов)</label>
-                    </div>
-                </div>
+    <div class="checkbox-group">
+        <input type="checkbox" id="simpleCalculation">
+        <label for="simpleCalculation">Упрощенный расчет (без коэффициентов сложности)</label>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="checkbox-group">
+        <input type="checkbox" id="enableVolumeDiscounts" checked>
+        <label for="enableVolumeDiscounts">Применять скидки за объем (6+ штук = скидка 10-30%)</label>
+    </div>
+</div>
+
+<div class="info-card" id="calculationInfo" style="background: #f0f9ff; border-color: #0ea5e9;">
+    <h4ℹ️ Настройки расчета</h4>
+    <p id="calculationDescription">
+        <strong>Коэффициенты сложности:</strong> Включены<br>
+        <strong>Скидки за объем:</strong> Включены (6-15шт: -10%, 16-30шт: -20%, 31+шт: -30%)
+    </p>
+</div>
                 
                 <div class="form-group">
                     <label for="methodistRole">Роль методиста:</label>
@@ -834,9 +849,9 @@
                 <div class="section-title">Быстрые пресеты (по типам контента)</div>
                 
                 <div class="info-card">
-                    <h4>Как работают пресеты</h4>
-                    <p>Пресеты автоматически активируют компоненты с учетом средней длительности урока.</p>
-                </div>
+    <h4>Как работают пресеты</h4>
+    <p>Пресеты - это готовые пакеты услуг с фиксированным составом. Цена зависит от количества и длительности. Дополнительно система может предложить связанные услуги (помечены "АВТО").</p>
+</div>
 
 <div class="preset-grid">
                     <div class="preset-item" data-preset="textLesson">
@@ -846,8 +861,8 @@
                         </div>
                         <div class="preset-description">Статья для самостоятельного изучения теории и концепций (20-40 мин чтения)</div>
                         <div class="preset-includes">
-                            <div class="preset-includes-title">Автоматически активирует:</div>
-                            <div class="preset-includes-list">Лонгрид + Упражнения + Иллюстрации + Квизы</div>
+                            <div class="preset-includes-title">Базово включает:</div>
+<div class="preset-includes-list">Лонгрид + Упражнения + Иллюстрации + Квизы</div>
                         </div>
                         <div class="preset-quantity">
                             <span class="preset-quantity-label">Количество:</span>
@@ -866,8 +881,8 @@
                         </div>
                         <div class="preset-description">Видеоурок с презентацией для объяснения процессов и демонстрации (30-90 мин)</div>
                         <div class="preset-includes">
-                            <div class="preset-includes-title">Автоматически активирует:</div>
-                            <div class="preset-includes-list">Скрипт + Презентация + Иллюстрации</div>
+                            <div class="preset-includes-title">Базово включает:</div>
+<div class="preset-includes-list">Скрипт + Презентация + Иллюстрации</div>
                         </div>
                         <div class="preset-quantity">
                             <span class="preset-quantity-label">Количество:</span>
@@ -886,8 +901,8 @@
                         </div>
                         <div class="preset-description">Живое онлайн-обучение с интерактивным взаимодействием с аудиторией (60-120 мин)</div>
                         <div class="preset-includes">
-                            <div class="preset-includes-title">Автоматически активирует:</div>
-                            <div class="preset-includes-list">Презентация + Иллюстрации + Механики вовлечения</div>
+                            <div class="preset-includes-title">Базово включает:</div>
+<div class="preset-includes-list">Презентация + Иллюстрации + Механики вовлечения</div>
                         </div>
                         <div class="preset-quantity">
                             <span class="preset-quantity-label">Количество:</span>
@@ -906,8 +921,8 @@
                         </div>
                         <div class="preset-description">Воркшоп для отработки навыков с пошаговыми инструкциями (60-180 мин)</div>
                         <div class="preset-includes">
-                            <div class="preset-includes-title">Автоматически активирует:</div>
-                            <div class="preset-includes-list">Инструкции + Шаблоны + Упражнения + Примеры</div>
+                            <div class="preset-includes-title">Базово включает:</div>
+<div class="preset-includes-list">Инструкции + Шаблоны + Упражнения + Примеры</div>
                         </div>
                         <div class="preset-quantity">
                             <span class="preset-quantity-label">Количество:</span>
@@ -926,8 +941,8 @@
                         </div>
                         <div class="preset-description">Разбор реальной ситуации для анализа и обсуждения решений (30-60 мин)</div>
                         <div class="preset-includes">
-                            <div class="preset-includes-title">Автоматически активирует:</div>
-                            <div class="preset-includes-list">Описание кейса + Вопросы + Разбор решения</div>
+                            <div class="preset-includes-title">Базово включает:</div>
+<div class="preset-includes-list">Описание кейса + Вопросы + Разбор решения</div>
                         </div>
                         <div class="preset-quantity">
                             <span class="preset-quantity-label">Количество:</span>
@@ -946,8 +961,8 @@
                         </div>
                         <div class="preset-description">Демонстрация экспертного подхода на конкретном примере (45-90 мин)</div>
                         <div class="preset-includes">
-                            <div class="preset-includes-title">Автоматически активирует:</div>
-                            <div class="preset-includes-list">Разбор кейса + Вопросы для анализа + Разбор решения</div>
+                            <div class="preset-includes-title">Базово включает:</div>
+<div class="preset-includes-list">Разбор кейса + Вопросы для анализа + Разбор решения</div>
                         </div>
                         <div class="preset-quantity">
                             <span class="preset-quantity-label">Количество:</span>
@@ -960,13 +975,13 @@
                     </div>
                 </div>
                 
-                <div class="section-title">Компоненты образовательного контента</div>
+                <div class="section-title">Дополнительные компоненты</div>
                 
-                <div class="info-card">
-                    <h4>Детальная настройка</h4>
-                    <p><span style="color: #10b981;">●</span> Зеленые - активированы пресетом, можно отключить<br>
-                    <span style="color: #7c3aed;">●</span> Фиолетовые - выбраны дополнительно</p>
-                </div>
+    <div class="info-card">
+    <h4>Дополнительные компоненты</h4>
+    <p>Полностью независимые от пресетов компоненты. Можно добавлять любые, даже если такие же есть в пресетах.<br>
+    <span style="color: #7c3aed;">●</span> Каждый компонент настраивается независимо</p>
+</div>
               
               <div class="components-grid">
                     <div class="component-item" data-component="longread">
@@ -1339,6 +1354,48 @@
                     </div>
                 </div>
                 
+<div class="section-title">Кастомные услуги</div>
+
+<div class="info-card">
+    <h4>Создайте свои услуги</h4>
+    <p>Добавьте любые дополнительные работы, которых нет в стандартном списке</p>
+</div>
+
+<div id="customServicesContainer">
+    <div class="custom-service-form" id="customServiceForm">
+        <div style="background: #f9fafb; border: 2px dashed #d1d5db; border-radius: 8px; padding: 20px; margin-bottom: 15px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Название услуги:</label>
+                    <input type="text" id="customServiceName" placeholder="Например: Дизайн логотипа" style="width: 100%; padding: 8px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px;">
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Описание (опционально):</label>
+                    <input type="text" id="customServiceDescription" placeholder="Краткое описание" style="width: 100%; padding: 8px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px;">
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 15px; align-items: end;">
+                <div>
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Время (ч):</label>
+                    <input type="number" id="customServiceHours" value="1" min="0.1" max="100" step="0.1" style="width: 100%; padding: 8px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; text-align: center;">
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Количество:</label>
+                    <input type="number" id="customServiceCount" value="1" min="1" max="100" style="width: 100%; padding: 8px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; text-align: center;">
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Цена за ед.:</label>
+                    <div id="customServicePrice" style="padding: 8px; background: #f3f4f6; border-radius: 6px; text-align: center; font-weight: 600; color: #7c3aed; font-size: 14px;">220 ₽</div>
+                </div>
+                <div>
+                    <button onclick="addCustomService()" style="padding: 8px 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px;">+ Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="customServicesList"></div>
+</div>
+
                 <div class="section-title">Дополнительные услуги</div>
                 
                 <div class="service-grid">
@@ -1667,7 +1724,11 @@ function updatePresetPrices() {
         
         const priceElement = safeGetElement(presetType + 'Price');
         if (priceElement) {
-            priceElement.textContent = pricePerUnit.toLocaleString('ru-RU') + ' ₽/шт';
+            if (count > 1) {
+                priceElement.textContent = pricePerUnit.toLocaleString('ru-RU') + ' ₽/шт (' + count + ' шт.)';
+            } else {
+                priceElement.textContent = pricePerUnit.toLocaleString('ru-RU') + ' ₽/шт';
+            }
         }
     });
 }
@@ -1687,6 +1748,7 @@ function updateComponentPrices() {
     const complexityMultiplier = simpleCalculation ? 1.0 : calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
     
     Object.keys(components).forEach(componentId => {
+        const count = parseInt(safeGetValue(componentId + 'Count', 1));
         const baseHours = safeGetValue(componentId + 'Hours', components[componentId]?.defaultHours || 1);
         
         let volumeFactor = 1.0;
@@ -1698,18 +1760,27 @@ function updateComponentPrices() {
             volumeFactor = questions / 7;
         }
         
-        const adjustedHours = baseHours * volumeFactor * (lessonDuration / 60) * complexityMultiplier * qualityLevel;
+        const volumeDiscount = getVolumeDiscount(count);
+        const adjustedHours = baseHours * volumeFactor * (lessonDuration / 60) * complexityMultiplier * qualityLevel * volumeDiscount;
         const pricePerUnit = Math.round(adjustedHours * hourlyRate);
         
         const priceElement = safeGetElement(componentId + 'Price');
         if (priceElement) {
-            priceElement.textContent = pricePerUnit.toLocaleString('ru-RU') + ' ₽/шт';
+            if (count > 1) {
+                priceElement.textContent = pricePerUnit.toLocaleString('ru-RU') + ' ₽/шт (' + count + ' шт.)';
+            } else {
+                priceElement.textContent = pricePerUnit.toLocaleString('ru-RU') + ' ₽/шт';
+            }
         }
     });
 }
 
 // Функция расчета скидки за объем
 function getVolumeDiscount(quantity) {
+    const enableVolumeDiscounts = safeGetElement('enableVolumeDiscounts')?.checked ?? true;
+    
+    if (!enableVolumeDiscounts) return 1.0;
+    
     if (quantity <= 5) return 1.0;
     if (quantity <= 15) return 0.9;
     if (quantity <= 30) return 0.8;
@@ -1739,9 +1810,189 @@ function calculateAdaptiveMultiplier(domain, project, complexity, urgency, role)
     return result;
 }
 
-    // Отслеживание автоматически активированных компонентов и услуг
-    let autoActivatedComponents = new Set();
-    let autoActivatedServices = new Set();
+// Массив кастомных услуг
+let customServices = [];
+let customServiceCounter = 0;
+
+// Отслеживание автоматически активированных услуг (только услуги, не компоненты!)
+let autoActivatedServices = new Set();
+
+// Автоматическая активация услуг
+function handleServiceAutoActivation() {
+    const domainKnowledge = safeGetValue('domainKnowledge', 1.0);
+    const projectType = safeGetValue('projectType', 1.0);
+    
+    // Проверяем пресеты с видеоуроками
+    const videoLessonCount = parseInt(safeGetValue('videoLessonPreset', 0));
+    
+    // Логика автоактивации услуг
+    if (projectType === 1.0) {
+        // Новая программа по моей методике → Исследование + Методические артефакты
+        activateService('research', true);
+        activateService('methodology', true);
+    } else {
+        // Доработка или чужая программа → Методический аудит
+        activateService('audit', true);
+        // Убираем исследование и методические артефакты если они были автоактивированы
+        deactivateService('research');
+        deactivateService('methodology');
+    }
+    
+    // Автоактивация подготовки спикера для видеоуроков
+    if (videoLessonCount > 0) {
+        activateService('speakerPrep', true);
+    } else {
+        deactivateService('speakerPrep');
+    }
+    
+    calculateCost();
+}
+
+function activateService(serviceId, isAuto) {
+    const checkbox = safeGetElement(serviceId);
+    if (!checkbox) return;
+    
+    const element = checkbox.closest('.service-item');
+    if (!element) return;
+    
+    const quantityGroups = element.querySelectorAll('.quantity-input-group');
+
+    if (!checkbox.checked) {
+        checkbox.checked = true;
+        if (isAuto) {
+            element.classList.add('auto-selected');
+            element.classList.remove('selected');
+            autoActivatedServices.add(serviceId);
+            updateAutoLabel(element, true);
+        } else {
+            element.classList.add('selected');
+            element.classList.remove('auto-selected');
+        }
+        quantityGroups.forEach(group => group.classList.add('visible'));
+    }
+}
+
+function deactivateService(serviceId) {
+    if (!autoActivatedServices.has(serviceId)) return;
+    
+    const checkbox = safeGetElement(serviceId);
+    if (!checkbox) return;
+    
+    const element = checkbox.closest('.service-item');
+    if (!element) return;
+    
+    const quantityGroups = element.querySelectorAll('.quantity-input-group');
+
+    checkbox.checked = false;
+    element.classList.remove('auto-selected', 'selected');
+    autoActivatedServices.delete(serviceId);
+    updateAutoLabel(element, false);
+    quantityGroups.forEach(group => group.classList.remove('visible'));
+}
+
+function updateAutoLabel(element, isAuto) {
+    const title = element.querySelector('.service-title');
+    if (!title) return;
+    
+    let label = title.querySelector('.auto-selected-label');
+
+    if (isAuto && !label) {
+        label = document.createElement('span');
+        label.className = 'auto-selected-label';
+        label.textContent = 'АВТО';
+        title.appendChild(label);
+    } else if (!isAuto && label) {
+        label.remove();
+    }
+}
+
+// Функции для кастомных услуг
+function updateCustomServicePrice() {
+    const hours = safeGetValue('customServiceHours', 1);
+    const hourlyRate = safeGetValue('hourlyRate', 220);
+    const price = Math.round(hours * hourlyRate);
+    
+    const priceElement = safeGetElement('customServicePrice');
+    if (priceElement) {
+        priceElement.textContent = price.toLocaleString('ru-RU') + ' ₽';
+    }
+}
+
+function addCustomService() {
+    const name = safeGetElement('customServiceName')?.value.trim();
+    const description = safeGetElement('customServiceDescription')?.value.trim();
+    const hours = safeGetValue('customServiceHours', 1);
+    const count = parseInt(safeGetValue('customServiceCount', 1));
+    const hourlyRate = safeGetValue('hourlyRate', 220);
+    
+    if (!name) {
+        alert('Введите название услуги');
+        return;
+    }
+    
+    customServiceCounter++;
+    const id = 'custom_' + customServiceCounter;
+    
+    const customService = {
+        id: id,
+        name: name,
+        description: description,
+        hours: hours,
+        count: count,
+        hourlyRate: hourlyRate
+    };
+    
+    customServices.push(customService);
+    renderCustomServices();
+    clearCustomServiceForm();
+    calculateCost();
+}
+
+function removeCustomService(id) {
+    customServices = customServices.filter(service => service.id !== id);
+    renderCustomServices();
+    calculateCost();
+}
+
+function renderCustomServices() {
+    const container = safeGetElement('customServicesList');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    customServices.forEach(service => {
+        const price = Math.round(service.hours * service.hourlyRate);
+        const totalCost = price * service.count;
+        
+        container.innerHTML += `
+            <div class="service-item" style="background: #fef3c7; border-color: #f59e0b;">
+                <div class="service-header">
+                    <span class="service-title">${service.name}</span>
+                    <span style="color: #d97706; font-weight: 600; font-size: 0.9rem;">${totalCost.toLocaleString('ru-RU')} ₽</span>
+                </div>
+                <div class="service-description">${service.description || 'Кастомная услуга'}</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f3f4f6;">
+                    <span style="font-size: 0.85rem; color: #6b7280;">${service.hours}ч × ${service.count}шт = ${price.toLocaleString('ru-RU')} ₽/шт</span>
+                    <button onclick="removeCustomService('${service.id}')" style="padding: 4px 8px; background: #ef4444; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer;">Удалить</button>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function clearCustomServiceForm() {
+    const nameInput = safeGetElement('customServiceName');
+    const descriptionInput = safeGetElement('customServiceDescription');
+    const hoursInput = safeGetElement('customServiceHours');
+    const countInput = safeGetElement('customServiceCount');
+    
+    if (nameInput) nameInput.value = '';
+    if (descriptionInput) descriptionInput.value = '';
+    if (hoursInput) hoursInput.value = '1';
+    if (countInput) countInput.value = '1';
+    
+    updateCustomServicePrice();
+}
 
 // Функции для работы с финансовыми настройками и подсказками
 function updateDiscountDisplay() {
@@ -1822,6 +2073,54 @@ function hideTooltip(tooltipId) {
     }
 }
 
+// Система умных подсказок
+    function addSmartTooltips() {
+        // Добавляем подсказку к упрощенному расчету
+        const simpleCalcLabel = document.querySelector('label[for="simpleCalculation"]');
+        if (simpleCalcLabel && !simpleCalcLabel.querySelector('.smart-tooltip')) {
+            const tooltip = document.createElement('span');
+            tooltip.className = 'smart-tooltip';
+            tooltip.innerHTML = ' <span style="color: #6b7280; cursor: help;" title="Отключает все коэффициенты сложности. Используйте для быстрой оценки или простых проектов">❓</span>';
+            simpleCalcLabel.appendChild(tooltip);
+        }
+        
+        // Добавляем подсказку к роли методиста
+        const methodistLabel = document.querySelector('label[for="methodistRole"]');
+        if (methodistLabel && !methodistLabel.querySelector('.smart-tooltip')) {
+            const tooltip = document.createElement('span');
+            tooltip.className = 'smart-tooltip';
+            tooltip.innerHTML = ' <span style="color: #6b7280; cursor: help;" title="Автор создает контент с нуля. Редактор проверяет готовый контент (50% ставки)">❓</span>';
+            methodistLabel.appendChild(tooltip);
+        }
+        
+        // Добавляем индикатор экономии для скидок за объем
+        updateVolumeDiscountIndicators();
+    }
+    
+    function updateVolumeDiscountIndicators() {
+        document.querySelectorAll('.preset-quantity-input').forEach(input => {
+            const value = parseInt(input.value) || 0;
+            let discountText = '';
+            
+            if (value > 30) discountText = ' 💰 -30%';
+            else if (value > 15) discountText = ' 💰 -20%';
+            else if (value > 5) discountText = ' 💰 -10%';
+            
+            // Удаляем старый индикатор
+            const existingIndicator = input.parentNode.querySelector('.volume-discount');
+            if (existingIndicator) existingIndicator.remove();
+            
+            // Добавляем новый, если есть скидка
+            if (discountText) {
+                const indicator = document.createElement('span');
+                indicator.className = 'volume-discount';
+                indicator.style.cssText = 'color: #10b981; font-size: 0.8rem; font-weight: 600; margin-left: 5px;';
+                indicator.textContent = discountText;
+                input.parentNode.appendChild(indicator);
+            }
+        });
+    }
+
 	// Функция для безопасного получения элемента
     function safeGetElement(id) {
         const element = document.getElementById(id);
@@ -1840,6 +2139,97 @@ function hideTooltip(tooltipId) {
         return isNaN(value) ? defaultValue : value;
     }
 
+// Система валидации и предупреждений
+    function showWarning(message, type = 'warning') {
+        // Удаляем предыдущие предупреждения
+        const existingWarning = document.querySelector('.calc-warning');
+        if (existingWarning) {
+            existingWarning.remove();
+        }
+        
+        // Создаем новое предупреждение
+        const warning = document.createElement('div');
+        warning.className = `calc-warning calc-${type}`;
+        warning.innerHTML = `
+            <div style="background: ${type === 'error' ? '#fee2e2' : '#fef3c7'}; 
+                        border: 1px solid ${type === 'error' ? '#fca5a5' : '#fbbf24'}; 
+                        color: ${type === 'error' ? '#dc2626' : '#d97706'}; 
+                        padding: 12px; 
+                        border-radius: 8px; 
+                        margin: 10px 0; 
+                        font-size: 0.9rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;">
+                <span>${type === 'error' ? '⚠️' : 'ℹ️'}</span>
+                <span>${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" 
+                        style="margin-left: auto; background: none; border: none; 
+                               font-size: 1.2rem; cursor: pointer; color: inherit;">×</button>
+            </div>
+        `;
+        
+        // Вставляем после заголовка "Базовые параметры"
+        const targetSection = document.querySelector('.section-title');
+        if (targetSection) {
+            targetSection.parentNode.insertBefore(warning, targetSection.nextSibling);
+        }
+        
+        // Автоматически убираем через 10 секунд
+        setTimeout(() => {
+            if (warning && warning.parentNode) {
+                warning.remove();
+            }
+        }, 10000);
+    }
+
+    function validateInputs() {
+        const hourlyRate = safeGetValue('hourlyRate', 220);
+        const totalHours = parseFloat(document.getElementById('totalHours')?.textContent || '0');
+        
+        // Проверка ставки
+        if (hourlyRate < 100) {
+            showWarning('Ставка менее 100₽/час может быть слишком низкой для качественной работы', 'warning');
+        } else if (hourlyRate > 10000) {
+            showWarning('Очень высокая ставка. Убедитесь, что это соответствует рынку', 'warning');
+        }
+        
+        // Проверка объема работ
+        if (totalHours > 200) {
+            showWarning('Очень большой объем работ (>200ч). Рекомендуется разбить на этапы', 'warning');
+        } else if (totalHours > 500) {
+            showWarning('Критически большой объем! Обязательно разбейте на несколько этапов', 'error');
+        }
+        
+        // Проверка логических противоречий
+        const simpleCalc = document.getElementById('simpleCalculation')?.checked;
+        const newDomain = safeGetValue('domainKnowledge', 1.0) === 1.3;
+        const complexContent = safeGetValue('contentComplexity', 1.2) > 1.4;
+        
+        if (simpleCalc && (newDomain || complexContent)) {
+            showWarning('Упрощенный расчет не учитывает сложность. Рекомендуется отключить для точности', 'warning');
+        }
+    }
+
+// Обновление информационной панели
+function updateCalculationInfo() {
+    const simpleCalc = safeGetElement('simpleCalculation')?.checked || false;
+    const volumeDiscounts = safeGetElement('enableVolumeDiscounts')?.checked ?? true;
+    const description = safeGetElement('calculationDescription');
+    
+    if (description) {
+        let text = '';
+        text += `<strong>Коэффициенты сложности:</strong> ${simpleCalc ? 'Отключены' : 'Включены'}<br>`;
+        text += `<strong>Скидки за объем:</strong> ${volumeDiscounts ? 'Включены (6-15шт: -10%, 16-30шт: -20%, 31+шт: -30%)' : 'Отключены'}`;
+        
+        if (simpleCalc && volumeDiscounts) {
+            text += '<br><span style="color: #d97706;">⚠️ Скидки работают даже в упрощенном режиме</span>';
+        }
+        
+        description.innerHTML = text;
+    }
+}
+
     // Обновление отображения длительности урока
     function updateLessonDurationDisplay() {
         const lessonDurationInput = safeGetElement('lessonDuration');
@@ -1847,90 +2237,6 @@ function hideTooltip(tooltipId) {
         
         if (lessonDurationInput && lessonDurationValue) {
             lessonDurationValue.textContent = lessonDurationInput.value + ' минут';
-        }
-    }
-
-    // Автоматическая активация услуг
-    function handleAutoActivation() {
-        const domainKnowledge = safeGetValue('domainKnowledge', 1.0);
-        const projectType = safeGetValue('projectType', 1.0);
-
-        // Новый домен -> активировать исследование и методические артефакты
-        if (domainKnowledge === 1.3) {
-            activateService('research', true);
-            activateService('methodology', true);
-        } else {
-            deactivateService('research');
-            if (projectType !== 1.0) {
-                deactivateService('methodology');
-            }
-        }
-
-        // Новая программа -> активировать методические артефакты
-        if (projectType === 1.0) {
-            activateService('methodology', true);
-        } else if (domainKnowledge !== 1.3) {
-            deactivateService('methodology');
-        }
-
-        calculateCost();
-    }
-
-    function activateService(serviceId, isAuto) {
-        const checkbox = safeGetElement(serviceId);
-        if (!checkbox) return;
-        
-        const element = checkbox.closest('.service-item');
-        if (!element) return;
-        
-        const quantityGroups = element.querySelectorAll('.quantity-input-group');
-
-        if (!checkbox.checked) {
-            checkbox.checked = true;
-            if (isAuto) {
-                element.classList.add('auto-selected');
-                element.classList.remove('selected');
-                autoActivatedServices.add(serviceId);
-                updateAutoLabel(element, true);
-            } else {
-                element.classList.add('selected');
-                element.classList.remove('auto-selected');
-            }
-            quantityGroups.forEach(group => group.classList.add('visible'));
-        }
-    }
-
-    function deactivateService(serviceId) {
-        if (!autoActivatedServices.has(serviceId)) return;
-        
-        const checkbox = safeGetElement(serviceId);
-        if (!checkbox) return;
-        
-        const element = checkbox.closest('.service-item');
-        if (!element) return;
-        
-        const quantityGroups = element.querySelectorAll('.quantity-input-group');
-
-        checkbox.checked = false;
-        element.classList.remove('auto-selected', 'selected');
-        autoActivatedServices.delete(serviceId);
-        updateAutoLabel(element, false);
-        quantityGroups.forEach(group => group.classList.remove('visible'));
-    }
-
-    function updateAutoLabel(element, isAuto) {
-        const title = element.querySelector('.component-title') || element.querySelector('.service-title');
-        if (!title) return;
-        
-        let label = title.querySelector('.auto-selected-label');
-
-        if (isAuto && !label) {
-            label = document.createElement('span');
-            label.className = 'auto-selected-label';
-            label.textContent = 'АВТО';
-            title.appendChild(label);
-        } else if (!isAuto && label) {
-            label.remove();
         }
     }
 
@@ -1957,139 +2263,68 @@ function hideTooltip(tooltipId) {
     }
 
 	function applyPreset(presetType) {
-        const preset = presets[presetType];
-        if (!preset) return;
-        
-        const count = parseInt(safeGetValue(presetType + 'Preset', 0));
-        const presetElement = document.querySelector('[data-preset="' + presetType + '"]');
+    const preset = presets[presetType];
+    if (!preset) return;
+    
+    const count = parseInt(safeGetValue(presetType + 'Preset', 0));
+    const presetElement = document.querySelector('[data-preset="' + presetType + '"]');
 
-        if (count > 0) {
-            preset.components.forEach(componentId => {
-                const checkbox = safeGetElement(componentId);
-                if (!checkbox) return;
-                
-                const element = checkbox.closest('.component-item');
-                if (!element) return;
-                
-                const countInput = safeGetElement(componentId + 'Count');
-
-                if (!checkbox.checked) {
-                    checkbox.checked = true;
-                    element.classList.add('auto-selected');
-                    element.classList.remove('selected');
-                    autoActivatedComponents.add(componentId);
-                    showComponentQuantities(componentId, true);
-
-                    if (countInput) {
-                        countInput.value = count;
-                    }
-
-                    // Специальные настройки для текстовых уроков
-                    if (presetType === 'textLesson') {
-                        if (componentId === 'longread') {
-                            const pagesInput = safeGetElement('longreadPages');
-                            if (pagesInput) pagesInput.value = 1;
-                        } else if (componentId === 'quizzes') {
-                            const questionsInput = safeGetElement('quizzesQuestions');
-                            if (questionsInput) questionsInput.value = 7;
-                        }
-                    }
-
-                    updateAutoLabel(element, true);
-                } else if (autoActivatedComponents.has(componentId)) {
-                    if (countInput) {
-                        countInput.value = Math.max(parseInt(countInput.value) || 0, count);
-                    }
-                }
-            });
-
-            if (presetElement) {
-                presetElement.classList.add('active');
-            }
-        } else {
-            if (presetElement) {
-                presetElement.classList.remove('active');
-            }
-
-            preset.components.forEach(componentId => {
-                if (!autoActivatedComponents.has(componentId)) return;
-                
-                const checkbox = safeGetElement(componentId);
-                if (!checkbox) return;
-                
-                const element = checkbox.closest('.component-item');
-                if (!element) return;
-
-                // Проверяем, нужен ли компонент другим активным пресетам
-                const neededByOtherPresets = Object.keys(presets).some(otherPreset => {
-                    if (otherPreset === presetType) return false;
-                    const otherCount = parseInt(safeGetValue(otherPreset + 'Preset', 0));
-                    return otherCount > 0 && presets[otherPreset].components.includes(componentId);
-                });
-
-                if (!neededByOtherPresets) {
-                    autoActivatedComponents.delete(componentId);
-                    checkbox.checked = false;
-                    element.classList.remove('auto-selected');
-                    showComponentQuantities(componentId, false);
-                    updateAutoLabel(element, false);
-                }
-            });
+    // Просто обновляем визуальное состояние пресета
+    if (count > 0) {
+        if (presetElement) {
+            presetElement.classList.add('active');
         }
-
-        calculateCost();
+    } else {
+        if (presetElement) {
+            presetElement.classList.remove('active');
+        }
     }
+
+    handleServiceAutoActivation();
+}
 
     function toggleComponent(element, componentId) {
-        const checkbox = element.querySelector('input[type="checkbox"]');
-        if (!checkbox) return;
+    const checkbox = element.querySelector('input[type="checkbox"]');
+    if (!checkbox) return;
 
-        checkbox.checked = !checkbox.checked;
+    checkbox.checked = !checkbox.checked;
 
-        if (checkbox.checked) {
-            if (autoActivatedComponents.has(componentId)) {
-                element.classList.add('auto-selected');
-                element.classList.remove('selected');
-            } else {
-                element.classList.add('selected');
-                element.classList.remove('auto-selected');
-            }
-            showComponentQuantities(componentId, true);
-        } else {
-            element.classList.remove('selected', 'auto-selected');
-            autoActivatedComponents.delete(componentId);
-            showComponentQuantities(componentId, false);
-            updateAutoLabel(element, false);
-        }
-
-        calculateCost();
+    if (checkbox.checked) {
+        element.classList.add('selected');
+        element.classList.remove('auto-selected');
+        showComponentQuantities(componentId, true);
+    } else {
+        element.classList.remove('selected', 'auto-selected');
+        showComponentQuantities(componentId, false);
     }
 
-    function toggleService(element, serviceId) {
-        const checkbox = element.querySelector('input[type="checkbox"]');
-        if (!checkbox) return;
+    calculateCost();
+}
 
-        checkbox.checked = !checkbox.checked;
+   function toggleService(element, serviceId) {
+    const checkbox = element.querySelector('input[type="checkbox"]');
+    if (!checkbox) return;
 
-        if (checkbox.checked) {
-            if (autoActivatedServices.has(serviceId)) {
-                element.classList.add('auto-selected');
-                element.classList.remove('selected');
-            } else {
-                element.classList.add('selected');
-                element.classList.remove('auto-selected');
-            }
-            showServiceQuantities(serviceId, true);
+    checkbox.checked = !checkbox.checked;
+
+    if (checkbox.checked) {
+        if (autoActivatedServices.has(serviceId)) {
+            element.classList.add('auto-selected');
+            element.classList.remove('selected');
         } else {
-            element.classList.remove('selected', 'auto-selected');
-            autoActivatedServices.delete(serviceId);
-            showServiceQuantities(serviceId, false);
-            updateAutoLabel(element, false);
+            element.classList.add('selected');
+            element.classList.remove('auto-selected');
         }
-
-        calculateCost();
+        showServiceQuantities(serviceId, true);
+    } else {
+        element.classList.remove('selected', 'auto-selected');
+        autoActivatedServices.delete(serviceId);
+        showServiceQuantities(serviceId, false);
+        updateAutoLabel(element, false);
     }
 
+    calculateCost();
+}
 	function calculateCost() {
         const hourlyRate = safeGetValue('hourlyRate', 220);
         const lessonDuration = parseInt(safeGetValue('lessonDuration', 30));
@@ -2130,27 +2365,21 @@ const adjustedHours = baseHours * durationFactor * complexityMultiplier * qualit
             const cost = adjustedHours * count * hourlyRate;
 
             componentCosts.push({
-                name: presets[presetType].name,
-                count: count,
-                hours: adjustedHours,
-                cost: cost
-            });
+    name: presets[presetType].name,
+    count: count,
+    hours: adjustedHours,
+    cost: cost,
+    source: 'preset'
+});
 
             totalContentCost += cost;
             totalContentHours += adjustedHours * count;
         });
 
-        // Расчет отдельных компонентов (если не в пресетах)
-        Object.keys(components).forEach(componentId => {
-            const checkbox = safeGetElement(componentId);
-            if (!checkbox?.checked) return;
-            
-            // Проверяем, не входит ли компонент в активные пресеты
-            const isInActivePreset = activePresets.some(preset => 
-                presets[preset].components.includes(componentId)
-            );
-            
-            if (isInActivePreset) return;
+        // Расчет дополнительных компонентов (независимо от пресетов)
+Object.keys(components).forEach(componentId => {
+    const checkbox = safeGetElement(componentId);
+    if (!checkbox?.checked) return;
 
             const count = parseInt(safeGetValue(componentId + 'Count', 1));
             const baseHours = safeGetValue(componentId + 'Hours', components[componentId].defaultHours);
@@ -2164,17 +2393,18 @@ const adjustedHours = baseHours * durationFactor * complexityMultiplier * qualit
                 volumeFactor = questions / 7;
             }
 
-            const multiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
-const volumeDiscount = getVolumeDiscount(count);
-const adjustedHours = baseHours * volumeFactor * (lessonDuration / 60) * multiplier * qualityLevel * volumeDiscount;
+           const multiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
+            const volumeDiscount = getVolumeDiscount(count);
+            const adjustedHours = baseHours * volumeFactor * (lessonDuration / 60) * multiplier * qualityLevel * volumeDiscount;
             const cost = adjustedHours * count * hourlyRate;
 
             componentCosts.push({
-                name: components[componentId].name,
-                count: count,
-                hours: adjustedHours,
-                cost: cost
-            });
+    name: components[componentId].name,
+    count: count,
+    hours: adjustedHours,
+    cost: cost,
+    source: 'additional'
+});
 
             totalContentCost += cost;
             totalContentHours += adjustedHours * count;
@@ -2229,6 +2459,22 @@ const adjustedHours = hours * multiplier;
             totalServiceHours += hours;
         });
 
+// Добавляем кастомные услуги
+        customServices.forEach(service => {
+            const cost = service.hours * service.hourlyRate * service.count;
+            
+            serviceCosts.push({
+                name: service.name,
+                count: service.count,
+                hours: service.hours,
+                cost: cost,
+                source: 'custom'
+            });
+            
+            totalServiceCost += cost;
+            totalServiceHours += service.hours * service.count;
+        });
+
         // Расчет правок
 const revisionFactor = clientType / 100;
 const contentWithRevisions = totalContentCost * (1 + revisionFactor);
@@ -2257,7 +2503,10 @@ updateComponentPrices();
 
         // Обновление интерфейса
         console.log('Financial data:', { subtotal, discountAmount, afterDiscount, taxAmount, discountRate: safeGetValue('discountRate', 0), taxRate: safeGetValue('taxRate', 13) });
-updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount);
+        updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount);
+        
+        // Запускаем валидацию после обновления результатов
+        setTimeout(validateInputs, 100);
     }
 
     function updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount) {
@@ -2295,13 +2544,10 @@ updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCos
             });
             
             componentCosts.forEach(item => {
-                const isInActivePreset = activePresets.some(preset => 
-                    presets[preset]?.name === item.name
-                );
-                if (!isInActivePreset) {
-                    projectComposition.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + ' (' + item.count + ' шт.)</span></div>';
-                }
-            });
+    if (item.source === 'additional') {
+        projectComposition.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + ' (' + item.count + ' шт.)</span></div>';
+    }
+});
             
             assessmentCosts.forEach(item => {
                 projectComposition.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + ' (' + item.count + ' шт.)</span></div>';
@@ -2323,14 +2569,29 @@ function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCost
         
         if (totalCost > 0) {
             // Показываем компоненты
-            if (componentCosts.length > 0) {
-                breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Контент</div>';
-                componentCosts.forEach(item => {
-                    const cost = Math.round(item.cost).toLocaleString('ru-RU');
-                    breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + ' (' + item.count + ' шт.)</span><span class="breakdown-right">' + cost + ' ₽</span></div>';
-                });
-                breakdown.innerHTML += '</div>';
-            }
+if (componentCosts.length > 0) {
+    // Разделяем на пресеты и дополнительные компоненты
+    const presetItems = componentCosts.filter(item => item.source === 'preset');
+    const additionalItems = componentCosts.filter(item => item.source === 'additional');
+    
+    if (presetItems.length > 0) {
+        breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Пресеты</div>';
+        presetItems.forEach(item => {
+            const cost = Math.round(item.cost).toLocaleString('ru-RU');
+            breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + ' (' + item.count + ' шт.)</span><span class="breakdown-right">' + cost + ' ₽</span></div>';
+        });
+        breakdown.innerHTML += '</div>';
+    }
+    
+    if (additionalItems.length > 0) {
+        breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Дополнительные компоненты</div>';
+        additionalItems.forEach(item => {
+            const cost = Math.round(item.cost).toLocaleString('ru-RU');
+            breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + ' (' + item.count + ' шт.)</span><span class="breakdown-right">' + cost + ' ₽</span></div>';
+        });
+        breakdown.innerHTML += '</div>';
+    }
+}
             
             // Показываем проверки знаний
             if (assessmentCosts.length > 0) {
@@ -2344,12 +2605,27 @@ function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCost
             
             // Показываем дополнительные услуги
             if (serviceCosts.length > 0) {
-                breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Дополнительные услуги</div>';
-                serviceCosts.forEach(item => {
-                    const cost = Math.round(item.cost).toLocaleString('ru-RU');
-                    breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + '</span><span class="breakdown-right">' + cost + ' ₽</span></div>';
-                });
-                breakdown.innerHTML += '</div>';
+                const standardServices = serviceCosts.filter(item => item.source !== 'custom');
+                const customServiceItems = serviceCosts.filter(item => item.source === 'custom');
+                
+                if (standardServices.length > 0) {
+                    breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Дополнительные услуги</div>';
+                    standardServices.forEach(item => {
+                        const cost = Math.round(item.cost).toLocaleString('ru-RU');
+                        breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + '</span><span class="breakdown-right">' + cost + ' ₽</span></div>';
+                    });
+                    breakdown.innerHTML += '</div>';
+                }
+                
+                if (customServiceItems.length > 0) {
+                    breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Кастомные услуги</div>';
+                    customServiceItems.forEach(item => {
+                        const cost = Math.round(item.cost).toLocaleString('ru-RU');
+                        const countText = item.count > 1 ? ` (${item.count} шт.)` : '';
+                        breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">' + item.name + countText + '</span><span class="breakdown-right">' + cost + ' ₽</span></div>';
+                    });
+                    breakdown.innerHTML += '</div>';
+                }
             }
             
             // Показываем правки ТОЛЬКО если они есть
@@ -2417,18 +2693,39 @@ function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCost
         }
 
         // Обработчики для основных параметров
-        const basicInputs = ['hourlyRate', 'simpleCalculation', 'methodistRole', 'domainKnowledge', 'projectType', 'contentComplexity', 'urgency', 'qualityLevel', 'clientType', 'showTaxSeparately'];
+        const basicInputs = ['hourlyRate', 'simpleCalculation', 'enableVolumeDiscounts', 'methodistRole', 'domainKnowledge', 'projectType', 'contentComplexity', 'urgency', 'qualityLevel', 'clientType', 'showTaxSeparately'];
+// Обработчики для кастомных услуг
+        const customHoursInput = safeGetElement('customServiceHours');
+        const customCountInput = safeGetElement('customServiceCount');
+        
+        if (customHoursInput) {
+            customHoursInput.addEventListener('input', updateCustomServicePrice);
+        }
+        
+        if (customCountInput) {
+            customCountInput.addEventListener('input', updateCustomServicePrice);
+        }
+        
+        // Обработчик Enter для добавления кастомной услуги
+        const customNameInput = safeGetElement('customServiceName');
+        if (customNameInput) {
+            customNameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addCustomService();
+                }
+            });
+        }
         basicInputs.forEach(inputId => {
             const element = safeGetElement(inputId);
             if (element) {
                 element.addEventListener('input', () => {
-                    handleAutoActivation();
-                    calculateCost();
-                });
+    updateCalculationInfo();
+    handleServiceAutoActivation();
+});
                 element.addEventListener('change', () => {
-                    handleAutoActivation();
-                    calculateCost();
-                });
+    updateCalculationInfo();
+    handleServiceAutoActivation();
+});
             }
         });
 
@@ -2486,6 +2783,7 @@ updatePresetPrices();
                 
                 input.addEventListener('input', () => {
                     applyPreset(presetType);
+                    updatePresetPrices();
                 });
             });
         });
@@ -2510,15 +2808,15 @@ updatePresetPrices();
                 });
                 
                 input.addEventListener('input', () => {
-    if (input.id.includes('Hours')) {
-        const displayElement = safeGetElement(componentId + 'HoursDisplay');
-        if (displayElement) {
-            displayElement.textContent = parseFloat(input.value).toFixed(1) + 'ч/шт';
-        }
-        updateComponentPrices();
-    }
-    calculateCost();
-});
+                    if (input.id.includes('Hours')) {
+                        const displayElement = safeGetElement(componentId + 'HoursDisplay');
+                        if (displayElement) {
+                            displayElement.textContent = parseFloat(input.value).toFixed(1) + 'ч/шт';
+                        }
+                    }
+                    updateComponentPrices();
+                    calculateCost();
+                });
             });
 
             // Обработчик для чекбокса
@@ -2529,17 +2827,15 @@ updatePresetPrices();
                 });
                 
                 checkbox.addEventListener('change', () => {
-                    if (checkbox.checked) {
-                        item.classList.add('selected');
-                        showComponentQuantities(componentId, true);
-                    } else {
-                        item.classList.remove('selected', 'auto-selected');
-                        autoActivatedComponents.delete(componentId);
-                        showComponentQuantities(componentId, false);
-                        updateAutoLabel(item, false);
-                    }
-                    calculateCost();
-                });
+    if (checkbox.checked) {
+        item.classList.add('selected');
+        showComponentQuantities(componentId, true);
+    } else {
+        item.classList.remove('selected', 'auto-selected');
+        showComponentQuantities(componentId, false);
+    }
+    calculateCost();
+});
             }
         });
 
@@ -2587,9 +2883,7 @@ updatePresetPrices();
                         showServiceQuantities(serviceId, true);
                     } else {
                         item.classList.remove('selected', 'auto-selected');
-                        autoActivatedServices.delete(serviceId);
                         showServiceQuantities(serviceId, false);
-                        updateAutoLabel(item, false);
                     }
                     calculateCost();
                 });
@@ -2711,12 +3005,13 @@ function copyCalculationToClipboard() {
     // Инициализация приложения
     function initialize() {
         updateLessonDurationDisplay();
+updateCalculationInfo();
         initializeEventListeners();
-        handleAutoActivation();
         updateDiscountDisplay();
 updateTaxDisplay();
 updateComponentPrices();
-calculateCost();
+updateCustomServicePrice();
+handleServiceAutoActivation();
     }
 
     // Запуск после загрузки DOM
