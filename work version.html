@@ -1658,6 +1658,7 @@ function safeGetRadioValue(name, defaultValue) {
 
 // Функция управления видимостью блоков
 function updateInterfaceVisibility() {
+    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
     const detailLevel = safeGetRadioValue('detailLevel', 'quick');
     
     // Показываем/скрываем блоки ценообразования
@@ -1844,6 +1845,7 @@ Object.keys(influenceWeights).forEach(key => {
 
 // Функция обновления цен в пресетах
 function updatePresetPrices() {
+    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
     const hourlyRate = safeGetValue('hourlyRate', 220);
     const detailLevel = safeGetRadioValue('detailLevel', 'quick');
     const methodistRole = safeGetValue('methodistRole', 1.0);
@@ -1947,6 +1949,7 @@ function getVolumeDiscount(quantity) {
 
 // Функция расчета адаптивного коэффициента
 function calculateAdaptiveMultiplier(domain, project, complexity, urgency, role) {
+    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
     const detailLevel = safeGetRadioValue('detailLevel', 'quick');
     
     if (detailLevel === 'quick') {
@@ -2397,6 +2400,7 @@ const simpleCalc = (detailLevel === 'quick');
 
 // Обновление информационной панели
 function updateCalculationInfo() {
+    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
     const detailLevel = safeGetRadioValue('detailLevel', 'quick');
     const simpleCalc = (detailLevel === 'quick');
     const volumeDiscounts = safeGetElement('enableVolumeDiscounts')?.checked ?? true;
@@ -2404,6 +2408,9 @@ function updateCalculationInfo() {
     
     if (description) {
         let text = '';
+        
+        // Метод ценообразования
+        if (pricingMethod === 'fixed') {
         
         // Метод ценообразования
         if (pricingMethod === 'fixed') {
