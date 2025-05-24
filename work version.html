@@ -2411,11 +2411,8 @@ function updateCalculationInfo() {
         
         // Метод ценообразования
         if (pricingMethod === 'fixed') {
-        
-        // Метод ценообразования
-        if (pricingMethod === 'fixed') {
             text += `<strong>Метод:</strong> Фиксированные цены для пресетов<br>`;
-            text += `<strong>Коэффициенты:</strong> Общая надбавка к проекту<br>`;
+            text += `<strong>Логика:</strong> Базовая цена + коррекция длительности + общая надбавка за сложность<br>`;
             text += `<strong>Компоненты/услуги:</strong> Почасовой расчет<br>`;
         } else {
             text += `<strong>Метод:</strong> Полностью почасовой расчет<br>`;
@@ -2539,6 +2536,7 @@ function updateCalculationInfo() {
         const qualityLevel = safeGetValue('qualityLevel', 1.0);
         const clientType = parseInt(safeGetValue('clientType', 20));
         const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
+		let complexityBonus = 0; // Объявляем в начале функции
 
         // Расчет компонентов контента
         let componentCosts = [];
@@ -2694,11 +2692,19 @@ const adjustedHours = hours * multiplier;
             totalServiceHours += service.hours * service.count;
         });
 
-        // Расчет правок
+      // Расчет надбавки за сложность для фиксированных цен
+if (pricingMethod === 'fixed' && totalContentCost > 0) {
+    const complexityMultiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
+    if (complexityMultiplier > 1.0) {
+        complexityBonus = totalContentCost * (complexityMultiplier - 1.0);
+    }
+}
+
+// Расчет правок
 const revisionFactor = clientType / 100;
 const contentWithRevisions = totalContentCost * (1 + revisionFactor);
 const assessmentsWithRevisions = totalAssessmentCost * (1 + revisionFactor);
-const subtotalBeforeFinancials = contentWithRevisions + assessmentsWithRevisions + totalServiceCost;
+const subtotalBeforeFinancials = contentWithRevisions + assessmentsWithRevisions + totalServiceCost + complexityBonus;
 
 // Применяем скидку/наценку к общей сумме
 const discountRate = safeGetValue('discountRate', 0) / 100;
@@ -2745,7 +2751,7 @@ const totalHours = totalContentHours + totalAssessmentHours + totalServiceHours;
         updateProjectComposition(activePresets, componentCosts, assessmentCosts, serviceCosts);
 
         // Обновление детализации
-        updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount);
+        updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount, complexityBonus, pricingMethod);
     }
 
     function updateProjectComposition(activePresets, componentCosts, assessmentCosts, serviceCosts) {
@@ -2780,7 +2786,7 @@ const totalHours = totalContentHours + totalAssessmentHours + totalServiceHours;
         }
     }
 
-function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount) {
+function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount, complexityBonus, pricingMethod) {
         const breakdown = safeGetElement('breakdown');
         if (!breakdown) return;
 
@@ -2870,7 +2876,14 @@ if (componentCosts.length > 0) {
             const discountRate = safeGetValue('discountRate', 0);
             const taxRate = safeGetValue('taxRate', 13);
             const showTaxSeparately = safeGetElement('showTaxSeparately')?.checked || false;
-            
+
+// Показываем надбавку за сложность ТОЛЬКО для фиксированных цен
+            if (pricingMethod === 'fixed' && complexityBonus > 0) {
+                breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Надбавка за сложность</div>';
+                breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">Коэффициент сложности проекта</span><span class="breakdown-right">+' + Math.round(complexityBonus).toLocaleString('ru-RU') + ' ₽</span></div>';
+                breakdown.innerHTML += '</div>';
+            }
+		
             if (discountRate !== 0 || (taxRate > 0 && showTaxSeparately)) {
                 breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Финансовые расчеты</div>';
                 
