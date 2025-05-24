@@ -57,14 +57,18 @@
         }
         
         .result-section {
-            background: #f8fafc;
-            padding: 40px;
-            border-left: 1px solid #e5e7eb;
-            position: sticky;
-            top: 0;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
+    background: #f8fafc;
+    padding: 40px;
+    border-left: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    max-height: 90vh;
+    overflow-y: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
         
         .form-group {
             margin-bottom: 25px;
@@ -492,12 +496,12 @@
         }
         
         .result-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+}
         
         .result-title {
             font-size: 1.2rem;
@@ -593,15 +597,6 @@
             flex-wrap: wrap;
             gap: 6px;
             margin-top: 8px;
-        }
-
-        .preset-tag {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: white;
         }
 
 .preset-tag {
@@ -713,6 +708,17 @@
     opacity: 1;
 }
 
+.slider-group {
+    margin-bottom: 20px;
+}
+
+.slider-value {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+	    
 .slider-container {
     position: relative;
 }
@@ -2877,6 +2883,11 @@ if (componentCosts.length > 0) {
             const taxRate = safeGetValue('taxRate', 13);
             const showTaxSeparately = safeGetElement('showTaxSeparately')?.checked || false;
 
+// Убеждаемся что complexityBonus определен
+if (typeof complexityBonus === 'undefined') {
+    complexityBonus = 0;
+}
+		
 // Показываем надбавку за сложность ТОЛЬКО для фиксированных цен
             if (pricingMethod === 'fixed' && complexityBonus > 0) {
                 breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Надбавка за сложность</div>';
