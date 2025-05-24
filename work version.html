@@ -1658,7 +1658,6 @@ function safeGetRadioValue(name, defaultValue) {
 
 // Функция управления видимостью блоков
 function updateInterfaceVisibility() {
-    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
     const detailLevel = safeGetRadioValue('detailLevel', 'quick');
     
     // Показываем/скрываем блоки ценообразования
@@ -1845,7 +1844,6 @@ Object.keys(influenceWeights).forEach(key => {
 
 // Функция обновления цен в пресетах
 function updatePresetPrices() {
-    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
     const hourlyRate = safeGetValue('hourlyRate', 220);
     const detailLevel = safeGetRadioValue('detailLevel', 'quick');
     const methodistRole = safeGetValue('methodistRole', 1.0);
@@ -1862,13 +1860,12 @@ function updatePresetPrices() {
         let pricePerUnit;
         
         if (pricingMethod === 'fixed') {
-            // Расчет по фиксированным ценам
+            // Расчет по фиксированным ценам (только длительность + объем)
             const basePrice = fixedPrices[presetType].current;
             const durationFactor = presetDuration / fixedPrices[presetType].baseDuration;
-            const complexityMultiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
             const volumeDiscount = getVolumeDiscount(count);
             
-            pricePerUnit = Math.round(basePrice * durationFactor * complexityMultiplier * volumeDiscount);
+            pricePerUnit = Math.round(basePrice * durationFactor * volumeDiscount);
         } else {
             // Почасовой расчет
             const durationFactor = presetDuration / presets[presetType].defaultDuration;
@@ -1950,7 +1947,6 @@ function getVolumeDiscount(quantity) {
 
 // Функция расчета адаптивного коэффициента
 function calculateAdaptiveMultiplier(domain, project, complexity, urgency, role) {
-    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
     const detailLevel = safeGetRadioValue('detailLevel', 'quick');
     
     if (detailLevel === 'quick') {
@@ -2401,7 +2397,6 @@ const simpleCalc = (detailLevel === 'quick');
 
 // Обновление информационной панели
 function updateCalculationInfo() {
-    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
     const detailLevel = safeGetRadioValue('detailLevel', 'quick');
     const simpleCalc = (detailLevel === 'quick');
     const volumeDiscounts = safeGetElement('enableVolumeDiscounts')?.checked ?? true;
@@ -2536,6 +2531,7 @@ function updateCalculationInfo() {
         const urgency = safeGetValue('urgency', 1.0);
         const qualityLevel = safeGetValue('qualityLevel', 1.0);
         const clientType = parseInt(safeGetValue('clientType', 20));
+        const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
 
         // Расчет компонентов контента
         let componentCosts = [];
@@ -2555,16 +2551,13 @@ function updateCalculationInfo() {
             let cost;
             let adjustedHours;
             
-            const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
-            
-            iif (pricingMethod === 'fixed') {
-                // Расчет по фиксированным ценам
+            if (pricingMethod === 'fixed') {
+                // Расчет по фиксированным ценам (только длительность + объем)
                 const basePrice = fixedPrices[presetType].current;
                 const durationFactor = presetDuration / fixedPrices[presetType].baseDuration;
-                const complexityMultiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
                 const volumeDiscount = getVolumeDiscount(count);
                 
-                const pricePerUnit = basePrice * durationFactor * complexityMultiplier * volumeDiscount;
+                const pricePerUnit = basePrice * durationFactor * volumeDiscount;
                 cost = pricePerUnit * count;
                 adjustedHours = cost / hourlyRate; // Примерное время для отчетности
             } else {
