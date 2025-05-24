@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор методических услуг 1.0</title>
+    <title>Калькулятор методических услуг 2.0</title>
     <style>
         * {
             box-sizing: border-box;
@@ -1080,7 +1080,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Калькулятор методических услуг 1.0</h1>
+            <h1>Калькулятор методических услуг 2.0</h1>
             <p>Гибкая система расчета с пресетами и детальной настройкой</p>
         </div>
         
@@ -1181,8 +1181,6 @@
     </div>
 </div>
 
-</div>
-
 <!-- Блоки параметров ценообразования -->
 <div class="pricing-params-card">
     <div class="pricing-params-title">Параметры ценообразования</div>
@@ -1281,9 +1279,6 @@
         </div>
     </div>
 </div>
-
-<!-- Блоки настройки детализации -->
-<div class="detail-settings-card">
 		    
 <!-- Блоки настройки детализации -->
 <div class="detail-settings-card">
@@ -1931,10 +1926,10 @@
                     <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Количество:</label>
                     <input type="number" id="customServiceCount" value="1" min="1" max="100" style="width: 100%; padding: 8px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; text-align: center;">
                 </div>
-                <div>
-                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Цена за ед.:</label>
-                    <div id="customServicePrice" style="padding: 8px; background: #f3f4f6; border-radius: 6px; text-align: center; font-weight: 600; color: #7c3aed; font-size: 14px;">220 ₽</div>
-                </div>
+               <div>
+    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Цена за ед. (₽):</label>
+    <input type="number" id="customServicePrice" value="220" min="1" max="100000" style="width: 100%; padding: 8px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; text-align: center; font-weight: 600; color: #7c3aed;">
+</div>
                 <div>
                     <button onclick="addCustomService()" style="padding: 8px 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px;">+ Добавить</button>
                 </div>
@@ -2017,7 +2012,6 @@
                 </div>
           
                 </div>
-            </div>
             
 <div class="result-section">
                 <div class="result-card">
@@ -2057,7 +2051,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
 	<script>
 
@@ -2526,14 +2519,8 @@ function updateAutoLabel(element, isAuto) {
 
 // Функции для кастомных услуг
 function updateCustomServicePrice() {
-    const hours = safeGetValue('customServiceHours', 1);
-    const hourlyRate = safeGetValue('hourlyRate', 220);
-    const price = Math.round(hours * hourlyRate);
-    
-    const priceElement = safeGetElement('customServicePrice');
-    if (priceElement) {
-        priceElement.textContent = price.toLocaleString('ru-RU') + ' ₽';
-    }
+    // Теперь цена редактируется пользователем напрямую
+    // Эта функция больше не нужна для автоматического расчета
 }
 
 function addCustomService() {
@@ -2541,7 +2528,7 @@ function addCustomService() {
     const description = safeGetElement('customServiceDescription')?.value.trim();
     const hours = safeGetValue('customServiceHours', 1);
     const count = parseInt(safeGetValue('customServiceCount', 1));
-    const hourlyRate = safeGetValue('hourlyRate', 220);
+    const price = safeGetValue('customServicePrice', 220);
     
     if (!name) {
         alert('Введите название услуги');
@@ -2557,7 +2544,7 @@ function addCustomService() {
         description: description,
         hours: hours,
         count: count,
-        hourlyRate: hourlyRate
+        pricePerUnit: price
     };
     
     customServices.push(customService);
@@ -2579,7 +2566,7 @@ function renderCustomServices() {
     container.innerHTML = '';
     
     customServices.forEach(service => {
-        const price = Math.round(service.hours * service.hourlyRate);
+        const price = service.pricePerUnit;
         const totalCost = price * service.count;
         
         container.innerHTML += `
@@ -2608,8 +2595,6 @@ function clearCustomServiceForm() {
     if (descriptionInput) descriptionInput.value = '';
     if (hoursInput) hoursInput.value = '1';
     if (countInput) countInput.value = '1';
-    
-    updateCustomServicePrice();
 }
 
 // Функции для работы с финансовыми настройками и подсказками
@@ -3115,20 +3100,20 @@ const adjustedHours = hours * multiplier;
         });
 
 // Добавляем кастомные услуги
-        customServices.forEach(service => {
-            const cost = service.hours * service.hourlyRate * service.count;
-            
-            serviceCosts.push({
-                name: service.name,
-                count: service.count,
-                hours: service.hours,
-                cost: cost,
-                source: 'custom'
-            });
-            
-            totalServiceCost += cost;
-            totalServiceHours += service.hours * service.count;
-        });
+customServices.forEach(service => {
+    const cost = service.pricePerUnit * service.count;
+    
+    serviceCosts.push({
+        name: service.name,
+        count: service.count,
+        hours: service.hours,
+        cost: cost,
+        source: 'custom'
+    });
+    
+    totalServiceCost += cost;
+    totalServiceHours += service.hours * service.count;
+});
 
       // Расчет надбавки за сложность для фиксированных цен
 if (pricingMethod === 'fixed' && totalContentCost > 0) {
