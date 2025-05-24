@@ -2528,6 +2528,7 @@ function updateCalculationInfo() {
 }
 	function calculateCost() {
       const hourlyRate = safeGetValue('hourlyRate', 220);
+		let complexityBonus = 0; // Объявляем в начале функции
      const methodistRole = safeGetValue('methodistRole', 1.0);
         const domainKnowledge = safeGetValue('domainKnowledge', 1.0);
         const projectType = safeGetValue('projectType', 1.0);
@@ -2536,7 +2537,6 @@ function updateCalculationInfo() {
         const qualityLevel = safeGetValue('qualityLevel', 1.0);
         const clientType = parseInt(safeGetValue('clientType', 20));
         const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
-		let complexityBonus = 0; // Объявляем в начале функции
 
         // Расчет компонентов контента
         let componentCosts = [];
@@ -2728,13 +2728,13 @@ const totalHours = totalContentHours + totalAssessmentHours + totalServiceHours;
 
         // Обновление интерфейса
         console.log('Financial data:', { subtotal, discountAmount, afterDiscount, taxAmount, discountRate: safeGetValue('discountRate', 0), taxRate: safeGetValue('taxRate', 13) });
-        updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount);
+        updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount, complexityBonus, pricingMethod);
         
         // Запускаем валидацию после обновления результатов
         setTimeout(validateInputs, 100);
     }
 
-    function updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount) {
+   function updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount, complexityBonus, pricingMethod) {
         // Обновление основных результатов
         const totalCostElement = safeGetElement('totalCost');
         const totalHoursElement = safeGetElement('totalHours');
