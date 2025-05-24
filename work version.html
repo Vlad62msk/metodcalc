@@ -866,7 +866,213 @@
 }
 
 .pricing-method-card {
-    background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 100
+    background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 100%);
+    border: 2px solid #d8b4fe;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.pricing-method-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #7c2d12;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.pricing-method-title::before {
+    content: '⚙️';
+    margin-right: 8px;
+}
+
+.pricing-method-description {
+    color: #92400e;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.method-options {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 15px;
+}
+
+.method-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #7c2d12;
+}
+
+.method-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #7c3aed;
+}
+
+.detail-level-section {
+    border-top: 1px solid #d8b4fe;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.detail-level-title {
+    font-weight: 600;
+    color: #7c2d12;
+    margin-bottom: 10px;
+}
+
+.detail-options {
+    display: flex;
+    gap: 25px;
+}
+
+/* Стили для блоков настройки детализации */
+.detail-settings-card {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+    border: 2px solid #bbf7d0;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.detail-settings-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.detail-settings-title::before {
+    content: '🎛️';
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+.detail-settings-description {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.detail-mode-block {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.detail-mode-block:hover {
+    border-color: #10b981;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+}
+
+.detail-mode-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.detail-mode-icon {
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
+.detail-mode-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.detail-mode-description {
+    color: #6b7280;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    padding-left: 30px;
+}
+
+/* Стили для блоков параметров ценообразования */
+.pricing-params-card {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border: 2px solid #fbbf24;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.pricing-params-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.pricing-params-title::before {
+    content: '💳';
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+.pricing-params-description {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.pricing-param-block {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.pricing-param-block:hover {
+    border-color: #fbbf24;
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.1);
+}
+
+.pricing-param-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.pricing-param-icon {
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
+.pricing-param-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.pricing-param-description {
+    color: #6b7280;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    padding-left: 30px;
+}
 
     </style>
 </head>
@@ -878,149 +1084,9 @@
             <p>Гибкая система расчета с пресетами и детальной настройкой</p>
         </div>
         
-<!-- Блок детальной оценки -->
-<div id="detailedComplexityGroup" style="display: none;">
-    <div class="form-group">
-        <label for="methodistRole">Роль методиста:</label>
-        <select id="methodistRole">
-            <option value="1.0">Методист-автор (пишу контент сам)</option>
-            <option value="0.5">Методист-редактор (проверяю за автором)</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="domainKnowledge">Знание предметной области:</label>
-        <select id="domainKnowledge">
-            <option value="1.0">Знаю домен хорошо</option>
-            <option value="1.3">Новый домен (требуется изучение)</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="projectType">Характер работы:</label>
-        <select id="projectType">
-            <option value="1.0">Новая программа по моей методике</option>
-            <option value="1.2">Доработка существующих материалов</option>
-            <option value="1.4">Работа по чужой программе/методике</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="contentComplexity">Сложность контента:</label>
-        <select id="contentComplexity">
-            <option value="1.0">Простой - теория и понятия</option>
-            <option value="1.2" selected>Средний - теория + применение</option>
-            <option value="1.4">Сложный - теория + применение + инструменты</option>
-            <option value="1.6">Высокосложный - теория + применение + инструменты + кейсы</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="urgency">Срочность выполнения:</label>
-        <select id="urgency">
-            <option value="1.0">Обычная (без ограничений по времени)</option>
-            <option value="1.2">Ускоренная (сжатые сроки) - +20%</option>
-            <option value="1.5">Срочная (очень сжатые сроки) - +50%</option>
-            <option value="2.0">Экстренная (критические сроки) - +100%</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="qualityLevel">Уровень качества:</label>
-        <select id="qualityLevel">
-            <option value="0.7">Базовый (экономия 30%)</option>
-            <option value="1.0" selected>Стандарт</option>
-            <option value="1.5">Премиум (+50%)</option>
-        </select>
-    </div>
-</div>
-                
-<!-- Блок для почасовой ставки -->
-<div id="hourlyRateBlock" class="form-group">
-    <div style="background: #fef3c7; border: 2px solid #f59e0b; border-radius: 8px; padding: 15px;">
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-            <span style="font-size: 1.1rem;">💳</span>
-            <label for="hourlyRate" style="font-weight: 600; color: #92400e; margin: 0;">Базовая ставка за час</label>
-        </div>
-        <div style="color: #92400e; font-size: 0.85rem; margin-bottom: 10px; line-height: 1.3;">
-            Используется для всех расчетов. Учитывайте ваш опыт, сложность работ и рыночные ставки
-        </div>
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <input type="number" id="hourlyRate" value="220" min="100" max="5000" style="width: 120px; padding: 8px; border: 2px solid #f59e0b; border-radius: 6px; text-align: center; font-weight: 600; color: #92400e;">
-            <span style="color: #92400e; font-weight: 600;">₽/час</span>
-        </div>
-    </div>
-</div>
-
-<!-- Блок для фиксированных цен -->
-<div id="fixedPricesBlock" class="form-group" style="display: none;">
-    <label>Фиксированные цены за единицу:</label>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 10px;">
-        
-        <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
-            <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Текстовый урок</div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <input type="number" id="fixedPrice_textLesson" value="1200" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
-                <span style="color: #6b7280;">₽/шт</span>
-            </div>
-            <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 30 мин</div>
-        </div>
-        
-        <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
-            <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Видео урок</div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <input type="number" id="fixedPrice_videoLesson" value="1800" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
-                <span style="color: #6b7280;">₽/шт</span>
-            </div>
-            <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 60 мин</div>
-        </div>
-        
-        <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
-            <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Вебинар</div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <input type="number" id="fixedPrice_webinar" value="1500" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
-                <span style="color: #6b7280;">₽/шт</span>
-            </div>
-            <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 90 мин</div>
-        </div>
-        
-        <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
-            <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Практикум</div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <input type="number" id="fixedPrice_workshop" value="2000" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
-                <span style="color: #6b7280;">₽/шт</span>
-            </div>
-            <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 60 мин</div>
-        </div>
-        
-        <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
-            <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Кейс-стади</div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <input type="number" id="fixedPrice_caseStudy" value="1100" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
-                <span style="color: #6b7280;">₽/шт</span>
-            </div>
-            <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 45 мин</div>
-        </div>
-        
-        <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
-            <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Мастер-класс</div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <input type="number" id="fixedPrice_masterClass" value="1540" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
-                <span style="color: #6b7280;">₽/шт</span>
-            </div>
-            <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 60 мин</div>
-        </div>
-        
-    </div>
-    
-    <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 15px; margin-top: 15px;">
-        <h4 style="color: #0369a1; margin-bottom: 8px; font-size: 1rem;">💡 Как работают фиксированные цены</h4>
-        <p style="color: #0369a1; font-size: 0.9rem; line-height: 1.4; margin: 0;">
-            Цены автоматически корректируются по длительности урока относительно базового времени. При детальном расчете дополнительно применяются ограниченные коэффициенты сложности.
-        </p>
-    </div>
-</div>
-
+        <div class="content">
+            <div class="form-section">
+                                
 <!-- Блок системы ценообразования -->
 <div class="pricing-method-card">
     <div class="pricing-method-title">Система ценообразования</div>
@@ -1085,13 +1151,235 @@
             <div class="financial-control-description">
                 Ставка налога в зависимости от статуса: самозанятый, ИП, ООО
             </div>
-            <div class="slider-wrapper">
+          <div class="slider-wrapper">
                 <div class="tooltip" id="taxTooltip">
                     <input type="range" id="taxRate" min="0" max="30" step="1" value="13">
                     <div class="tooltip-content" id="taxTooltipContent">
                         НДФЛ для физлиц
                     </div>
                 </div>
+            </div>
+            <div class="financial-slider-value" id="taxRateValue">13% (НДФЛ)</div>
+        </div>
+        
+        <div class="financial-control-item">
+            <div class="financial-control-label">Объемные скидки</div>
+            <div class="financial-control-description">
+                Автоматические скидки при заказе большого количества элементов
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="enableVolumeDiscounts" checked>
+                <label for="enableVolumeDiscounts">Применять скидки за объем<br><small>(6-15шт: -10%, 16-30шт: -20%, 31+шт: -30%)</small></label>
+            </div>
+            <div style="margin-top: 12px;">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="showTaxSeparately" checked>
+                    <label for="showTaxSeparately">Показывать налог отдельной строкой</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- Блоки параметров ценообразования -->
+<div class="pricing-params-card">
+    <div class="pricing-params-title">Параметры ценообразования</div>
+    <div class="pricing-params-description">
+        Настройте базовые параметры расчета стоимости в зависимости от выбранного метода
+    </div>
+    
+    <!-- Блок для почасовой ставки -->
+    <div id="hourlyRateBlock" class="pricing-param-block">
+        <div class="pricing-param-header">
+            <span class="pricing-param-icon">💳</span>
+            <span class="pricing-param-title">Базовая ставка за час</span>
+        </div>
+        <div class="pricing-param-description">
+            Используется для всех расчетов. Учитывайте ваш опыт, сложность работ и рыночные ставки
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="number" id="hourlyRate" value="220" min="100" max="5000" style="width: 120px; padding: 8px; border: 2px solid #f59e0b; border-radius: 6px; text-align: center; font-weight: 600; color: #92400e;">
+            <span style="color: #92400e; font-weight: 600;">₽/час</span>
+        </div>
+    </div>
+
+    <!-- Блок для фиксированных цен -->
+    <div id="fixedPricesBlock" class="pricing-param-block" style="display: none;">
+        <div class="pricing-param-header">
+            <span class="pricing-param-icon">💰</span>
+            <span class="pricing-param-title">Фиксированные цены за единицу</span>
+        </div>
+        <div class="pricing-param-description">
+            Установите цены для каждого типа контента. Цены автоматически корректируются по длительности
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px;">
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Текстовый урок</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_textLesson" value="1200" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 30 мин</div>
+            </div>
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Видео урок</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_videoLesson" value="1800" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 60 мин</div>
+            </div>
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Вебинар</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_webinar" value="1500" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 90 мин</div>
+            </div>
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Практикум</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_workshop" value="2000" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 60 мин</div>
+            </div>
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Кейс-стади</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_caseStudy" value="1100" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 45 мин</div>
+            </div>
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Мастер-класс</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_masterClass" value="1540" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 60 мин</div>
+            </div>
+            
+        </div>
+        
+        <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 15px; margin-top: 15px;">
+            <h4 style="color: #0369a1; margin-bottom: 8px; font-size: 1rem;">💡 Как работают фиксированные цены</h4>
+            <p style="color: #0369a1; font-size: 0.9rem; line-height: 1.4; margin: 0;">
+                Цены автоматически корректируются по длительности урока относительно базового времени. При детальном расчете дополнительно применяются ограниченные коэффициенты сложности.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Блоки настройки детализации -->
+<div class="detail-settings-card">
+		    
+<!-- Блоки настройки детализации -->
+<div class="detail-settings-card">
+    <div class="detail-settings-title">Настройки детализации</div>
+    <div class="detail-settings-description">
+        Выберите уровень детализации расчета и настройте параметры сложности проекта
+    </div>
+    
+    <!-- Блок быстрой оценки -->
+    <div id="quickComplexityGroup" class="detail-mode-block">
+        <div class="detail-mode-header">
+            <span class="detail-mode-icon">🎯</span>
+            <span class="detail-mode-title">Быстрая оценка</span>
+        </div>
+        <div class="detail-mode-description">
+            Получите приблизительную стоимость за 30 секунд. Все факторы сложности объединены в один селектор.
+        </div>
+        <div class="form-group">
+            <label for="projectComplexity">Сложность проекта:</label>
+            <select id="projectComplexity">
+                <option value="1.0">Простой (знакомый домен + своя методика)</option>
+                <option value="1.3" selected>Средний (один усложняющий фактор)</option>
+                <option value="1.6">Сложный (несколько усложняющих факторов)</option>
+                <option value="1.8">Экстремальный (все факторы + срочность)</option>
+            </select>
+            <div class="complexity-hint" id="complexityHint">
+                Средняя сложность: новый домен ИЛИ чужая методика ИЛИ сложный контент
+            </div>
+        </div>
+    </div>
+
+    <!-- Блок детальной оценки -->
+    <div id="detailedComplexityGroup" class="detail-mode-block" style="display: none;">
+        <div class="detail-mode-header">
+            <span class="detail-mode-icon">⚙️</span>
+            <span class="detail-mode-title">Детальный расчет</span>
+        </div>
+        <div class="detail-mode-description">
+            Максимально точная оценка с учетом всех факторов сложности по отдельности. Рекомендуется для крупных проектов.
+        </div>
+        
+        <div class="form-group">
+            <label for="methodistRole">Роль методиста:</label>
+            <select id="methodistRole">
+                <option value="1.0">Методист-автор (пишу контент сам)</option>
+                <option value="0.5">Методист-редактор (проверяю за автором)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="domainKnowledge">Знание предметной области:</label>
+            <select id="domainKnowledge">
+                <option value="1.0">Знаю домен хорошо</option>
+                <option value="1.3">Новый домен (требуется изучение)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="projectType">Характер работы:</label>
+            <select id="projectType">
+                <option value="1.0">Новая программа по моей методике</option>
+                <option value="1.2">Доработка существующих материалов</option>
+                <option value="1.4">Работа по чужой программе/методике</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="contentComplexity">Сложность контента:</label>
+            <select id="contentComplexity">
+                <option value="1.0">Простой - теория и понятия</option>
+                <option value="1.2" selected>Средний - теория + применение</option>
+                <option value="1.4">Сложный - теория + применение + инструменты</option>
+                <option value="1.6">Высокосложный - теория + применение + инструменты + кейсы</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="urgency">Срочность выполнения:</label>
+            <select id="urgency">
+                <option value="1.0">Обычная (без ограничений по времени)</option>
+                <option value="1.2">Ускоренная (сжатые сроки) - +20%</option>
+                <option value="1.5">Срочная (очень сжатые сроки) - +50%</option>
+                <option value="2.0">Экстренная (критические сроки) - +100%</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="qualityLevel">Уровень качества:</label>
+            <select id="qualityLevel">
+                <option value="0.7">Базовый (экономия 30%)</option>
+                <option value="1.0" selected>Стандарт</option>
+                <option value="1.5">Премиум (+50%)</option>
+            </select>
+        </div>
+    </div>
+</div>
 		    
 <div class="info-card" id="calculationInfo" style="background: #f0f9ff; border-color: #0ea5e9;">
     <h4> Настройки расчета</h4>
@@ -1105,21 +1393,7 @@
     <h4>🎯 Быстрая оценка</h4>
     <p>Получите приблизительную стоимость за 30 секунд. Все факторы сложности объединены в один селектор. Идеально для первичных переговоров с клиентами.</p>
 </div>
-
-                <!-- Блок быстрой оценки -->
-<div id="quickComplexityGroup" class="form-group">
-    <label for="projectComplexity">Сложность проекта:</label>
-    <select id="projectComplexity">
-        <option value="1.0">Простой (знакомый домен + своя методика)</option>
-        <option value="1.3" selected>Средний (один усложняющий фактор)</option>
-        <option value="1.6">Сложный (несколько усложняющих факторов)</option>
-        <option value="1.8">Экстремальный (все факторы + срочность)</option>
-    </select>
-    <div class="complexity-hint" id="complexityHint">
-        Средняя сложность: новый домен ИЛИ чужая методика ИЛИ сложный контент
-    </div>
-</div>
-                
+               
                 <div class="section-title">Быстрые пресеты (по типам контента)</div>
                 
                 <div class="info-card">
@@ -1742,7 +2016,10 @@
                     <p>Правки применяются к компонентам образовательного контента и проверкам знаний. Дополнительные услуги не подлежат правкам.</p>
                 </div>
           
-            <div class="result-section">
+                </div>
+            </div>
+            
+<div class="result-section">
                 <div class="result-card">
                     <div class="result-title">Итоговая стоимость</div>
                     <div class="result-value" id="totalCost">0 ₽</div>
@@ -1768,17 +2045,19 @@
                         <div style="color: #6b7280; font-style: italic;">Расчет появится после выбора компонентов</div>
                     </div>
                 </div>
+                
+                <div class="result-card">
+                    <div class="result-title">Для клиента</div>
+                    <button class="copy-button" onclick="copyCalculationToClipboard()">
+                        Копировать расчет
+                    </button>
+                    <div class="copy-status" id="copyStatus" style="margin-top: 10px; color: #10b981; font-size: 0.9rem; display: none;">
+                        ✓ Скопировано в буфер обмена
+                    </div>
+                </div>
             </div>
-
-<div class="result-card">
-    <div class="result-title">Для клиента</div>
-    <button class="copy-button" onclick="copyCalculationToClipboard()">
-        Копировать расчет
-    </button>
-    <div class="copy-status" id="copyStatus" style="margin-top: 10px; color: #10b981; font-size: 0.9rem; display: none;">
-        ✓ Скопировано в буфер обмена
+        </div>
     </div>
-</div>
 
 	<script>
 
@@ -2562,7 +2841,6 @@ function updateCalculationInfo() {
     const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
     const detailLevel = safeGetRadioValue('detailLevel', 'quick');
     const simpleCalc = (detailLevel === 'quick');
-	const volumeDiscounts = safeGetElement('enableVolumeDiscounts')?.checked ?? true;
     const volumeDiscounts = safeGetElement('enableVolumeDiscounts')?.checked ?? true;
     const description = safeGetElement('calculationDescription');
     
