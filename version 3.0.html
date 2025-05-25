@@ -12462,7 +12462,713 @@ class ExportManager {
             };
 
         } catch (error) {
-            this.errors.
+            this.errors.handleError(error, { context: 'ExportManager.prepareEmailExport' });
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
+     * Генерация тела письма
+     */
+    generateEmailBody(template, options) {
+        const state = this.state.getState();
+        const { results } = state;
+        
+        let body = '';
+        
+        if (options.greeting === 'formal') {
+            body += 'Уважаемый клиент!\n\n';
+        } else {
+            body += 'Здравствуйте!\n\n';
+        }
+        
+        body += 'Подготовил для Вас расчет стоимости методических услуг согласно техническому заданию.\n\n';
+        
+        body += `ИТОГОВАЯ СТОИМОСТЬ: ${this.formatters.currency(results.totalCost)}\n`;
+        body += `Общее время выполнения: ${this.formatters.duration(results.totalHours)}\n\n`;
+        
+        if (template === 'detailed') {
+            body += 'СОСТАВ ПРОЕКТА:\n';
+            const composition = this.prepareComposition(state);
+            composition.slice(0, 10).forEach(item => {
+                body += `• ${item.name} (${item.quantity} ${item.unit}) — ${this.formatters.currency(item.price)}\n`;
+            });
+            body += '\n';
+        }
+        
+        body += 'Стоимость действительна в течение 30 дней с момента отправки.\n';
+        body += 'Готов обсудить детали и ответить на вопросы.\n\n';
+        
+        if (options.signature) {
+            body += 'С уважением,\n';
+            body += '[Ваше имя]\n';
+            body += 'Методист-разработчик\n';
+            body += 'Тел: [Ваш телефон]\n';
+            body += 'Email: [Ваш email]';
+        }
+        
+        return body;
+    }
+
+    /**
+     * Открытие почтового клиента
+     */
+    openEmailClient(emailData) {
+        const { subject, body } = emailData;
+        const encodedSubject = encodeURIComponent(subject);
+        const encodedBody = encodeURIComponent(body);
+        
+        const mailtoLink = `mailto:?subject=${encodedSubject}&body=${encodedBody}`;
+        window.open(mailtoLink);
+    }
+
+    /**
+     * API экспорт
+     */
+    async apiExport(data) {
+        try {
+            const { endpoint, method = 'POST', headers = {}, format = 'json' } = data;
+            
+            const exportData = await this.prepareExportData(format);
+            
+            const response = await fetch(endpoint, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...headers
+                },
+                body: JSON.stringify(exportData)
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                this.errors.showSuccess('Данные успешно отправлены через API');
+                this.events.emit('export:api-completed', { endpoint, result });
+                
+                return {
+                    success: true,
+                    response: result
+                };
+            } else {
+                throw new Error(`API Error: ${response.status} ${response.statusText}`);
+            }
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'ExportManager.apiExport' });
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
+     * Кастомный экспорт
+     */
+    async customExport(data) {
+        try {
+            const { generator, options = {} } = data;
+            
+            if (typeof generator !== 'function') {
+                throw new Error('Generator должен быть функцией');
+            }
+            
+            const exportData = await this.prepareExportData('custom', options);
+            const result = await generator(exportData, options);
+            
+            this.events.emit('export:custom-completed', result);
+            
+            return result;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'ExportManager.customExport' });
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
+     * Генерация отчета
+     */
+    async generateReport(data) {
+        try {
+            const { reportType = 'standard', format = 'pdf', options = {} } = data;
+            
+            const reportData = await this.prepareReportData(reportType);
+            const generator = this.generators[format];
+            
+            if (!generator) {
+                throw new Error(`Неподдерживаемый формат отчета: ${format}`);
+            }
+            
+            const result = await generator.generator(reportData, {
+                ...generator.options,
+                ...options,
+                isReport: true
+            });
+            
+            if (result.success) {
+                this.downloadFile(result.blob, result.filename);
+                this.errors.showSuccess(`Отчет ${format.toUpperCase()} создан успешно`);
+                this.events.emit('export:report-completed', { reportType, format, filename: result.filename });
+            }
+            
+            return result;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'ExportManager.generateReport' });
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
+     * Подготовка данных отчета
+     */
+    async prepareReportData(reportType) {
+        const state = this.state.getState();
+        const exportData = await this.prepareExportData('report');
+        
+        const reportData = {
+            ...exportData,
+            reportType,
+            analytics: this.generateAnalytics(state),
+            recommendations: this.generateRecommendations(state),
+            charts: this.prepareChartData(state)
+        };
+        
+        return reportData;
+    }
+
+    /**
+     * Генерация аналитики
+     */
+    generateAnalytics(state) {
+        const analytics = {
+            complexity: {
+                score: this.calculateComplexityScore(state),
+                factors: this.analyzeComplexityFactors(state)
+            },
+            efficiency: {
+                costPerHour: state.results.totalHours > 0 ? state.results.totalCost / state.results.totalHours : 0,
+                comparison: this.compareWithMarket(state)
+            },
+            composition: {
+                distribution: this.analyzeCompositionDistribution(state),
+                recommendations: this.getCompositionRecommendations(state)
+            }
+        };
+        
+        return analytics;
+    }
+
+    /**
+     * Расчет оценки сложности
+     */
+    calculateComplexityScore(state) {
+        const { complexity } = state;
+        
+        if (state.pricing.detailLevel === 'quick') {
+            return complexity.projectComplexity * 20; // Перевод в проценты
+        } else {
+            const factors = [
+                complexity.methodistRole,
+                complexity.domainKnowledge,
+                complexity.projectType,
+                complexity.contentComplexity,
+                complexity.urgency,
+                complexity.qualityLevel
+            ];
+            
+            const average = factors.reduce((sum, factor) => sum + (factor || 1), 0) / factors.length;
+            return Math.round(average * 20);
+        }
+    }
+
+    /**
+     * Анализ факторов сложности
+     */
+    analyzeComplexityFactors(state) {
+        const factors = [];
+        const { complexity } = state;
+        
+        if (complexity.domainKnowledge > 1.2) {
+            factors.push('Высокая экспертность предметной области');
+        }
+        
+        if (complexity.contentComplexity > 1.3) {
+            factors.push('Сложный контент');
+        }
+        
+        if (complexity.urgency > 1.2) {
+            factors.push('Сжатые сроки');
+        }
+        
+        if (complexity.qualityLevel > 1.2) {
+            factors.push('Повышенные требования к качеству');
+        }
+        
+        return factors;
+    }
+
+    /**
+     * Сравнение с рынком
+     */
+    compareWithMarket(state) {
+        const effectiveRate = state.results.totalHours > 0 ? 
+            state.results.totalCost / state.results.totalHours : 0;
+        
+        const marketRates = {
+            junior: 225,
+            middle: 375,
+            senior: 600
+        };
+        
+        let position = 'middle';
+        if (effectiveRate < marketRates.middle * 0.8) position = 'junior';
+        else if (effectiveRate > marketRates.middle * 1.3) position = 'senior';
+        
+        return {
+            position,
+            effectiveRate,
+            marketAverage: marketRates[position],
+            deviation: ((effectiveRate - marketRates[position]) / marketRates[position]) * 100
+        };
+    }
+
+    /**
+     * Анализ распределения состава
+     */
+    analyzeCompositionDistribution(state) {
+        const distribution = {
+            presets: 0,
+            components: 0,
+            services: 0,
+            custom: 0
+        };
+        
+        // Пресеты
+        Object.values(state.presets).forEach(preset => {
+            distribution.presets += preset.count || 0;
+        });
+        
+        // Компоненты
+        distribution.components = Object.keys(state.components).length;
+        
+        // Услуги
+        distribution.services = Object.keys(state.services).length;
+        
+        // Кастомные
+        distribution.custom = state.customServices.length;
+        
+        const total = distribution.presets + distribution.components + distribution.services + distribution.custom;
+        
+        // Конвертируем в проценты
+        Object.keys(distribution).forEach(key => {
+            distribution[key] = total > 0 ? Math.round((distribution[key] / total) * 100) : 0;
+        });
+        
+        return distribution;
+    }
+
+    /**
+     * Рекомендации по составу
+     */
+    getCompositionRecommendations(state) {
+        const recommendations = [];
+        const distribution = this.analyzeCompositionDistribution(state);
+        
+        if (distribution.presets > 70) {
+            recommendations.push('Высокая доля пресетов. Рассмотрите добавление дополнительных компонентов.');
+        }
+        
+        if (distribution.components === 0 && distribution.presets > 0) {
+            recommendations.push('Добавьте дополнительные компоненты для улучшения качества проекта.');
+        }
+        
+        if (distribution.services === 0) {
+            recommendations.push('Рассмотрите добавление системы проверки знаний.');
+        }
+        
+        return recommendations;
+    }
+
+    /**
+     * Подготовка данных для диаграмм
+     */
+    prepareChartData(state) {
+        return {
+            costDistribution: this.prepareCostDistributionChart(state),
+            timeDistribution: this.prepareTimeDistributionChart(state),
+            complexityRadar: this.prepareComplexityRadarChart(state)
+        };
+    }
+
+    /**
+     * Диаграмма распределения стоимости
+     */
+    prepareCostDistributionChart(state) {
+        const data = [];
+        
+        // Анализируем breakdown если есть
+        if (state.results.breakdown && state.results.breakdown.sections) {
+            state.results.breakdown.sections.forEach(section => {
+                data.push({
+                    label: section.name,
+                    value: section.totalCost || 0,
+                    percentage: state.results.totalCost > 0 ? 
+                        Math.round((section.totalCost / state.results.totalCost) * 100) : 0
+                });
+            });
+        }
+        
+        return {
+            type: 'pie',
+            title: 'Распределение стоимости по разделам',
+            data
+        };
+    }
+
+    /**
+     * Диаграмма распределения времени
+     */
+    prepareTimeDistributionChart(state) {
+        const data = [];
+        
+        // Группируем по типам
+        const timeByType = {
+            'Пресеты': 0,
+            'Компоненты': 0,
+            'Услуги': 0,
+            'Кастомные': 0
+        };
+        
+        // Считаем время для каждого типа (примерно)
+        Object.values(state.presets).forEach(preset => {
+            timeByType['Пресеты'] += (preset.count || 0) * (preset.duration || 30) / 60; // Примерная оценка
+        });
+        
+        Object.values(state.components).forEach(component => {
+            timeByType['Компоненты'] += component.hours || 0;
+        });
+        
+        Object.values(state.services).forEach(service => {
+            timeByType['Услуги'] += service.hours || 0;
+        });
+        
+        state.customServices.forEach(service => {
+            timeByType['Кастомные'] += service.hours * service.count;
+        });
+        
+        Object.entries(timeByType).forEach(([label, value]) => {
+            if (value > 0) {
+                data.push({
+                    label,
+                    value: Math.round(value * 10) / 10,
+                    percentage: state.results.totalHours > 0 ? 
+                        Math.round((value / state.results.totalHours) * 100) : 0
+                });
+            }
+        });
+        
+        return {
+            type: 'bar',
+            title: 'Распределение времени по типам работ',
+            data
+        };
+    }
+
+    /**
+     * Радарная диаграмма сложности
+     */
+    prepareComplexityRadarChart(state) {
+        const { complexity } = state;
+        
+        if (state.pricing.detailLevel === 'quick') {
+            return {
+                type: 'radar',
+                title: 'Анализ сложности проекта',
+                data: [
+                    { label: 'Общая сложность', value: (complexity.projectComplexity || 1) * 20 }
+                ]
+            };
+        }
+        
+        return {
+            type: 'radar',
+            title: 'Детальный анализ сложности',
+            data: [
+                { label: 'Роль методиста', value: (complexity.methodistRole || 1) * 20 },
+                { label: 'Предметная область', value: (complexity.domainKnowledge || 1) * 20 },
+                { label: 'Тип проекта', value: (complexity.projectType || 1) * 20 },
+                { label: 'Сложность контента', value: (complexity.contentComplexity || 1) * 20 },
+                { label: 'Срочность', value: (complexity.urgency || 1) * 20 },
+                { label: 'Качество', value: (complexity.qualityLevel || 1) * 20 }
+            ]
+        };
+    }
+
+    /**
+     * Генерация рекомендаций
+     */
+    generateRecommendations(state) {
+        const recommendations = [];
+        
+        // Рекомендации по ценообразованию
+        const pricingRecs = this.generatePricingRecommendations(state);
+        recommendations.push(...pricingRecs);
+        
+        // Рекомендации по составу
+        const compositionRecs = this.getCompositionRecommendations(state);
+        recommendations.push(...compositionRecs);
+        
+        // Рекомендации по оптимизации
+        const optimizationRecs = this.generateOptimizationRecommendations(state);
+        recommendations.push(...optimizationRecs);
+        
+        return recommendations;
+    }
+
+    /**
+     * Рекомендации по ценообразованию
+     */
+    generatePricingRecommendations(state) {
+        const recommendations = [];
+        const effectiveRate = state.results.totalHours > 0 ? 
+            state.results.totalCost / state.results.totalHours : 0;
+        
+        if (effectiveRate < 200) {
+            recommendations.push('Рассмотрите увеличение часовой ставки или коэффициентов сложности');
+        }
+        
+        if (state.financial.discountRate < -20) {
+            recommendations.push('Большая скидка может негативно повлиять на прибыльность');
+        }
+        
+        if (state.results.totalHours > 100 && state.pricing.method === 'hourly') {
+            recommendations.push('Для больших проектов рассмотрите фиксированное ценообразование');
+        }
+        
+        return recommendations;
+    }
+
+    /**
+     * Рекомендации по оптимизации
+     */
+    generateOptimizationRecommendations(state) {
+        const recommendations = [];
+        
+        // Анализ объемов
+        Object.entries(state.presets).forEach(([type, data]) => {
+            if (data.count > 0 && data.count < 6) {
+                recommendations.push(`Увеличьте количество "${type}" до 6+ для получения объемной скидки`);
+            }
+        });
+        
+        // Анализ эффективности
+        if (state.results.totalCost > 0 && state.results.totalHours > 0) {
+            const efficiency = state.results.totalCost / state.results.totalHours;
+            if (efficiency > 500) {
+                recommendations.push('Высокая эффективная ставка. Проверьте корректность расчетов');
+            }
+        }
+        
+        return recommendations;
+    }
+
+    /**
+     * Вспомогательные методы для получения названий
+     */
+    getPresetName(presetType) {
+        const names = {
+            textLesson: 'Текстовый урок',
+            videoLesson: 'Видео урок',
+            webinar: 'Вебинар',
+            workshop: 'Практикум',
+            caseStudy: 'Кейс-стади',
+            masterClass: 'Мастер-класс'
+        };
+        return names[presetType] || presetType;
+    }
+
+    getComponentName(componentId) {
+        // Здесь должна быть ссылка на ComponentManager или словарь названий
+        return componentId; // Упрощенная версия
+    }
+
+    getServiceName(serviceId) {
+        // Здесь должна быть ссылка на ComponentManager или словарь названий
+        return serviceId; // Упрощенная версия
+    }
+
+    /**
+     * Приблизительный расчет цен (для экспорта)
+     */
+    calculatePresetPrice(presetType, data, state) {
+        // Упрощенный расчет для экспорта
+        const basePrice = 1500; // Средняя цена пресета
+        const durationFactor = (data.duration || 60) / 60;
+        return Math.round(basePrice * durationFactor * (data.count || 1));
+    }
+
+    calculateComponentPrice(componentId, data, state) {
+        // Упрощенный расчет для экспорта
+        const hours = data.hours || 2;
+        const rate = state.pricing.hourlyRate || 220;
+        return Math.round(hours * rate * (data.count || 1));
+    }
+
+    calculateServicePrice(serviceId, data, state) {
+        // Упрощенный расчет для экспорта
+        const hours = data.hours || 3;
+        const rate = state.pricing.hourlyRate || 220;
+        return Math.round(hours * rate * (data.count || 1));
+    }
+
+    /**
+     * Скачивание файла
+     */
+    downloadFile(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    /**
+     * Генерация имени файла
+     */
+    generateFilename(extension, exportData) {
+        const timestamp = new Date().toISOString().slice(0, 10);
+        const cost = Math.round(exportData.results.totalCost / 1000);
+        return `calculator_${timestamp}_${cost}k.${extension}`;
+    }
+
+    /**
+     * Расчет контрольной суммы
+     */
+    calculateChecksum(data) {
+        const str = JSON.stringify(data);
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+        return hash.toString();
+    }
+
+    /**
+     * Форматеры данных
+     */
+    formatCurrency(amount, locale = 'ru-RU') {
+        if (typeof amount !== 'number' || isNaN(amount)) return '0 ₽';
+        return Math.round(amount).toLocaleString(locale) + ' ₽';
+    }
+
+    formatNumber(number, locale = 'ru-RU') {
+        if (typeof number !== 'number' || isNaN(number)) return '0';
+        return number.toLocaleString(locale);
+    }
+
+    formatDate(date, format = 'DD.MM.YYYY') {
+        if (!(date instanceof Date)) return '';
+        
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        
+        return format
+            .replace('DD', day)
+            .replace('MM', month)
+            .replace('YYYY', year);
+    }
+
+    formatDuration(hours) {
+        if (typeof hours !== 'number' || isNaN(hours)) return '0 ч';
+        return (Math.round(hours * 10) / 10) + ' ч';
+    }
+
+    formatPercentage(value) {
+        if (typeof value !== 'number' || isNaN(value)) return '0%';
+        return value.toFixed(1) + '%';
+    }
+
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    /**
+     * Получение статистики экспорта
+     */
+    getExportStatistics() {
+        return {
+            generators: Object.keys(this.generators).length,
+            templates: Object.keys(this.templates).length,
+            integrations: Object.keys(this.integrations).length,
+            enabledIntegrations: Object.values(this.integrations).filter(i => i.enabled).length,
+            supportedFormats: Object.keys(this.generators)
+        };
+    }
+
+    /**
+     * Настройка экспорта
+     */
+    configureExport(settings) {
+        this.defaultSettings = { ...this.defaultSettings, ...settings };
+        this.events.emit('export:configured', this.defaultSettings);
+    }
+
+    /**
+     * Получение списка доступных форматов
+     */
+    getAvailableFormats() {
+        return Object.entries(this.generators).map(([id, generator]) => ({
+            id,
+            name: generator.name,
+            extensions: generator.extensions,
+            mimeType: generator.mimeType
+        }));
+    }
+
+    /**
+     * Получение списка шаблонов
+     */
+    getAvailableTemplates() {
+        return Object.entries(this.templates).map(([id, template]) => ({
+            id,
+            ...template
+        }));
+    }
+
+    /**
+     * Уничтожение модуля
+     */
+    destroy() {
+        // Отписка от событий
+        this.events.off('export:document');
+        this.events.off('export:report');
+        this.events.off('export:integration');
+        this.events.off('export:bulk');
+        this.events.off('export:custom');
+        this.events.off('export:email');
+        this.events.off('export:api');
+
+        console.log('📤 ExportManager destroyed');
+    }
+}
+
+// Экспорт для использования в других модулях
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ExportManager;
+} else if (typeof window !== 'undefined') {
+    window.ExportManager = ExportManager;
+}
+
+        
         
     </script>
 </body>
