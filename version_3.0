@@ -2421,95 +2421,169 @@ kbd {
             getActiveLoadings() {
                 return Array.from(this.loadingStates.keys());
             }
-        }
 
-        // Создаем глобальные экземпляры
-         // Создаем экземпляры всех модулей в правильном порядке
-        const StateManager = new StateManager();
-        const EventBus = new EventBusClass();
-        const ErrorHandler = new ErrorHandlerClass();
-        const LoadingManager = new LoadingManager();
+       // Создаем экземпляры всех модулей в правильном порядке
+const stateManager = new StateManager();
+const eventBus = new EventBusClass();
+const errorHandler = new ErrorHandlerClass();
+const loadingManager = new LoadingManager();
 
-        // Создаем основные движки
-        const PricingEngine = new PricingEngine(StateManager, EventBus, ErrorHandler);
-        const PresetManager = new PresetManager(StateManager, EventBus, ErrorHandler);
-        const ComponentManager = new ComponentManager(StateManager, EventBus, ErrorHandler);
-        
-        // Создаем UI и финансовые модули
-        const UIManager = new UIManager(StateManager, EventBus, ErrorHandler, PricingEngine, PresetManager, ComponentManager);
-        const FinancialControls = new FinancialControls(StateManager, EventBus, ErrorHandler);
-        const ResultsPanel = new ResultsPanel(StateManager, EventBus, ErrorHandler);
-        
-        // Создаем продвинутые модули
-        const StorageManager = new StorageManager(StateManager, EventBus, ErrorHandler);
-        const ExportManager = new ExportManager(StateManager, EventBus, ErrorHandler);
-        const TemplateSystem = new TemplateSystem(StateManager, EventBus, ErrorHandler, PresetManager, ComponentManager);
+// Создаем основные движки
+const pricingEngine = new PricingEngine(stateManager, eventBus, errorHandler);
+const presetManager = new PresetManager(stateManager, eventBus, errorHandler);
+const componentManager = new ComponentManager(stateManager, eventBus, errorHandler);
+
+// Создаем UI и финансовые модули
+const uiManager = new UIManager(stateManager, eventBus, errorHandler, pricingEngine, presetManager, componentManager);
+const financialControls = new FinancialControls(stateManager, eventBus, errorHandler);
+const resultsPanel = new ResultsPanel(stateManager, eventBus, errorHandler);
+
+// Создаем продвинутые модули
+const storageManager = new StorageManager(stateManager, eventBus, errorHandler);
+const exportManager = new ExportManager(stateManager, eventBus, errorHandler);
+const templateSystem = new TemplateSystem(stateManager, eventBus, errorHandler, presetManager, componentManager);
 
         // Middleware для логирования
-        StateManager.use((action, state) => {
-            console.log('🔄 State change:', action.type, 'Current state size:', JSON.stringify(state).length);
-            return action;
-        });
+stateManager.use((action, state) => {
+    console.log('🔄 State change:', action.type, 'Current state size:', JSON.stringify(state).length);
+    return action;
+});
 
-        // Глобальные слушатели для отладки
-        EventBus.onAll((event, data) => {
-            if (!event.startsWith('state:') && !event.startsWith('ui:')) {
-                console.log(`📡 Event: ${event}`, data);
-            }
-        });
+// Глобальные слушатели для отладки
+eventBus.onAll((event, data) => {
+    if (!event.startsWith('state:') && !event.startsWith('ui:')) {
+        console.log(`📡 Event: ${event}`, data);
+    }
+});
 
-        // Подписка на изменения состояния для отображения в dev panel
-        StateManager.subscribe((state, action) => {
-            updateDevPanel(state);
-        });
+// Подписка на изменения состояния для отображения в dev panel
+stateManager.subscribe((state, action) => {
+    updateDevPanel(state);
+});
 
-        // Устанавливаем глобальные ссылки для доступа из HTML
-        window.StateManager = StateManager;
-        window.EventBus = EventBus;
-        window.ErrorHandler = ErrorHandler;
-        window.LoadingManager = LoadingManager;
-        window.PricingEngine = PricingEngine;
-        window.PresetManager = PresetManager;
-        window.ComponentManager = ComponentManager;
-        window.UIManager = UIManager;
-        window.FinancialControls = FinancialControls;
-        window.ResultsPanel = ResultsPanel;
-        window.StorageManager = StorageManager;
-        window.ExportManager = ExportManager;
-        window.TemplateSystem = TemplateSystem;
-        window.Utils = Utils;
+// Устанавливаем глобальные ссылки для доступа из HTML
+window.StateManager = stateManager;
+window.EventBus = eventBus;
+window.ErrorHandler = errorHandler;
+window.LoadingManager = loadingManager;
+window.PricingEngine = pricingEngine;
+window.PresetManager = presetManager;
+window.ComponentManager = componentManager;
+window.UIManager = uiManager;
+window.FinancialControls = financialControls;
+window.ResultsPanel = resultsPanel;
+window.StorageManager = storageManager;
+window.ExportManager = exportManager;
+window.TemplateSystem = templateSystem;
+window.Utils = Utils;
 
-        /**
-         * Advanced Event Handlers - Продвинутые обработчики событий
-         */
+       /**
+ * Advanced Event Handlers - Продвинутые обработчики событий
+ */
+
+// Обработка событий ценообразования
+eventBus.on('pricing:method-changed', (method) => {
+    stateManager.dispatch({
+        type: 'PRICING_UPDATE',
+        payload: { method }
+    });
+});
+
+eventBus.on('pricing:detail-level-changed', (detailLevel) => {
+    stateManager.dispatch({
+        type: 'PRICING_UPDATE',
+        payload: { detailLevel }
+    });
+});
+
+// Обработка событий сложности
+document.addEventListener('input', (e) => {
+    if (e.target.matches('[data-complexity]')) {
+        const factor = e.target.dataset.complexity;
+        const value = parseFloat(e.target.value) || 1.0;
         
-        // Обработка событий ценообразования
-        EventBus.on('pricing:method-changed', (method) => {
-            StateManager.dispatch({
-                type: 'PRICING_UPDATE',
-                payload: { method }
-            });
+        stateManager.dispatch({
+            type: 'COMPLEXITY_UPDATE',
+            payload: { [factor]: value }
         });
+    }
+});
 
-        EventBus.on('pricing:detail-level-changed', (detailLevel) => {
-            StateManager.dispatch({
-                type: 'PRICING_UPDATE',
-                payload: { detailLevel }
-            });
-        });
+// Функция инициализации модулей
+function initializeModules() {
+    try {
+        // Проверяем, что все базовые классы загружены
+        if (typeof PricingEngine === 'undefined') {
+            console.error('PricingEngine not loaded');
+            return false;
+        }
+        if (typeof PresetManager === 'undefined') {
+            console.error('PresetManager not loaded');
+            return false;
+        }
+        
+        // Создаем основные движки
+        window.pricingEngine = new PricingEngine(stateManager, eventBus, errorHandler);
+        window.presetManager = new PresetManager(stateManager, eventBus, errorHandler);
+        window.componentManager = new ComponentManager(stateManager, eventBus, errorHandler);
 
-        // Обработка событий сложности
-        document.addEventListener('input', (e) => {
-            if (e.target.matches('[data-complexity]')) {
-                const factor = e.target.dataset.complexity;
-                const value = parseFloat(e.target.value) || 1.0;
-                
-                StateManager.dispatch({
-                    type: 'COMPLEXITY_UPDATE',
-                    payload: { [factor]: value }
-                });
-            }
+        // Создаем UI и финансовые модули
+        window.uiManager = new UIManager(stateManager, eventBus, errorHandler, window.pricingEngine, window.presetManager, window.componentManager);
+        window.financialControls = new FinancialControls(stateManager, eventBus, errorHandler);
+        window.resultsPanel = new ResultsPanel(stateManager, eventBus, errorHandler);
+
+        // Создаем продвинутые модули
+        window.storageManager = new StorageManager(stateManager, eventBus, errorHandler);
+        window.exportManager = new ExportManager(stateManager, eventBus, errorHandler);
+        window.templateSystem = new TemplateSystem(stateManager, eventBus, errorHandler, window.presetManager, window.componentManager);
+
+        return true;
+    } catch (error) {
+        console.error('Failed to initialize modules:', error);
+        return false;
+    }
+}
+
+// Запускаем инициализацию после загрузки всех скриптов
+setTimeout(() => {
+    if (initializeModules()) {
+        console.log('All modules initialized successfully');
+    } else {
+        console.error('Module initialization failed');
+    }
+}, 100);
+
+// Обработка событий финансовых настроек
+document.addEventListener('change', (e) => {
+    if (e.target.matches('[data-financial]')) {
+        const setting = e.target.dataset.financial;
+        let value;
+        
+        if (e.target.type === 'checkbox') {
+            value = e.target.checked;
+        } else if (e.target.type === 'number' || e.target.type === 'range') {
+            value = parseFloat(e.target.value) || 0;
+        } else {
+            value = e.target.value;
+        }
+        
+        stateManager.dispatch({
+            type: 'FINANCIAL_UPDATE',
+            payload: { [setting]: value }
         });
+    }
+});
+
+// Обработка кнопок действий
+document.addEventListener('click', (e) => {
+    const actionButton = e.target.closest('[data-action]');
+    if (!actionButton) return;
+    
+    const action = actionButton.dataset.action;
+    const params = actionButton.dataset.params ? JSON.parse(actionButton.dataset.params) : {};
+    
+    handleGlobalAction(action, params, actionButton);
+});
 
         // Обработка событий финансовых настроек
         document.addEventListener('change', (e) => {
@@ -3145,82 +3219,333 @@ kbd {
             return EventBus.getStats().totalListeners;
         }
 
-        /**
-         * Advanced Test Functions - Продвинутые тестовые функции
+// Тестовые функции для кнопок в интерфейсе
+window.testStateManager = function() {
+    console.log('🧪 Testing StateManager...');
+    const state = window.StateManager.getState();
+    console.log('Current state:', state);
+    window.ErrorHandler.showSuccess('StateManager test completed');
+};
+
+window.testEventBus = function() {
+    console.log('🧪 Testing EventBus...');
+    window.EventBus.emit('test-event', { message: 'Test successful' });
+    window.ErrorHandler.showSuccess('EventBus test completed');
+};
+
+window.testErrorHandler = function() {
+    console.log('🧪 Testing ErrorHandler...');
+    window.ErrorHandler.showInfo('Test notification from ErrorHandler');
+    window.ErrorHandler.showSuccess('ErrorHandler test completed');
+};
+
+       /**
+         * Полное тестирование workflow системы
          */
-        
-                window.testFullWorkflow = function() {
+        window.testFullWorkflow = function() {
             console.log('🧪 Testing full workflow...');
             
-            // 1. Применяем шаблон
-            TemplateSystem.applyTemplate('basicCourse');
-            
-            setTimeout(() => {
-                // 2. Добавляем кастомную услуги
-                ComponentManager.addCustomService({
-                    name: 'Тестовая услуга',
-                    description: 'Для тестирования workflow',
-                    hours: 5,
-                    count: 1,
-                    pricePerUnit: 1000
-                });
+            try {
+                // 1. Применяем шаблон
+                console.log('📋 Applying template...');
+                TemplateSystem.applyTemplate('basicCourse');
                 
                 setTimeout(() => {
-                    // 3. Экспортируем результат
-                    ExportManager.exportDocument({
-                        format: 'pdf',
-                        template: 'commercial'
-                    });
-                    
-                    setTimeout(() => {
-                        // 4. Сохраняем как новый шаблон
-                        TemplateSystem.saveCurrentAsTemplate(
-                            'Тестовый шаблон', 
-                            'Создан автоматически в тесте', 
-                            'custom'
-                        );
+                    try {
+                        // 2. Добавляем кастомную услугу
+                        console.log('⚙️ Adding custom service...');
+                        ComponentManager.addCustomService({
+                            name: 'Тестовая услуга',
+                            description: 'Для тестирования workflow',
+                            hours: 5,
+                            count: 1,
+                            pricePerUnit: 1000
+                        });
                         
                         setTimeout(() => {
-                            // 5. Тестируем финансовые настройки
-                            FinancialControls.applyFinancialPreset('corporate');
-                            
-                            setTimeout(() => {
-                                // 6. Экспортируем в разных форматах
-                                ExportManager.bulkExport({
-                                    formats: ['pdf', 'excel', 'json'],
-                                    template: 'technical'
+                            try {
+                                // 3. Экспортируем результат
+                                console.log('📄 Exporting PDF...');
+                                ExportManager.exportDocument({
+                                    format: 'pdf',
+                                    template: 'commercial',
+                                    options: {
+                                        includeDetails: true,
+                                        includeBranding: false
+                                    }
                                 });
                                 
                                 setTimeout(() => {
-                                    // 7. Сохраняем состояние
-                                    StorageManager.saveCurrentState('Тест полного workflow');
-                                    
-                                    setTimeout(() => {
-                                        // 8. Показываем результаты
-                                        const state = StateManager.getState();
-                                        console.log('✅ Workflow test completed!');
-                                        console.log('Final state:', {
-                                            totalCost: state.results.totalCost,
-                                            totalHours: state.results.totalHours,
-                                            activePresets: Object.keys(state.presets).filter(key => state.presets[key].count > 0),
-                                            activeComponents: Object.keys(state.components),
-                                            activeServices: Object.keys(state.services),
-                                            customServices: state.customServices.length
-                                        });
+                                    try {
+                                        // 4. Сохраняем как новый шаблон
+                                        console.log('💾 Saving template...');
+                                        TemplateSystem.saveCurrentAsTemplate(
+                                            'Тестовый шаблон', 
+                                            'Создан автоматически в тесте', 
+                                            'custom'
+                                        );
                                         
-                                        ErrorHandler.showSuccess('Полный тест workflow завершен успешно!');
-                                        
-                                    }, 500);
-                                }, 1000);
-                            }, 500);
+                                        setTimeout(() => {
+                                            try {
+                                                // 5. Тестируем финансовые настройки
+                                                console.log('💰 Applying financial preset...');
+                                                FinancialControls.applyFinancialPreset('corporate');
+                                                
+                                                setTimeout(() => {
+                                                    try {
+                                                        // 6. Экспортируем в разных форматах
+                                                        console.log('📊 Bulk export...');
+                                                        ExportManager.bulkExport({
+                                                            formats: ['pdf', 'excel', 'json'],
+                                                            template: 'technical'
+                                                        });
+                                                        
+                                                        setTimeout(() => {
+                                                            try {
+                                                                // 7. Сохраняем состояние
+                                                                console.log('💾 Saving state...');
+                                                                StorageManager.saveCurrentState('Тест полного workflow');
+                                                                
+                                                                setTimeout(() => {
+                                                                    try {
+                                                                        // 8. Показываем результаты
+                                                                        const state = StateManager.getState();
+                                                                        console.log('✅ Workflow test completed successfully!');
+                                                                        
+                                                                        const results = {
+                                                                            totalCost: state.results.totalCost,
+                                                                            totalHours: state.results.totalHours,
+                                                                            activePresets: Object.keys(state.presets).filter(key => state.presets[key].count > 0),
+                                                                            activeComponents: Object.keys(state.components),
+                                                                            activeServices: Object.keys(state.services),
+                                                                            customServices: state.customServices.length,
+                                                                            templateApplied: 'basicCourse',
+                                                                            financialPreset: 'corporate',
+                                                                            exportsCompleted: ['pdf', 'excel', 'json']
+                                                                        };
+                                                                        
+                                                                        console.log('📊 Final results:', results);
+                                                                        
+                                                                        ErrorHandler.showSuccess('Полный тест workflow завершен успешно!');
+                                                                        
+                                                                        // Генерируем отчет о тестировании
+                                                                        window.workflowTestResults = results;
+                                                                        
+                                                                        // Проверяем валидность результатов
+                                                                        const validation = validateWorkflowResults(results);
+                                                                        if (validation.isValid) {
+                                                                            console.log('✅ All workflow tests passed!');
+                                                                        } else {
+                                                                            console.warn('⚠️ Some workflow tests failed:', validation.errors);
+                                                                        }
+                                                                        
+                                                                    } catch (error) {
+                                                                        console.error('❌ Error in step 8:', error);
+                                                                        ErrorHandler.handleError(error, { context: 'testFullWorkflow.step8' });
+                                                                    }
+                                                                }, 500);
+                                                            } catch (error) {
+                                                                console.error('❌ Error in step 7:', error);
+                                                                ErrorHandler.handleError(error, { context: 'testFullWorkflow.step7' });
+                                                            }
+                                                        }, 1000);
+                                                    } catch (error) {
+                                                        console.error('❌ Error in step 6:', error);
+                                                        ErrorHandler.handleError(error, { context: 'testFullWorkflow.step6' });
+                                                    }
+                                                }, 500);
+                                            } catch (error) {
+                                                console.error('❌ Error in step 5:', error);
+                                                ErrorHandler.handleError(error, { context: 'testFullWorkflow.step5' });
+                                            }
+                                        }, 1000);
+                                    } catch (error) {
+                                        console.error('❌ Error in step 4:', error);
+                                        ErrorHandler.handleError(error, { context: 'testFullWorkflow.step4' });
+                                    }
+                                }, 500);
+                            } catch (error) {
+                                console.error('❌ Error in step 3:', error);
+                                ErrorHandler.handleError(error, { context: 'testFullWorkflow.step3' });
+                            }
                         }, 1000);
-                    }, 500);
+                    } catch (error) {
+                        console.error('❌ Error in step 2:', error);
+                        ErrorHandler.handleError(error, { context: 'testFullWorkflow.step2' });
+                    }
                 }, 1000);
-            }, 1000);
+            } catch (error) {
+                console.error('❌ Error in step 1:', error);
+                ErrorHandler.handleError(error, { context: 'testFullWorkflow.step1' });
+            }
         };
 
-        window.addEventListener('DOMContentLoaded', () => {
-    testFullWorkflow();
+        /**
+         * Валидация результатов workflow теста
+         */
+        function validateWorkflowResults(results) {
+            const errors = [];
+            
+            // Проверяем базовые показатели
+            if (!results.totalCost || results.totalCost <= 0) {
+                errors.push('Total cost should be greater than 0');
+            }
+            
+            if (!results.totalHours || results.totalHours <= 0) {
+                errors.push('Total hours should be greater than 0');
+            }
+            
+            // Проверяем активные элементы
+            if (results.activePresets.length === 0) {
+                errors.push('Should have active presets after applying template');
+            }
+            
+            // Проверяем кастомную услугу
+            if (results.customServices !== 1) {
+                errors.push('Should have exactly 1 custom service');
+            }
+            
+            // Проверяем шаблон
+            if (results.templateApplied !== 'basicCourse') {
+                errors.push('Template should be applied correctly');
+            }
+            
+            // Проверяем финансовый пресет
+            if (results.financialPreset !== 'corporate') {
+                errors.push('Financial preset should be applied');
+            }
+            
+            // Проверяем экспорты
+            if (!results.exportsCompleted || results.exportsCompleted.length !== 3) {
+                errors.push('Should complete 3 exports');
+            }
+            
+            return {
+                isValid: errors.length === 0,
+                errors,
+                summary: {
+                    totalTests: 7,
+                    passedTests: 7 - errors.length,
+                    failedTests: errors.length
+                }
+            };
+        }
+        
+        /**
+         * Быстрый тест отдельных компонентов
+         */
+        window.testComponents = function() {
+            console.log('🔧 Testing individual components...');
+            
+            const tests = [
+                {
+                    name: 'StateManager',
+                    test: () => {
+                        const state = StateManager.getState();
+                        return state && typeof state === 'object';
+                    }
+                },
+                {
+                    name: 'EventBus',
+                    test: () => {
+                        let eventFired = false;
+                        const unsubscribe = EventBus.on('test-event', () => eventFired = true);
+                        EventBus.emit('test-event');
+                        unsubscribe();
+                        return eventFired;
+                    }
+                },
+                {
+                    name: 'ErrorHandler',
+                    test: () => {
+                        return typeof ErrorHandler.handleError === 'function';
+                    }
+                },
+                {
+                    name: 'PricingEngine',
+                    test: () => {
+                        return typeof PricingEngine.calculateAndUpdate === 'function';
+                    }
+                },
+                {
+                    name: 'PresetManager',
+                    test: () => {
+                        return typeof PresetManager.activatePreset === 'function';
+                    }
+                },
+                {
+                    name: 'ComponentManager',
+                    test: () => {
+                        return typeof ComponentManager.toggleComponent === 'function';
+                    }
+                },
+                {
+                    name: 'TemplateSystem',
+                    test: () => {
+                        return typeof TemplateSystem.applyTemplate === 'function';
+                    }
+                }
+            ];
+            
+            const results = tests.map(({ name, test }) => {
+                try {
+                    const passed = test();
+                    console.log(passed ? `✅ ${name}` : `❌ ${name}`);
+                    return { name, passed, error: null };
+                } catch (error) {
+                    console.log(`❌ ${name}: ${error.message}`);
+                    return { name, passed: false, error: error.message };
+                }
+            });
+            
+            const passedCount = results.filter(r => r.passed).length;
+            console.log(`📊 Component tests: ${passedCount}/${tests.length} passed`);
+            
+            return results;
+        };
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Функция проверки готовности всех модулей
+    function checkModulesReady() {
+        const modules = [
+            'StateManager', 'EventBus', 'ErrorHandler', 
+            'PricingEngine', 'PresetManager', 'ComponentManager',
+            'TemplateSystem', 'StorageManager', 'ExportManager'
+        ];
+        
+        const ready = modules.every(moduleName => 
+            window[moduleName] && typeof window[moduleName] === 'object'
+        );
+        
+        return ready;
+    }
+    
+    // Ожидаем готовности модулей
+    function waitForModules() {
+        if (checkModulesReady()) {
+            console.log('🚀 All modules ready, starting workflow test...');
+            testFullWorkflow();
+        } else {
+            console.log('⏳ Waiting for modules to initialize...');
+            setTimeout(waitForModules, 500);
+        }
+    }
+    
+    // Начинаем проверку через 1 секунду после загрузки DOM
+    setTimeout(waitForModules, 1000);
+});
+
+// Автозапуск тестирования при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    // Проверяем модули через некоторое время
+    setTimeout(() => {
+        if (window.testFullWorkflow && typeof window.testFullWorkflow === 'function') {
+            console.log('🚀 Starting workflow test...');
+            window.testFullWorkflow();
+        } else {
+            console.log('⏳ Test functions not ready yet');
+        }
+    }, 2000);
 });
         
     </script>
