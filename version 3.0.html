@@ -1615,19 +1615,19 @@
                 name: 'Экспресс-режим',
                 icon: '🚀',
                 description: 'Быстрая оценка за 30 секунд. Подходит для первичных переговоров и примерных расчетов.',
-                sections: ['pricingSystemSection', 'complexitySection', 'financialSection']
+                sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'revisionsSection']
             },
             standard: {
                 name: 'Стандартный',
                 icon: '⚖️',
                 description: 'Сбалансированный режим с основными настройками. Подходит для большинства проектов.',
-                sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'presetsSection']
+                sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'presetsSection', 'componentsSection', 'revisionsSection']
             },
             detailed: {
                 name: 'Детальный',
                 icon: '🔬',
                 description: 'Максимально точный расчет с учетом всех факторов. Рекомендуется для крупных проектов.',
-                sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'presetsSection']
+                sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'presetsSection', 'componentsSection', 'assessmentsSection', 'servicesSection', 'customServicesSection', 'revisionsSection']
             }
         };
 
@@ -1843,7 +1843,7 @@
             constructor(stateManager) {
                 this.stateManager = stateManager;
                 this.debouncedCalculate = Utils.debounce(() => {
-                    calculator.calculate();
+                    this.debouncedCalculate();
                 }, 300);
                 
                 this.init();
@@ -2494,7 +2494,7 @@
                 this.syncStateToUI();
                 
                 // Пересчитываем
-                calculator.calculate();
+                this.debouncedCalculate();
                 
                 this.hideLoadModal();
                 Utils.showToast(`Загружен расчет "${calculation.name}"`);
@@ -2800,11 +2800,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Первичный расчет
-        if (calculator && calculator.calculate) {
-            setTimeout(() => {
-                calculator.calculate();
-            }, 100);
-        }
+setTimeout(() => {
+    if (calculator && calculator.calculate) {
+        calculator.calculate();
+        console.log('Первичный расчет выполнен');
+    }
+}, 500); // Увеличиваем задержку
 
         console.log('Калькулятор инициализирован успешно');
         Utils.showToast('Калькулятор готов к работе');
@@ -2881,15 +2882,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         class ComponentsManager {
             constructor(stateManager) {
-                this.stateManager = stateManager;
-                this.customServices = [];
-                this.customServiceCounter = 0;
-                this.autoActivatedComponents = new Set();
-                
-                this.initializeData();
-                this.render();
-                this.setupEventListeners();
-            }
+    this.stateManager = stateManager;
+    this.customServices = [];
+    this.customServiceCounter = 0;
+    this.autoActivatedComponents = new Set();
+    
+    // Создаем debounced функцию для расчетов
+    this.debouncedCalculate = Utils.debounce(() => {
+        if (window.calculator && calculator.calculate) {
+            calculator.calculate();
+        }
+    }, 300);
+    
+    this.initializeData();
+    this.render();
+    this.setupEventListeners();
+}
 
             initializeData() {
                 // Конфигурация пресетов
@@ -3429,7 +3437,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const clientTypeSelect = Utils.safeGetElement('clientType');
                 if (clientTypeSelect) {
                     clientTypeSelect.addEventListener('change', () => {
-                        calculator.calculate();
+                        this.debouncedCalculate(); // ИЗМЕНЕНО
                     });
                 }
             }
@@ -3489,7 +3497,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 this.updatePresetPrices();
-                calculator.calculate();
+                this.debouncedCalculate(); // ИЗМЕНЕНО
             }
 
             handleComponentCheckbox(checkbox) {
@@ -3510,23 +3518,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.removeAutoBadge(componentItem);
                 }
                 
-                calculator.calculate();
+                this.debouncedCalculate(); // ИЗМЕНЕНО
             }
 
-            handleAssessmentCheckbox(checkbox) {
-                const assessmentId = checkbox.dataset.assessment;
-                const assessmentItem = checkbox.closest('.assessment-item');
-                const controls = Utils.safeGetElement(`${assessmentId}Controls`);
+            handleComponentCheckbox(checkbox) {
+                const componentId = checkbox.dataset.component;
+                const componentItem = checkbox.closest('.component-item');
+                const controls = Utils.safeGetElement(`${componentId}Controls`);
                 
                 if (checkbox.checked) {
-                    assessmentItem.classList.add('selected');
+                    componentItem.classList.add('selected');
+                    componentItem.classList.remove('auto-selected');
                     controls?.classList.add('visible');
+                    this.autoActivatedComponents.delete(componentId);
+                    this.removeAutoBadge(componentItem);
                 } else {
-                    assessmentItem.classList.remove('selected', 'auto-selected');
+                    componentItem.classList.remove('selected', 'auto-selected');
                     controls?.classList.remove('visible');
+                    this.autoActivatedComponents.delete(componentId);
+                    this.removeAutoBadge(componentItem);
                 }
                 
-                calculator.calculate();
+                this.debouncedCalculate(); // ИЗМЕНЕНО
             }
 
             handleServiceCheckbox(checkbox) {
@@ -3543,22 +3556,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     controls?.classList.remove('visible');
                 }
                 
-                calculator.calculate();
+                this.debouncedCalculate(); // ИЗМЕНЕНО
             }
-
+            
             handleComponentChange() {
                 this.updateComponentPrices();
-                calculator.calculate();
+                this.debouncedCalculate(); // ИЗМЕНЕНО
             }
 
             handleAssessmentChange() {
                 this.updateAssessmentPrices();
-                calculator.calculate();
+                this.debouncedCalculate(); // ИЗМЕНЕНО
             }
 
             handleServiceChange() {
                 this.updateServicePrices();
-                calculator.calculate();
+                this.debouncedCalculate(); // ИЗМЕНЕНО
             }
 
             suggestComponentsForPreset(presetId) {
@@ -3759,7 +3772,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
                // Кастомные услуги
-            addCustomService() {
+             addCustomService() {
                 const nameInput = Utils.safeGetElement('customServiceName');
                 const descInput = Utils.safeGetElement('customServiceDescription');
                 const hoursInput = Utils.safeGetElement('customServiceHours');
@@ -3784,7 +3797,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.customServices.push(customService);
                 this.renderCustomServices();
                 this.clearCustomServiceForm();
-                calculator.calculate();
+                this.debouncedCalculate(); // ИЗМЕНЕНО
                 
                 Utils.showToast('Кастомная услуга добавлена');
             }
@@ -3792,7 +3805,7 @@ document.addEventListener('DOMContentLoaded', () => {
             removeCustomService(id) {
                 this.customServices = this.customServices.filter(service => service.id !== id);
                 this.renderCustomServices();
-                calculator.calculate();
+                this.debouncedCalculate(); // ИЗМЕНЕНО
                 Utils.showToast('Услуга удалена');
             }
 
