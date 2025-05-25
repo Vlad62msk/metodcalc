@@ -1611,25 +1611,25 @@
 
         // Конфигурация режимов
         const MODES = {
-            express: {
-                name: 'Экспресс-режим',
-                icon: '🚀',
-                description: 'Быстрая оценка за 30 секунд. Подходит для первичных переговоров и примерных расчетов.',
-                sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'revisionsSection']
-            },
-            standard: {
-                name: 'Стандартный',
-                icon: '⚖️',
-                description: 'Сбалансированный режим с основными настройками. Подходит для большинства проектов.',
-                sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'presetsSection', 'componentsSection', 'revisionsSection']
-            },
-            detailed: {
-                name: 'Детальный',
-                icon: '🔬',
-                description: 'Максимально точный расчет с учетом всех факторов. Рекомендуется для крупных проектов.',
-                sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'presetsSection', 'componentsSection', 'assessmentsSection', 'servicesSection', 'customServicesSection', 'revisionsSection']
-            }
-        };
+    express: {
+        name: 'Экспресс-режим',
+        icon: '🚀',
+        description: 'Быстрая оценка за 30 секунд. Подходит для первичных переговоров и примерных расчетов.',
+        sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'presetsSection', 'revisionsSection']
+    },
+    standard: {
+        name: 'Стандартный',
+        icon: '⚖️',
+        description: 'Сбалансированный режим с основными настройками. Подходит для большинства проектов.',
+        sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'presetsSection', 'componentsSection', 'assessmentsSection', 'revisionsSection']
+    },
+    detailed: {
+        name: 'Детальный',
+        icon: '🔬',
+        description: 'Максимально точный расчет с учетом всех факторов. Рекомендуется для крупных проектов.',
+        sections: ['pricingSystemSection', 'complexitySection', 'financialSection', 'presetsSection', 'componentsSection', 'assessmentsSection', 'servicesSection', 'customServicesSection', 'revisionsSection']
+    }
+};
 
         // Утилиты
         const Utils = {
@@ -1843,8 +1843,10 @@
             constructor(stateManager) {
                 this.stateManager = stateManager;
                 this.debouncedCalculate = Utils.debounce(() => {
-                    this.debouncedCalculate();
-                }, 300);
+    if (window.calculator && calculator.calculate) {
+        calculator.calculate();
+    }
+}, 300);
                 
                 this.init();
             }
@@ -1936,19 +1938,21 @@
             // Настройка обработчиков событий
             setupEventListeners() {
                 // Радиокнопки режима
-                document.querySelectorAll('input[name="calculatorMode"]').forEach(radio => {
-                    radio.addEventListener('change', (e) => {
-                        this.stateManager.update({ mode: e.target.value });
-                    });
-                });
+document.querySelectorAll('input[name="calculatorMode"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+        console.log('Режим изменен на:', e.target.value);
+        this.stateManager.update({ mode: e.target.value });
+    });
+});
 
                 // Метод ценообразования
-                document.querySelectorAll('input[name="pricingMethod"]').forEach(radio => {
-                    radio.addEventListener('change', (e) => {
-                        this.stateManager.update({ pricingMethod: e.target.value });
-                        this.debouncedCalculate();
-                    });
-                });
+document.querySelectorAll('input[name="pricingMethod"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+        console.log('Метод ценообразования изменен на:', e.target.value);
+        this.stateManager.update({ pricingMethod: e.target.value });
+        this.debouncedCalculate();
+    });
+});
 
                 // Числовые поля
                 this.setupNumberInput('hourlyRate', 'hourlyRate');
@@ -2494,7 +2498,9 @@
                 this.syncStateToUI();
                 
                 // Пересчитываем
-                this.debouncedCalculate();
+if (calculator && calculator.calculate) {
+    calculator.calculate();
+}
                 
                 this.hideLoadModal();
                 Utils.showToast(`Загружен расчет "${calculation.name}"`);
@@ -2805,7 +2811,12 @@ setTimeout(() => {
         calculator.calculate();
         console.log('Первичный расчет выполнен');
     }
-}, 500); // Увеличиваем задержку
+    
+    // Принудительно показываем все секции для тестирования
+    document.querySelectorAll('.form-section-wrapper').forEach(section => {
+        section.classList.remove('hidden');
+    });
+}, 1000);
 
         console.log('Калькулятор инициализирован успешно');
         Utils.showToast('Калькулятор готов к работе');
@@ -3521,26 +3532,21 @@ setTimeout(() => {
                 this.debouncedCalculate(); // ИЗМЕНЕНО
             }
 
-            handleComponentCheckbox(checkbox) {
-                const componentId = checkbox.dataset.component;
-                const componentItem = checkbox.closest('.component-item');
-                const controls = Utils.safeGetElement(`${componentId}Controls`);
-                
-                if (checkbox.checked) {
-                    componentItem.classList.add('selected');
-                    componentItem.classList.remove('auto-selected');
-                    controls?.classList.add('visible');
-                    this.autoActivatedComponents.delete(componentId);
-                    this.removeAutoBadge(componentItem);
-                } else {
-                    componentItem.classList.remove('selected', 'auto-selected');
-                    controls?.classList.remove('visible');
-                    this.autoActivatedComponents.delete(componentId);
-                    this.removeAutoBadge(componentItem);
-                }
-                
-                this.debouncedCalculate(); // ИЗМЕНЕНО
-            }
+            handleAssessmentCheckbox(checkbox) {
+    const assessmentId = checkbox.dataset.assessment;
+    const assessmentItem = checkbox.closest('.assessment-item');
+    const controls = Utils.safeGetElement(`${assessmentId}Controls`);
+    
+    if (checkbox.checked) {
+        assessmentItem.classList.add('selected');
+        controls?.classList.add('visible');
+    } else {
+        assessmentItem.classList.remove('selected', 'auto-selected');
+        controls?.classList.remove('visible');
+    }
+    
+    this.debouncedCalculate();
+}
 
             handleServiceCheckbox(checkbox) {
                 const serviceId = checkbox.dataset.service;
