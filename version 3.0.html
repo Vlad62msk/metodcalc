@@ -1865,6 +1865,7 @@
 
                     if (changedFields.includes('totalCost') || changedFields.includes('totalHours')) {
                         this.updateResults(state);
+                        this.updateProjectComposition(state);
                     }
 
                     if (changedFields.includes('discountRate')) {
@@ -1874,7 +1875,62 @@
                     if (changedFields.includes('taxRate')) {
                         this.updateTaxDisplay(state.taxRate);
                     }
+
+                    if (changedFields.includes('hourlyRate') && componentsManager) {
+                        componentsManager.updateAllPrices();
+                    }
                 });
+            }
+
+            // Обновление состава проекта
+            updateProjectComposition(state) {
+                const compositionEl = Utils.safeGetElement('projectComposition');
+                if (!compositionEl || !state.breakdown) return;
+
+                let html = '';
+                const breakdown = state.breakdown;
+
+                if (breakdown.presets && breakdown.presets.length > 0) {
+                    html += '<div class="mb-2"><strong>Пресеты:</strong></div>';
+                    breakdown.presets.forEach(item => {
+                        html += `<div class="text-sm text-gray-600">• ${item.name} (${item.count} шт.)</div>`;
+                    });
+                }
+
+                if (breakdown.components && breakdown.components.length > 0) {
+                    html += '<div class="mb-2 mt-3"><strong>Дополнительные компоненты:</strong></div>';
+                    breakdown.components.forEach(item => {
+                        html += `<div class="text-sm text-gray-600">• ${item.name} (${item.count} шт.)</div>`;
+                    });
+                }
+
+                if (breakdown.assessments && breakdown.assessments.length > 0) {
+                    html += '<div class="mb-2 mt-3"><strong>Проверки знаний:</strong></div>';
+                    breakdown.assessments.forEach(item => {
+                        html += `<div class="text-sm text-gray-600">• ${item.name} (${item.count} шт.)</div>`;
+                    });
+                }
+
+                if (breakdown.services && breakdown.services.length > 0) {
+                    html += '<div class="mb-2 mt-3"><strong>Дополнительные услуги:</strong></div>';
+                    breakdown.services.forEach(item => {
+                        const autoLabel = item.isAuto ? ' <span class="auto-badge" style="font-size: 0.6rem;">АВТО</span>' : '';
+                        html += `<div class="text-sm text-gray-600">• ${item.name}${autoLabel}</div>`;
+                    });
+                }
+
+                if (breakdown.customServices && breakdown.customServices.length > 0) {
+                    html += '<div class="mb-2 mt-3"><strong>Кастомные услуги:</strong></div>';
+                    breakdown.customServices.forEach(item => {
+                        html += `<div class="text-sm text-gray-600">• ${item.name} (${item.count} шт.)</div>`;
+                    });
+                }
+
+                if (html === '') {
+                    html = '<div class="text-gray-500 text-sm" style="font-style: italic;">Выберите компоненты для расчета</div>';
+                }
+
+                compositionEl.innerHTML = html;
             }
 
             // Настройка обработчиков событий
@@ -2124,43 +2180,111 @@
                 this.updateBreakdown(state);
             }
 
-            // Обновление детализации
+           // Обновление детализации
             updateBreakdown(state) {
                 const breakdownEl = Utils.safeGetElement('breakdown');
-                if (!breakdownEl || !state.breakdown) return;
+                if (!breakdownEl || !state.breakdown) {
+                    if (breakdownEl) {
+                        breakdownEl.innerHTML = '<div class="text-gray-500 text-sm" style="font-style: italic;">Расчет появится после выбора компонентов</div>';
+                    }
+                    return;
+                }
 
-                const { subtotal, discountAmount, afterDiscount, taxAmount, complexityMultiplier } = state.breakdown;
-
+                const breakdown = state.breakdown;
                 let html = '<div class="space-y-2 text-sm">';
-                
-                html += `<div class="flex justify-between">
-                    <span>Базовая стоимость:</span>
-                    <span class="font-semibold">${Utils.formatCurrency(subtotal)}</span>
-                </div>`;
 
-                if (complexityMultiplier !== 1.0) {
+                // Показываем секции, если есть элементы
+                if (breakdown.presets && breakdown.presets.length > 0) {
+                    html += '<div class="font-semibold text-blue-600 mb-2">Пресеты:</div>';
+                    breakdown.presets.forEach(item => {
+                        html += `<div class="flex justify-between">
+                            <span>${item.name} (${item.count} шт.)</span>
+                            <span class="font-semibold">${Utils.formatCurrency(item.cost)}</span>
+                        </div>`;
+                    });
+                    html += '<div class="mb-3"></div>';
+                }
+
+                if (breakdown.components && breakdown.components.length > 0) {
+                    html += '<div class="font-semibold text-blue-600 mb-2">Компоненты:</div>';
+                    breakdown.components.forEach(item => {
+                        html += `<div class="flex justify-between">
+                            <span>${item.name} (${item.count} шт.)</span>
+                            <span class="font-semibold">${Utils.formatCurrency(item.cost)}</span>
+                        </div>`;
+                    });
+                    html += '<div class="mb-3"></div>';
+                }
+
+                if (breakdown.assessments && breakdown.assessments.length > 0) {
+                    html += '<div class="font-semibold text-blue-600 mb-2">Проверки знаний:</div>';
+                    breakdown.assessments.forEach(item => {
+                        html += `<div class="flex justify-between">
+                            <span>${item.name} (${item.count} шт.)</span>
+                            <span class="font-semibold">${Utils.formatCurrency(item.cost)}</span>
+                        </div>`;
+                    });
+                    html += '<div class="mb-3"></div>';
+                }
+
+                if (breakdown.services && breakdown.services.length > 0) {
+                    html += '<div class="font-semibold text-blue-600 mb-2">Услуги:</div>';
+                    breakdown.services.forEach(item => {
+                        const autoLabel = item.isAuto ? ' <span class="auto-badge" style="font-size: 0.6rem;">АВТО</span>' : '';
+                        html += `<div class="flex justify-between">
+                            <span>${item.name}${autoLabel}</span>
+                            <span class="font-semibold">${Utils.formatCurrency(item.cost)}</span>
+                        </div>`;
+                    });
+                    html += '<div class="mb-3"></div>';
+                }
+
+                if (breakdown.customServices && breakdown.customServices.length > 0) {
+                    html += '<div class="font-semibold text-blue-600 mb-2">Кастомные услуги:</div>';
+                    breakdown.customServices.forEach(item => {
+                        html += `<div class="flex justify-between">
+                            <span>${item.name} (${item.count} шт.)</span>
+                            <span class="font-semibold">${Utils.formatCurrency(item.cost)}</span>
+                        </div>`;
+                    });
+                    html += '<div class="mb-3"></div>';
+                }
+
+                // Правки
+                if (breakdown.revisionCost > 0) {
+                    html += `<div class="flex justify-between text-orange-600">
+                        <span>Правки:</span>
+                        <span class="font-semibold">+${Utils.formatCurrency(breakdown.revisionCost)}</span>
+                    </div>`;
+                }
+
+                // Коэффициент сложности
+                if (breakdown.complexityMultiplier !== 1.0) {
                     html += `<div class="flex justify-between text-blue-600">
                         <span>Коэффициент сложности:</span>
-                        <span class="font-semibold">×${complexityMultiplier.toFixed(2)}</span>
+                        <span class="font-semibold">×${breakdown.complexityMultiplier.toFixed(2)}</span>
                     </div>`;
                 }
 
-                if (discountAmount !== 0) {
-                    const sign = discountAmount > 0 ? '+' : '';
-                    const label = discountAmount > 0 ? 'Наценка:' : 'Скидка:';
-                    html += `<div class="flex justify-between ${discountAmount > 0 ? 'text-red-600' : 'text-green-600'}">
+                // Скидка/наценка
+                if (breakdown.discountAmount !== 0) {
+                    const sign = breakdown.discountAmount > 0 ? '+' : '';
+                    const label = breakdown.discountAmount > 0 ? 'Наценка:' : 'Скидка:';
+                    html += `<div class="flex justify-between ${breakdown.discountAmount > 0 ? 'text-red-600' : 'text-green-600'}">
                         <span>${label}</span>
-                        <span class="font-semibold">${sign}${Utils.formatCurrency(Math.abs(discountAmount))}</span>
+                        <span class="font-semibold">${sign}${Utils.formatCurrency(Math.abs(breakdown.discountAmount))}</span>
                     </div>`;
                 }
 
-                if (state.showTaxSeparately && taxAmount > 0) {
+                // Налог
+                if (state.showTaxSeparately && breakdown.taxAmount > 0) {
                     html += `<div class="flex justify-between text-gray-600">
                         <span>Налог (${state.taxRate}%):</span>
-                        <span class="font-semibold">+${Utils.formatCurrency(taxAmount)}</span>
+                        <span class="font-semibold">+${Utils.formatCurrency(breakdown.taxAmount)}</span>
                     </div>`;
                 }
 
+                // Итого
                 html += `<div class="flex justify-between border-t pt-2 font-bold text-lg">
                     <span>Итого:</span>
                     <span class="text-blue-600">${Utils.formatCurrency(state.totalCost)}</span>
@@ -2632,49 +2756,64 @@
        let stateManager, calculator, uiManager, storageManager, componentsManager;
 
         // Инициализация после загрузки DOM
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                // Создаем экземпляры классов
-                stateManager = new StateManager();
-                calculator = new Calculator(stateManager);
-                uiManager = new UIManager(stateManager);
-                storageManager = new StorageManager(stateManager);
-                componentsManager = new ComponentsManager(stateManager);
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        console.log('Начинаем инициализацию калькулятора...');
+        
+        // Создаем экземпляры классов в правильном порядке
+        stateManager = new StateManager();
+        console.log('StateManager создан');
+        
+        uiManager = new UIManager(stateManager);
+        console.log('UIManager создан');
+        
+        storageManager = new StorageManager(stateManager);
+        console.log('StorageManager создан');
+        
+        componentsManager = new ComponentsManager(stateManager);
+        console.log('ComponentsManager создан');
+        
+        calculator = new Calculator(stateManager);
+        console.log('Calculator создан');
 
-                // Загружаем сохраненное состояние
-                const savedState = storageManager.loadState();
-                if (savedState) {
-                    Object.keys(savedState).forEach(key => {
-                        if (savedState[key] !== undefined) {
-                            stateManager.update({ [key]: savedState[key] });
-                        }
-                    });
-                    uiManager.syncStateToUI();
+        // Загружаем сохраненное состояние
+        const savedState = storageManager.loadState();
+        if (savedState) {
+            console.log('Загружаем сохраненное состояние...');
+            Object.keys(savedState).forEach(key => {
+                if (savedState[key] !== undefined) {
+                    stateManager.update({ [key]: savedState[key] });
                 }
+            });
+            uiManager.syncStateToUI();
+        }
 
-                // Включаем автосохранение
-                storageManager.enableAutosave();
+        // Включаем автосохранение
+        storageManager.enableAutosave();
 
-                // Обработчики модальных окон
-                setupModalHandlers();
+        // Обработчики модальных окон
+        setupModalHandlers();
 
-                // Обновляем цены при изменении ставки
-                stateManager.subscribe((state, changedFields) => {
-                    if (changedFields.includes('hourlyRate')) {
-                        componentsManager.updateAllPrices();
-                    }
-                });
-                
-                // Первичный расчет
+        // Первичное обновление цен
+        if (componentsManager && componentsManager.updateAllPrices) {
+            componentsManager.updateAllPrices();
+        }
+        
+        // Первичный расчет
+        if (calculator && calculator.calculate) {
+            setTimeout(() => {
                 calculator.calculate();
+            }, 100);
+        }
 
-                Utils.showToast('Калькулятор готов к работе');
+        console.log('Калькулятор инициализирован успешно');
+        Utils.showToast('Калькулятор готов к работе');
 
-            } catch (error) {
-                console.error('Initialization error:', error);
-                Utils.showToast('Ошибка инициализации приложения', 'error');
-            }
-        });
+    } catch (error) {
+        console.error('Initialization error:', error);
+        Utils.showToast('Ошибка инициализации приложения', 'error');
+    }
+});
 
         // Настройка обработчиков модальных окон
         function setupModalHandlers() {
