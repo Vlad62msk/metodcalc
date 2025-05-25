@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор методических услуг 1.0</title>
+    <title>Калькулятор методических услуг 2.0</title>
     <style>
         * {
             box-sizing: border-box;
@@ -57,14 +57,18 @@
         }
         
         .result-section {
-            background: #f8fafc;
-            padding: 40px;
-            border-left: 1px solid #e5e7eb;
-            position: sticky;
-            top: 0;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
+    background: #f8fafc;
+    padding: 40px;
+    border-left: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    max-height: 90vh;
+    overflow-y: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
         
         .form-group {
             margin-bottom: 25px;
@@ -89,52 +93,6 @@
         .form-group input:focus, .form-group select:focus {
             outline: none;
             border-color: #4f46e5;
-        }
-        
-        .slider-group {
-            margin-bottom: 25px;
-        }
-        
-        .slider-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .slider-group input[type="range"] {
-            width: 100%;
-            -webkit-appearance: none;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            outline: none;
-            transition: background 0.3s;
-        }
-        
-        .slider-group input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #4f46e5;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .slider-group input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: #4f46e5;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .slider-value {
-            margin-top: 8px;
-            font-size: 14px;
-            color: #6b7280;
         }
         
         .checkbox-group {
@@ -176,6 +134,24 @@
             font-size: 0.9rem;
             line-height: 1.4;
             margin: 0;
+        }
+
+.mode-group {
+            transition: all 0.3s ease;
+        }
+        
+        .mode-group.hidden {
+            display: none !important;
+        }
+        
+        .complexity-hint {
+            background: #f3f4f6;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.4;
         }
         
         .preset-grid {
@@ -520,12 +496,12 @@
         }
         
         .result-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+}
         
         .result-title {
             font-size: 1.2rem;
@@ -623,15 +599,6 @@
             margin-top: 8px;
         }
 
-        .preset-tag {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: white;
-        }
-
 .preset-tag {
     display: inline-block;
     padding: 3px 8px;
@@ -725,6 +692,12 @@
     line-height: 1.3;
 }
 
+.financial-control-item .tooltip-content {
+    bottom: 150%;
+    width: 180px;
+    margin-left: -90px;
+}
+
 .tooltip-content::after {
     content: "";
     position: absolute;
@@ -741,8 +714,364 @@
     opacity: 1;
 }
 
+.slider-group {
+    margin-bottom: 20px;
+}
+
+.slider-value {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+	    
 .slider-container {
     position: relative;
+}
+
+	    /* Новые стили для финансовых настроек */
+.financial-settings-card {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.financial-settings-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.financial-settings-title::before {
+    content: '💰';
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+.financial-settings-description {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.financial-controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .financial-controls-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+.financial-control-item {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.financial-control-item:hover {
+    border-color: #7c3aed;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.1);
+}
+
+.financial-control-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.financial-control-description {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.slider-wrapper {
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.slider-wrapper input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e7eb;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.slider-wrapper input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #7c3aed;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.slider-wrapper input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #7c3aed;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.financial-slider-value {
+    font-size: 0.85rem;
+    color: #7c3aed;
+    font-weight: 600;
+    text-align: center;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: #7c3aed;
+}
+
+.checkbox-wrapper label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #374151;
+    line-height: 1.3;
+    margin: 0;
+}
+
+.pricing-method-card {
+    background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 100%);
+    border: 2px solid #d8b4fe;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.pricing-method-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #7c2d12;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.pricing-method-title::before {
+    content: '⚙️';
+    margin-right: 8px;
+}
+
+.pricing-method-description {
+    color: #92400e;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.method-options {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 15px;
+}
+
+.method-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #7c2d12;
+}
+
+.method-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #7c3aed;
+}
+
+.detail-level-section {
+    border-top: 1px solid #d8b4fe;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.detail-level-title {
+    font-weight: 600;
+    color: #7c2d12;
+    margin-bottom: 10px;
+}
+
+.detail-options {
+    display: flex;
+    gap: 25px;
+}
+
+/* Стили для блоков настройки детализации */
+.detail-settings-card {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+    border: 2px solid #bbf7d0;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.detail-settings-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.detail-settings-title::before {
+    content: '🎛️';
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+.detail-settings-description {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.detail-mode-block {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.detail-mode-block:hover {
+    border-color: #10b981;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+}
+
+.detail-mode-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.detail-mode-icon {
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
+.detail-mode-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.detail-mode-description {
+    color: #6b7280;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    padding-left: 30px;
+}
+
+/* Стили для блоков параметров ценообразования */
+.pricing-params-card {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border: 2px solid #fbbf24;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.pricing-params-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.pricing-params-title::before {
+    content: '💳';
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+.pricing-params-description {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.pricing-param-block {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.pricing-param-block:hover {
+    border-color: #fbbf24;
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.1);
+}
+
+.pricing-param-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.pricing-param-icon {
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
+.pricing-param-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.pricing-param-description {
+    color: #6b7280;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    padding-left: 30px;
 }
 
     </style>
@@ -751,101 +1080,315 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Калькулятор методических услуг 1.0</h1>
+            <h1>Калькулятор методических услуг 2.0</h1>
             <p>Гибкая система расчета с пресетами и детальной настройкой</p>
         </div>
         
         <div class="content">
             <div class="form-section">
-                <div class="section-title">Базовые параметры</div>
-                
-                <div class="form-group">
-                    <label for="hourlyRate">Ставка за час (₽):</label>
-                    <input type="number" id="hourlyRate" value="220" min="100" max="5000">
-                </div>
-                
-                <div class="slider-group">
-                    <label for="lessonDuration">Средняя длительность урока (минуты):</label>
-                    <input type="range" id="lessonDuration" min="0" max="120" step="5" value="30">
-                    <div class="slider-value" id="lessonDurationValue">30 минут</div>
-                </div>
-                
-                <div class="form-group">
-    <div class="checkbox-group">
-        <input type="checkbox" id="simpleCalculation">
-        <label for="simpleCalculation">Упрощенный расчет (без коэффициентов сложности)</label>
+                                
+<!-- Блок системы ценообразования -->
+<div class="pricing-method-card">
+    <div class="pricing-method-title">Система ценообразования</div>
+    <div class="pricing-method-description">
+        Выберите метод расчета стоимости и уровень детализации для настройки коэффициентов сложности
+    </div>
+    
+    <div>
+        <div class="method-options">
+            <label class="method-option">
+                <input type="radio" name="pricingMethod" value="hourly" checked>
+                <span>⏱️ Почасовой расчет</span>
+            </label>
+            <label class="method-option">
+                <input type="radio" name="pricingMethod" value="fixed">
+                <span>💰 Фиксированные цены</span>
+            </label>
+        </div>
+    </div>
+    
+    <div class="detail-level-section">
+        <div class="detail-level-title">Уровень детализации:</div>
+        <div class="detail-options">
+            <label class="method-option">
+                <input type="radio" name="detailLevel" value="quick" checked>
+                <span>🎯 Быстрая оценка</span>
+            </label>
+            <label class="method-option">
+                <input type="radio" name="detailLevel" value="detailed">
+                <span>⚙️ Детальный расчет</span>
+            </label>
+        </div>
     </div>
 </div>
 
-<div class="form-group">
-    <div class="checkbox-group">
-        <input type="checkbox" id="enableVolumeDiscounts" checked>
-        <label for="enableVolumeDiscounts">Применять скидки за объем (6+ штук = скидка 10-30%)</label>
+<!-- Блок финансовых настроек -->
+<div class="financial-settings-card">
+    <div class="financial-settings-title">Финансовые настройки</div>
+    <div class="financial-settings-description">
+        Настройте скидки, наценки, налоговые параметры и политику объемных скидок для точного расчета итоговой стоимости
+    </div>
+    
+    <div class="financial-controls-grid">
+        <div class="financial-control-item">
+            <div class="financial-control-label">Скидка / Наценка</div>
+            <div class="financial-control-description">
+                Корректировка цены для постоянных клиентов или сложных проектов
+            </div>
+            <div class="slider-wrapper">
+                <div class="tooltip" id="discountTooltip">
+                    <input type="range" id="discountRate" min="-50" max="50" step="5" value="0">
+                    <div class="tooltip-content" id="discountTooltipContent">
+                        Без изменений
+                    </div>
+                </div>
+            </div>
+            <div class="financial-slider-value" id="discountRateValue">0% (без изменений)</div>
+        </div>
+        
+        <div class="financial-control-item">
+            <div class="financial-control-label">Налоговая ставка</div>
+            <div class="financial-control-description">
+                Ставка налога в зависимости от статуса: самозанятый, ИП, ООО
+            </div>
+          <div class="slider-wrapper">
+                <div class="tooltip" id="taxTooltip">
+                    <input type="range" id="taxRate" min="0" max="30" step="1" value="13">
+                    <div class="tooltip-content" id="taxTooltipContent">
+                        НДФЛ для физлиц
+                    </div>
+                </div>
+            </div>
+            <div class="financial-slider-value" id="taxRateValue">13% (НДФЛ)</div>
+        </div>
+        
+        <div class="financial-control-item">
+            <div class="financial-control-label">Объемные скидки</div>
+            <div class="financial-control-description">
+                Автоматические скидки при заказе большого количества элементов
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="enableVolumeDiscounts" checked>
+                <label for="enableVolumeDiscounts">Применять скидки за объем<br><small>(6-15шт: -10%, 16-30шт: -20%, 31+шт: -30%)</small></label>
+            </div>
+            <div style="margin-top: 12px;">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="showTaxSeparately" checked>
+                    <label for="showTaxSeparately">Показывать налог отдельной строкой</label>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- Блоки параметров ценообразования -->
+<div class="pricing-params-card">
+    <div class="pricing-params-title">Параметры ценообразования</div>
+    <div class="pricing-params-description">
+        Настройте базовые параметры расчета стоимости в зависимости от выбранного метода
+    </div>
+    
+    <!-- Блок для почасовой ставки -->
+    <div id="hourlyRateBlock" class="pricing-param-block">
+        <div class="pricing-param-header">
+            <span class="pricing-param-icon">💳</span>
+            <span class="pricing-param-title">Базовая ставка за час</span>
+        </div>
+        <div class="pricing-param-description">
+            Используется для всех расчетов. Учитывайте ваш опыт, сложность работ и рыночные ставки
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="number" id="hourlyRate" value="220" min="100" max="5000" style="width: 120px; padding: 8px; border: 2px solid #f59e0b; border-radius: 6px; text-align: center; font-weight: 600; color: #92400e;">
+            <span style="color: #92400e; font-weight: 600;">₽/час</span>
+        </div>
+    </div>
+
+    <!-- Блок для фиксированных цен -->
+    <div id="fixedPricesBlock" class="pricing-param-block" style="display: none;">
+        <div class="pricing-param-header">
+            <span class="pricing-param-icon">💰</span>
+            <span class="pricing-param-title">Фиксированные цены за единицу</span>
+        </div>
+        <div class="pricing-param-description">
+            Установите цены для каждого типа контента. Цены автоматически корректируются по длительности
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px;">
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Текстовый урок</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_textLesson" value="1200" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 30 мин</div>
+            </div>
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Видео урок</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_videoLesson" value="1800" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 60 мин</div>
+            </div>
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Вебинар</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_webinar" value="1500" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 90 мин</div>
+            </div>
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Практикум</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_workshop" value="2000" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 60 мин</div>
+            </div>
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Кейс-стади</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_caseStudy" value="1100" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 45 мин</div>
+            </div>
+            
+            <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Мастер-класс</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="fixedPrice_masterClass" value="1540" min="100" max="10000" style="width: 100px; padding: 6px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                    <span style="color: #6b7280;">₽/шт</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Базово: 60 мин</div>
+            </div>
+            
+        </div>
+        
+        <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 15px; margin-top: 15px;">
+            <h4 style="color: #0369a1; margin-bottom: 8px; font-size: 1rem;">💡 Как работают фиксированные цены</h4>
+            <p style="color: #0369a1; font-size: 0.9rem; line-height: 1.4; margin: 0;">
+                Цены автоматически корректируются по длительности урока относительно базового времени. При детальном расчете дополнительно применяются ограниченные коэффициенты сложности.
+            </p>
+        </div>
+    </div>
+</div>
+		    
+<!-- Блоки настройки детализации -->
+<div class="detail-settings-card">
+    <div class="detail-settings-title">Настройки детализации</div>
+    <div class="detail-settings-description">
+        Выберите уровень детализации расчета и настройте параметры сложности проекта
+    </div>
+    
+    <!-- Блок быстрой оценки -->
+    <div id="quickComplexityGroup" class="detail-mode-block">
+        <div class="detail-mode-header">
+            <span class="detail-mode-icon">🎯</span>
+            <span class="detail-mode-title">Быстрая оценка</span>
+        </div>
+        <div class="detail-mode-description">
+            Получите приблизительную стоимость за 30 секунд. Все факторы сложности объединены в один селектор.
+        </div>
+        <div class="form-group">
+            <label for="projectComplexity">Сложность проекта:</label>
+            <select id="projectComplexity">
+                <option value="1.0">Простой (знакомый домен + своя методика)</option>
+                <option value="1.3" selected>Средний (один усложняющий фактор)</option>
+                <option value="1.6">Сложный (несколько усложняющих факторов)</option>
+                <option value="1.8">Экстремальный (все факторы + срочность)</option>
+            </select>
+            <div class="complexity-hint" id="complexityHint">
+                Средняя сложность: новый домен ИЛИ чужая методика ИЛИ сложный контент
+            </div>
+        </div>
+    </div>
+
+    <!-- Блок детальной оценки -->
+    <div id="detailedComplexityGroup" class="detail-mode-block" style="display: none;">
+        <div class="detail-mode-header">
+            <span class="detail-mode-icon">⚙️</span>
+            <span class="detail-mode-title">Детальный расчет</span>
+        </div>
+        <div class="detail-mode-description">
+            Максимально точная оценка с учетом всех факторов сложности по отдельности. Рекомендуется для крупных проектов.
+        </div>
+        
+        <div class="form-group">
+            <label for="methodistRole">Роль методиста:</label>
+            <select id="methodistRole">
+                <option value="1.0">Методист-автор (пишу контент сам)</option>
+                <option value="0.5">Методист-редактор (проверяю за автором)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="domainKnowledge">Знание предметной области:</label>
+            <select id="domainKnowledge">
+                <option value="1.0">Знаю домен хорошо</option>
+                <option value="1.3">Новый домен (требуется изучение)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="projectType">Характер работы:</label>
+            <select id="projectType">
+                <option value="1.0">Новая программа по моей методике</option>
+                <option value="1.2">Доработка существующих материалов</option>
+                <option value="1.4">Работа по чужой программе/методике</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="contentComplexity">Сложность контента:</label>
+            <select id="contentComplexity">
+                <option value="1.0">Простой - теория и понятия</option>
+                <option value="1.2" selected>Средний - теория + применение</option>
+                <option value="1.4">Сложный - теория + применение + инструменты</option>
+                <option value="1.6">Высокосложный - теория + применение + инструменты + кейсы</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="urgency">Срочность выполнения:</label>
+            <select id="urgency">
+                <option value="1.0">Обычная (без ограничений по времени)</option>
+                <option value="1.2">Ускоренная (сжатые сроки) - +20%</option>
+                <option value="1.5">Срочная (очень сжатые сроки) - +50%</option>
+                <option value="2.0">Экстренная (критические сроки) - +100%</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="qualityLevel">Уровень качества:</label>
+            <select id="qualityLevel">
+                <option value="0.7">Базовый (экономия 30%)</option>
+                <option value="1.0" selected>Стандарт</option>
+                <option value="1.5">Премиум (+50%)</option>
+            </select>
+        </div>
+    </div>
+</div>
+		    
 <div class="info-card" id="calculationInfo" style="background: #f0f9ff; border-color: #0ea5e9;">
-    <h4ℹ️ Настройки расчета</h4>
+    <h4> Настройки расчета</h4>
     <p id="calculationDescription">
         <strong>Коэффициенты сложности:</strong> Включены<br>
         <strong>Скидки за объем:</strong> Включены (6-15шт: -10%, 16-30шт: -20%, 31+шт: -30%)
     </p>
 </div>
-                
-                <div class="form-group">
-                    <label for="methodistRole">Роль методиста:</label>
-                    <select id="methodistRole">
-                        <option value="1.0">Методист-автор (пишу контент сам)</option>
-                        <option value="0.5">Методист-редактор (проверяю за автором)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="domainKnowledge">Знание предметной области:</label>
-                    <select id="domainKnowledge">
-                        <option value="1.0">Знаю домен хорошо</option>
-                        <option value="1.3">Новый домен (требуется изучение)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="projectType">Характер работы:</label>
-                    <select id="projectType">
-                        <option value="1.0">Новая программа по моей методике</option>
-                        <option value="1.2">Доработка существующих материалов</option>
-                        <option value="1.4">Работа по чужой программе/методике</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="contentComplexity">Сложность контента:</label>
-                    <select id="contentComplexity">
-                        <option value="1.0">Простой - теория и понятия</option>
-                        <option value="1.2" selected>Средний - теория + применение</option>
-                        <option value="1.4">Сложный - теория + применение + инструменты</option>
-                        <option value="1.6">Высокосложный - теория + применение + инструменты + кейсы</option>
-                    </select>
-                </div>
 
-<div class="form-group">
-    <label for="urgency">Срочность выполнения:</label>
-    <select id="urgency">
-        <option value="1.0">Обычная (без ограничений по времени)</option>
-        <option value="1.2">Ускоренная (сжатые сроки) - +20%</option>
-        <option value="1.5">Срочная (очень сжатые сроки) - +50%</option>
-        <option value="2.0">Экстренная (критические сроки) - +100%</option>
-    </select>
+<div class="info-card" id="modeInfo" style="background: #ecfdf5; border-color: #10b981; display: none;">
+    <h4>🎯 Быстрая оценка</h4>
+    <p>Получите приблизительную стоимость за 30 секунд. Все факторы сложности объединены в один селектор. Идеально для первичных переговоров с клиентами.</p>
 </div>
-
-<div class="form-group">
-    <label for="qualityLevel">Уровень качества:</label>
-    <select id="qualityLevel">
-        <option value="0.7">Базовый (экономия 30%)</option>
-        <option value="1.0" selected>Стандарт</option>
-        <option value="1.5">Премиум (+50%)</option>
-    </select>
-</div>
-                
+               
                 <div class="section-title">Быстрые пресеты (по типам контента)</div>
                 
                 <div class="info-card">
@@ -1383,10 +1926,10 @@
                     <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Количество:</label>
                     <input type="number" id="customServiceCount" value="1" min="1" max="100" style="width: 100%; padding: 8px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; text-align: center;">
                 </div>
-                <div>
-                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Цена за ед.:</label>
-                    <div id="customServicePrice" style="padding: 8px; background: #f3f4f6; border-radius: 6px; text-align: center; font-weight: 600; color: #7c3aed; font-size: 14px;">220 ₽</div>
-                </div>
+               <div>
+    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #374151; font-size: 0.9rem;">Цена за ед. (₽):</label>
+    <input type="number" id="customServicePrice" value="220" min="1" max="100000" style="width: 100%; padding: 8px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 14px; text-align: center; font-weight: 600; color: #7c3aed;">
+</div>
                 <div>
                     <button onclick="addCustomService()" style="padding: 8px 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px;">+ Добавить</button>
                 </div>
@@ -1467,44 +2010,10 @@
                     <h4>Важно: правки касаются только контента</h4>
                     <p>Правки применяются к компонентам образовательного контента и проверкам знаний. Дополнительные услуги не подлежат правкам.</p>
                 </div>
-
-<div class="section-title">Финансовые настройки</div>
-
-<div class="slider-group">
-    <label for="discountRate">Скидка/Наценка (%):</label>
-    <div class="slider-container">
-        <div class="tooltip" id="discountTooltip">
-            <input type="range" id="discountRate" min="-50" max="50" step="5" value="0">
-            <div class="tooltip-content" id="discountTooltipContent">
-                Без изменений
-            </div>
-        </div>
-    </div>
-    <div class="slider-value" id="discountRateValue">0% (без изменений)</div>
-</div>
-
-<div class="slider-group">
-    <label for="taxRate">Налоговая ставка (%):</label>
-    <div class="slider-container">
-        <div class="tooltip" id="taxTooltip">
-            <input type="range" id="taxRate" min="0" max="30" step="1" value="13">
-            <div class="tooltip-content" id="taxTooltipContent">
-                НДФЛ для физлиц
-            </div>
-        </div>
-    </div>
-    <div class="slider-value" id="taxRateValue">13% (НДФЛ)</div>
-</div>
-
-<div class="form-group">
-    <div class="checkbox-group">
-        <input type="checkbox" id="showTaxSeparately" checked>
-        <label for="showTaxSeparately">Показывать налог отдельной строкой</label>
-    </div>
-</div>
-            </div>
+          
+                </div>
             
-            <div class="result-section">
+<div class="result-section">
                 <div class="result-card">
                     <div class="result-title">Итоговая стоимость</div>
                     <div class="result-value" id="totalCost">0 ₽</div>
@@ -1530,19 +2039,89 @@
                         <div style="color: #6b7280; font-style: italic;">Расчет появится после выбора компонентов</div>
                     </div>
                 </div>
-
-<div class="result-card">
-    <div class="result-title">Для клиента</div>
-    <button class="copy-button" onclick="copyCalculationToClipboard()">
-        Копировать расчет
-    </button>
-    <div class="copy-status" id="copyStatus" style="margin-top: 10px; color: #10b981; font-size: 0.9rem; display: none;">
-        ✓ Скопировано в буфер обмена
-    </div>
-</div>
+                
+                <div class="result-card">
+                    <div class="result-title">Для клиента</div>
+                    <button class="copy-button" onclick="copyCalculationToClipboard()">
+                        Копировать расчет
+                    </button>
+                    <div class="copy-status" id="copyStatus" style="margin-top: 10px; color: #10b981; font-size: 0.9rem; display: none;">
+                        ✓ Скопировано в буфер обмена
+                    </div>
+                </div>
+            </div>
+        </div>
 
 	<script>
-    // Конфигурация пресетов
+
+// Функция обновления подсказок для сложности проекта
+function updateComplexityHint() {
+    const complexity = safeGetValue('projectComplexity', 1.3);
+    const hintElement = safeGetElement('complexityHint');
+    
+    if (!hintElement) return;
+    
+    const hints = {
+        1.0: 'Простой проект: знакомый домен + своя методика + простой контент',
+        1.3: 'Средняя сложность: новый домен ИЛИ чужая методика ИЛИ сложный контент',
+        1.6: 'Сложный проект: два усложняющих фактора одновременно',
+        1.8: 'Экстремальный проект: все факторы сложности + срочность'
+    };
+    
+    hintElement.textContent = hints[complexity] || hints[1.3];
+}
+
+// Конфигурация фиксированных цен
+const fixedPrices = {
+    textLesson: { default: 1200, current: 1200, baseDuration: 30 },
+    videoLesson: { default: 1800, current: 1800, baseDuration: 60 },
+    webinar: { default: 1500, current: 1500, baseDuration: 90 },
+    workshop: { default: 2000, current: 2000, baseDuration: 60 },
+    caseStudy: { default: 1100, current: 1100, baseDuration: 45 },
+    masterClass: { default: 1540, current: 1540, baseDuration: 60 }
+};
+
+// Функции для получения значений радиокнопок
+function safeGetRadioValue(name, defaultValue) {
+    const checkedRadio = document.querySelector(`input[name="${name}"]:checked`);
+    return checkedRadio ? checkedRadio.value : defaultValue;
+}
+
+// Функция управления видимостью блоков
+function updateInterfaceVisibility() {
+    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
+    const detailLevel = safeGetRadioValue('detailLevel', 'quick');
+    
+    // Показываем/скрываем блоки ценообразования
+    const hourlyBlock = safeGetElement('hourlyRateBlock');
+    const fixedBlock = safeGetElement('fixedPricesBlock');
+    
+    if (hourlyBlock) {
+        hourlyBlock.style.display = pricingMethod === 'hourly' ? 'block' : 'none';
+    }
+    if (fixedBlock) {
+        fixedBlock.style.display = pricingMethod === 'fixed' ? 'block' : 'none';
+    }
+    
+    // Показываем/скрываем блоки детализации
+    const quickBlock = safeGetElement('quickComplexityGroup');
+    const detailedBlock = safeGetElement('detailedComplexityGroup');
+    
+    if (quickBlock) {
+        quickBlock.style.display = detailLevel === 'quick' ? 'block' : 'none';
+    }
+    if (detailedBlock) {
+        detailedBlock.style.display = detailLevel === 'detailed' ? 'block' : 'none';
+    }
+    
+    // Обновляем информационную панель
+    updateCalculationInfo();
+    
+    // Пересчитываем стоимость
+    calculateCost();
+}
+
+ // Конфигурация пресетов
     const presets = {
         textLesson: {
             name: 'Текстовые уроки',
@@ -1694,33 +2273,47 @@ Object.keys(influenceWeights).forEach(key => {
     normalizedWeights[key] = influenceWeights[key] / totalInfluence;
 });
 
+
 // Функция обновления цен в пресетах
 function updatePresetPrices() {
+    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
     const hourlyRate = safeGetValue('hourlyRate', 220);
-    const simpleCalculation = safeGetElement('simpleCalculation')?.checked || false;
-    const methodistRole = simpleCalculation ? 1.0 : safeGetValue('methodistRole', 1.0);
-    const domainKnowledge = simpleCalculation ? 1.0 : safeGetValue('domainKnowledge', 1.0);
-    const projectType = simpleCalculation ? 1.0 : safeGetValue('projectType', 1.0);
-    const contentComplexity = simpleCalculation ? 1.0 : safeGetValue('contentComplexity', 1.2);
-    const urgency = simpleCalculation ? 1.0 : safeGetValue('urgency', 1.0);
-    const qualityLevel = simpleCalculation ? 1.0 : safeGetValue('qualityLevel', 1.0);
-    
-    const complexityMultiplier = simpleCalculation ? 1.0 : calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
+    const detailLevel = safeGetRadioValue('detailLevel', 'quick');
+    const methodistRole = safeGetValue('methodistRole', 1.0);
+    const domainKnowledge = safeGetValue('domainKnowledge', 1.0);
+    const projectType = safeGetValue('projectType', 1.0);
+    const contentComplexity = safeGetValue('contentComplexity', 1.2);
+    const urgency = safeGetValue('urgency', 1.0);
+    const qualityLevel = safeGetValue('qualityLevel', 1.0);
     
     Object.keys(presets).forEach(presetType => {
-        const count = parseInt(safeGetValue(presetType + 'Preset', 1));
+        const count = parseInt(safeGetValue(presetType + 'Preset', 0));
         const presetDuration = parseInt(safeGetValue(presetType + 'Duration', presets[presetType].defaultDuration));
-        const durationFactor = presetDuration / presets[presetType].defaultDuration;
         
-        let baseHours = 0;
-        presets[presetType].components.forEach(componentId => {
-            const hours = safeGetValue(componentId + 'Hours', components[componentId]?.defaultHours || 1);
-            baseHours += hours;
-        });
+        let pricePerUnit;
         
-        const volumeDiscount = getVolumeDiscount(count);
-        const adjustedHours = baseHours * durationFactor * complexityMultiplier * qualityLevel * volumeDiscount;
-        const pricePerUnit = Math.round(adjustedHours * hourlyRate);
+        if (pricingMethod === 'fixed') {
+            // Расчет по фиксированным ценам (только длительность + объем)
+            const basePrice = fixedPrices[presetType].current;
+            const durationFactor = presetDuration / fixedPrices[presetType].baseDuration;
+            const volumeDiscount = getVolumeDiscount(count);
+            
+            pricePerUnit = Math.round(basePrice * durationFactor * volumeDiscount);
+        } else {
+            // Почасовой расчет
+            const durationFactor = presetDuration / presets[presetType].defaultDuration;
+            let baseHours = 0;
+            
+            presets[presetType].components.forEach(componentId => {
+                const hours = safeGetValue(componentId + 'Hours', components[componentId]?.defaultHours || 1);
+                baseHours += hours;
+            });
+            
+            const complexityMultiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
+            const volumeDiscount = getVolumeDiscount(count);
+            const adjustedHours = baseHours * durationFactor * complexityMultiplier * qualityLevel * volumeDiscount;
+            pricePerUnit = Math.round(adjustedHours * hourlyRate);
+        }
         
         const priceElement = safeGetElement(presetType + 'Price');
         if (priceElement) {
@@ -1733,19 +2326,17 @@ function updatePresetPrices() {
     });
 }
 
-// Функция обновления цен компонентов
-function updateComponentPrices() {
+// Функция обновления цен отдельных компонентов  
+function updateIndividualComponentPrices() {
     const hourlyRate = safeGetValue('hourlyRate', 220);
-    const lessonDuration = parseInt(safeGetValue('lessonDuration', 30));
-    const simpleCalculation = safeGetElement('simpleCalculation')?.checked || false;
-    const methodistRole = simpleCalculation ? 1.0 : safeGetValue('methodistRole', 1.0);
-    const domainKnowledge = simpleCalculation ? 1.0 : safeGetValue('domainKnowledge', 1.0);
-    const projectType = simpleCalculation ? 1.0 : safeGetValue('projectType', 1.0);
-    const contentComplexity = simpleCalculation ? 1.0 : safeGetValue('contentComplexity', 1.2);
-    const urgency = simpleCalculation ? 1.0 : safeGetValue('urgency', 1.0);
-    const qualityLevel = simpleCalculation ? 1.0 : safeGetValue('qualityLevel', 1.0);
+     const methodistRole = safeGetValue('methodistRole', 1.0);
+        const domainKnowledge = safeGetValue('domainKnowledge', 1.0);
+        const projectType = safeGetValue('projectType', 1.0);
+        const contentComplexity = safeGetValue('contentComplexity', 1.2);
+        const urgency = safeGetValue('urgency', 1.0);
+        const qualityLevel = safeGetValue('qualityLevel', 1.0);
     
-    const complexityMultiplier = simpleCalculation ? 1.0 : calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
+    const complexityMultiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
     
     Object.keys(components).forEach(componentId => {
         const count = parseInt(safeGetValue(componentId + 'Count', 1));
@@ -1761,7 +2352,7 @@ function updateComponentPrices() {
         }
         
         const volumeDiscount = getVolumeDiscount(count);
-        const adjustedHours = baseHours * volumeFactor * (lessonDuration / 60) * complexityMultiplier * qualityLevel * volumeDiscount;
+        const adjustedHours = baseHours * volumeFactor * complexityMultiplier * qualityLevel * volumeDiscount;
         const pricePerUnit = Math.round(adjustedHours * hourlyRate);
         
         const priceElement = safeGetElement(componentId + 'Price');
@@ -1789,25 +2380,45 @@ function getVolumeDiscount(quantity) {
 
 // Функция расчета адаптивного коэффициента
 function calculateAdaptiveMultiplier(domain, project, complexity, urgency, role) {
-    // Взвешенная сумма коэффициентов
-    const weightedSum = 1.0 + 
-        (domain - 1) * normalizedWeights.domain +
-        (project - 1) * normalizedWeights.project +
-        (complexity - 1) * normalizedWeights.complexity +
-        (urgency - 1) * normalizedWeights.urgency;
+    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
+    const detailLevel = safeGetRadioValue('detailLevel', 'quick');
     
-    // Применяем роль методиста отдельно
-    let result = weightedSum * role;
-    
-    // Адаптивное ограничение для экстремальных случаев
-    if (result > 2.5) {
-        result = 2.5 + (result - 2.5) * 0.5;
+    if (detailLevel === 'quick') {
+        // Быстрый режим - используем объединенную сложность
+        const projectComplexity = safeGetValue('projectComplexity', 1.3);
+        let multiplier = projectComplexity * role;
+        
+        // Для фиксированных цен ограничиваем коэффициент
+        if (pricingMethod === 'fixed') {
+            multiplier = Math.min(multiplier, 1.5);
+        }
+        
+        return multiplier;
+    } else {
+        // Детальный режим - используем детальную логику с ограничителями
+        const weightedSum = 1.0 + 
+            (domain - 1) * normalizedWeights.domain +
+            (project - 1) * normalizedWeights.project +
+            (complexity - 1) * normalizedWeights.complexity +
+            (urgency - 1) * normalizedWeights.urgency;
+        
+        let result = weightedSum * role;
+        
+        if (pricingMethod === 'fixed') {
+            // Для фиксированных цен - ограниченные коэффициенты
+            result = Math.min(result, 1.5);
+        } else {
+            // Для почасового - полные коэффициенты с ограничителями
+            if (result > 3.0) {
+                result = 3.0 + (result - 3.0) * 0.3;
+            }
+            if (result > 4.0) {
+                result = 4.0;
+            }
+        }
+        
+        return result;
     }
-    if (result > 4.0) {
-        result = 4.0; // Абсолютный максимум
-    }
-    
-    return result;
 }
 
 // Массив кастомных услуг
@@ -1908,14 +2519,8 @@ function updateAutoLabel(element, isAuto) {
 
 // Функции для кастомных услуг
 function updateCustomServicePrice() {
-    const hours = safeGetValue('customServiceHours', 1);
-    const hourlyRate = safeGetValue('hourlyRate', 220);
-    const price = Math.round(hours * hourlyRate);
-    
-    const priceElement = safeGetElement('customServicePrice');
-    if (priceElement) {
-        priceElement.textContent = price.toLocaleString('ru-RU') + ' ₽';
-    }
+    // Теперь цена редактируется пользователем напрямую
+    // Эта функция больше не нужна для автоматического расчета
 }
 
 function addCustomService() {
@@ -1923,7 +2528,7 @@ function addCustomService() {
     const description = safeGetElement('customServiceDescription')?.value.trim();
     const hours = safeGetValue('customServiceHours', 1);
     const count = parseInt(safeGetValue('customServiceCount', 1));
-    const hourlyRate = safeGetValue('hourlyRate', 220);
+    const price = safeGetValue('customServicePrice', 220);
     
     if (!name) {
         alert('Введите название услуги');
@@ -1939,7 +2544,7 @@ function addCustomService() {
         description: description,
         hours: hours,
         count: count,
-        hourlyRate: hourlyRate
+        pricePerUnit: price
     };
     
     customServices.push(customService);
@@ -1961,7 +2566,7 @@ function renderCustomServices() {
     container.innerHTML = '';
     
     customServices.forEach(service => {
-        const price = Math.round(service.hours * service.hourlyRate);
+        const price = service.pricePerUnit;
         const totalCost = price * service.count;
         
         container.innerHTML += `
@@ -1990,8 +2595,6 @@ function clearCustomServiceForm() {
     if (descriptionInput) descriptionInput.value = '';
     if (hoursInput) hoursInput.value = '1';
     if (countInput) countInput.value = '1';
-    
-    updateCustomServicePrice();
 }
 
 // Функции для работы с финансовыми настройками и подсказками
@@ -2130,10 +2733,16 @@ function hideTooltip(tooltipId) {
         return element;
     }
 
-    // Функция для безопасного получения значения
+// Функция для безопасного получения значения
     function safeGetValue(id, defaultValue = 0) {
         const element = safeGetElement(id);
         if (!element) return defaultValue;
+        
+        // Для селектора calculationMode возвращаем строку, а не число
+        if (id === 'calculationMode') {
+            console.log('Getting calculationMode value:', element.value);
+            return element.value;
+        }
         
         const value = parseFloat(element.value);
         return isNaN(value) ? defaultValue : value;
@@ -2202,7 +2811,8 @@ function hideTooltip(tooltipId) {
         }
         
         // Проверка логических противоречий
-        const simpleCalc = document.getElementById('simpleCalculation')?.checked;
+        const detailLevel = safeGetRadioValue('detailLevel', 'quick');
+const simpleCalc = (detailLevel === 'quick');
         const newDomain = safeGetValue('domainKnowledge', 1.0) === 1.3;
         const complexContent = safeGetValue('contentComplexity', 1.2) > 1.4;
         
@@ -2213,32 +2823,46 @@ function hideTooltip(tooltipId) {
 
 // Обновление информационной панели
 function updateCalculationInfo() {
-    const simpleCalc = safeGetElement('simpleCalculation')?.checked || false;
+    const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
+    const detailLevel = safeGetRadioValue('detailLevel', 'quick');
+    const simpleCalc = (detailLevel === 'quick');
     const volumeDiscounts = safeGetElement('enableVolumeDiscounts')?.checked ?? true;
     const description = safeGetElement('calculationDescription');
     
     if (description) {
         let text = '';
+        
+        // Метод ценообразования
+        if (pricingMethod === 'fixed') {
+            text += `<strong>Метод:</strong> Фиксированные цены для пресетов<br>`;
+            text += `<strong>Логика:</strong> Базовая цена + коррекция длительности + общая надбавка за сложность<br>`;
+            text += `<strong>Компоненты/услуги:</strong> Почасовой расчет<br>`;
+        } else {
+            text += `<strong>Метод:</strong> Полностью почасовой расчет<br>`;
+            if (detailLevel === 'quick') {
+                text += `<strong>Ограничения:</strong> Коэффициенты до 3.0x<br>`;
+            } else {
+                text += `<strong>Ограничения:</strong> Коэффициенты до 4.0x<br>`;
+            }
+        }
+        
+        // Уровень детализации
+        if (detailLevel === 'quick') {
+            text += `<strong>Детализация:</strong> Быстрая (единый селектор сложности)<br>`;
+        } else {
+            text += `<strong>Детализация:</strong> Подробная (все факторы отдельно)<br>`;
+        }
+        
         text += `<strong>Коэффициенты сложности:</strong> ${simpleCalc ? 'Отключены' : 'Включены'}<br>`;
         text += `<strong>Скидки за объем:</strong> ${volumeDiscounts ? 'Включены (6-15шт: -10%, 16-30шт: -20%, 31+шт: -30%)' : 'Отключены'}`;
         
-        if (simpleCalc && volumeDiscounts) {
-            text += '<br><span style="color: #d97706;">⚠️ Скидки работают даже в упрощенном режиме</span>';
+        if (simpleCalc) {
+            text += '<br><span style="color: #d97706;">⚠️ Упрощенный расчет игнорирует настройки сложности</span>';
         }
         
         description.innerHTML = text;
     }
 }
-
-    // Обновление отображения длительности урока
-    function updateLessonDurationDisplay() {
-        const lessonDurationInput = safeGetElement('lessonDuration');
-        const lessonDurationValue = safeGetElement('lessonDurationValue');
-        
-        if (lessonDurationInput && lessonDurationValue) {
-            lessonDurationValue.textContent = lessonDurationInput.value + ' минут';
-        }
-    }
 
     function showComponentQuantities(componentId, show) {
         const quantities = document.querySelectorAll('#' + componentId + 'Quantity, #' + componentId + 'CountGroup, #' + componentId + 'PagesGroup, #' + componentId + 'QuestionsGroup');
@@ -2326,16 +2950,16 @@ function updateCalculationInfo() {
     calculateCost();
 }
 	function calculateCost() {
-        const hourlyRate = safeGetValue('hourlyRate', 220);
-        const lessonDuration = parseInt(safeGetValue('lessonDuration', 30));
-        const simpleCalculation = safeGetElement('simpleCalculation')?.checked || false;
-        const methodistRole = simpleCalculation ? 1.0 : safeGetValue('methodistRole', 1.0);
-        const domainKnowledge = simpleCalculation ? 1.0 : safeGetValue('domainKnowledge', 1.0);
-        const projectType = simpleCalculation ? 1.0 : safeGetValue('projectType', 1.0);
-        const contentComplexity = simpleCalculation ? 1.0 : safeGetValue('contentComplexity', 1.2);
-const urgency = simpleCalculation ? 1.0 : safeGetValue('urgency', 1.0);
-const qualityLevel = simpleCalculation ? 1.0 : safeGetValue('qualityLevel', 1.0);
+      const hourlyRate = safeGetValue('hourlyRate', 220);
+		let complexityBonus = 0; // Объявляем в начале функции
+     const methodistRole = safeGetValue('methodistRole', 1.0);
+        const domainKnowledge = safeGetValue('domainKnowledge', 1.0);
+        const projectType = safeGetValue('projectType', 1.0);
+        const contentComplexity = safeGetValue('contentComplexity', 1.2);
+        const urgency = safeGetValue('urgency', 1.0);
+        const qualityLevel = safeGetValue('qualityLevel', 1.0);
         const clientType = parseInt(safeGetValue('clientType', 20));
+        const pricingMethod = safeGetRadioValue('pricingMethod', 'hourly');
 
         // Расчет компонентов контента
         let componentCosts = [];
@@ -2348,21 +2972,37 @@ const qualityLevel = simpleCalculation ? 1.0 : safeGetValue('qualityLevel', 1.0)
             return count > 0;
         });
 
-        activePresets.forEach(presetType => {
+       activePresets.forEach(presetType => {
             const count = parseInt(safeGetValue(presetType + 'Preset', 0));
             const presetDuration = parseInt(safeGetValue(presetType + 'Duration', presets[presetType].defaultDuration));
-            const durationFactor = presetDuration / presets[presetType].defaultDuration;
-            let baseHours = 0;
+            
+            let cost;
+            let adjustedHours;
+            
+            if (pricingMethod === 'fixed') {
+                // Расчет по фиксированным ценам (только длительность + объем)
+                const basePrice = fixedPrices[presetType].current;
+                const durationFactor = presetDuration / fixedPrices[presetType].baseDuration;
+                const volumeDiscount = getVolumeDiscount(count);
+                
+                const pricePerUnit = basePrice * durationFactor * volumeDiscount;
+                cost = pricePerUnit * count;
+                adjustedHours = cost / hourlyRate; // Примерное время для отчетности
+            } else {
+                // Почасовой расчет (как было)
+                const durationFactor = presetDuration / presets[presetType].defaultDuration;
+                let baseHours = 0;
 
-            presets[presetType].components.forEach(componentId => {
-                const hours = safeGetValue(componentId + 'Hours', components[componentId]?.defaultHours || 1);
-                baseHours += hours;
-            });
+                presets[presetType].components.forEach(componentId => {
+                    const hours = safeGetValue(componentId + 'Hours', components[componentId]?.defaultHours || 1);
+                    baseHours += hours;
+                });
 
-            const complexityMultiplier = simpleCalculation ? 1.0 : calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
-            const volumeDiscount = getVolumeDiscount(count);
-const adjustedHours = baseHours * durationFactor * complexityMultiplier * qualityLevel * volumeDiscount;
-            const cost = adjustedHours * count * hourlyRate;
+                const complexityMultiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
+                const volumeDiscount = getVolumeDiscount(count);
+                adjustedHours = baseHours * durationFactor * complexityMultiplier * qualityLevel * volumeDiscount;
+                cost = adjustedHours * count * hourlyRate;
+            }
 
             componentCosts.push({
     name: presets[presetType].name,
@@ -2395,7 +3035,7 @@ Object.keys(components).forEach(componentId => {
 
            const multiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
             const volumeDiscount = getVolumeDiscount(count);
-            const adjustedHours = baseHours * volumeFactor * (lessonDuration / 60) * multiplier * qualityLevel * volumeDiscount;
+         const adjustedHours = baseHours * volumeFactor * multiplier * qualityLevel * volumeDiscount;
             const cost = adjustedHours * count * hourlyRate;
 
             componentCosts.push({
@@ -2460,26 +3100,34 @@ const adjustedHours = hours * multiplier;
         });
 
 // Добавляем кастомные услуги
-        customServices.forEach(service => {
-            const cost = service.hours * service.hourlyRate * service.count;
-            
-            serviceCosts.push({
-                name: service.name,
-                count: service.count,
-                hours: service.hours,
-                cost: cost,
-                source: 'custom'
-            });
-            
-            totalServiceCost += cost;
-            totalServiceHours += service.hours * service.count;
-        });
+customServices.forEach(service => {
+    const cost = service.pricePerUnit * service.count;
+    
+    serviceCosts.push({
+        name: service.name,
+        count: service.count,
+        hours: service.hours,
+        cost: cost,
+        source: 'custom'
+    });
+    
+    totalServiceCost += cost;
+    totalServiceHours += service.hours * service.count;
+});
 
-        // Расчет правок
+      // Расчет надбавки за сложность для фиксированных цен
+if (pricingMethod === 'fixed' && totalContentCost > 0) {
+    const complexityMultiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
+    if (complexityMultiplier > 1.0) {
+        complexityBonus = totalContentCost * (complexityMultiplier - 1.0);
+    }
+}
+
+// Расчет правок
 const revisionFactor = clientType / 100;
 const contentWithRevisions = totalContentCost * (1 + revisionFactor);
 const assessmentsWithRevisions = totalAssessmentCost * (1 + revisionFactor);
-const subtotalBeforeFinancials = contentWithRevisions + assessmentsWithRevisions + totalServiceCost;
+const subtotalBeforeFinancials = contentWithRevisions + assessmentsWithRevisions + totalServiceCost + complexityBonus;
 
 // Применяем скидку/наценку к общей сумме
 const discountRate = safeGetValue('discountRate', 0) / 100;
@@ -2498,18 +3146,18 @@ const subtotal = subtotalBeforeFinancials;
 const totalHours = totalContentHours + totalAssessmentHours + totalServiceHours;
 
 // Обновление цен в пресетах и компонентах
-updatePresetPrices();
-updateComponentPrices();
+        updatePresetPrices();
+        updateIndividualComponentPrices();
 
         // Обновление интерфейса
         console.log('Financial data:', { subtotal, discountAmount, afterDiscount, taxAmount, discountRate: safeGetValue('discountRate', 0), taxRate: safeGetValue('taxRate', 13) });
-        updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount);
+        updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount, complexityBonus, pricingMethod);
         
         // Запускаем валидацию после обновления результатов
         setTimeout(validateInputs, 100);
     }
 
-    function updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount) {
+   function updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount, complexityBonus, pricingMethod) {
         // Обновление основных результатов
         const totalCostElement = safeGetElement('totalCost');
         const totalHoursElement = safeGetElement('totalHours');
@@ -2526,7 +3174,7 @@ updateComponentPrices();
         updateProjectComposition(activePresets, componentCosts, assessmentCosts, serviceCosts);
 
         // Обновление детализации
-        updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount);
+        updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount, complexityBonus, pricingMethod);
     }
 
     function updateProjectComposition(activePresets, componentCosts, assessmentCosts, serviceCosts) {
@@ -2561,7 +3209,7 @@ updateComponentPrices();
         }
     }
 
-function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount) {
+function updateBreakdown(totalCost, componentCosts, assessmentCosts, serviceCosts, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount, complexityBonus, pricingMethod) {
         const breakdown = safeGetElement('breakdown');
         if (!breakdown) return;
 
@@ -2651,7 +3299,19 @@ if (componentCosts.length > 0) {
             const discountRate = safeGetValue('discountRate', 0);
             const taxRate = safeGetValue('taxRate', 13);
             const showTaxSeparately = safeGetElement('showTaxSeparately')?.checked || false;
-            
+
+// Убеждаемся что complexityBonus определен
+if (typeof complexityBonus === 'undefined') {
+    complexityBonus = 0;
+}
+		
+// Показываем надбавку за сложность ТОЛЬКО для фиксированных цен
+            if (pricingMethod === 'fixed' && complexityBonus > 0) {
+                breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Надбавка за сложность</div>';
+                breakdown.innerHTML += '<div class="breakdown-item"><span class="breakdown-left">Коэффициент сложности проекта</span><span class="breakdown-right">+' + Math.round(complexityBonus).toLocaleString('ru-RU') + ' ₽</span></div>';
+                breakdown.innerHTML += '</div>';
+            }
+		
             if (discountRate !== 0 || (taxRate > 0 && showTaxSeparately)) {
                 breakdown.innerHTML += '<div class="breakdown-section"><div class="breakdown-section-title">Финансовые расчеты</div>';
                 
@@ -2683,17 +3343,25 @@ if (componentCosts.length > 0) {
 
     // Добавление обработчиков событий
     function initializeEventListeners() {
-        // Обработчик для слайдера длительности урока
-        const lessonDurationInput = safeGetElement('lessonDuration');
-        if (lessonDurationInput) {
-            lessonDurationInput.addEventListener('input', () => {
-                updateLessonDurationDisplay();
-                calculateCost();
-            });
-        }
+// Обработчики для радиокнопок
+        const pricingMethodRadios = document.querySelectorAll('input[name="pricingMethod"]');
+        const detailLevelRadios = document.querySelectorAll('input[name="detailLevel"]');
+        
+        pricingMethodRadios.forEach(radio => {
+            radio.addEventListener('change', updateInterfaceVisibility);
+        });
+        
+        detailLevelRadios.forEach(radio => {
+            radio.addEventListener('change', updateInterfaceVisibility);
+        });
 
         // Обработчики для основных параметров
-        const basicInputs = ['hourlyRate', 'simpleCalculation', 'enableVolumeDiscounts', 'methodistRole', 'domainKnowledge', 'projectType', 'contentComplexity', 'urgency', 'qualityLevel', 'clientType', 'showTaxSeparately'];
+        const basicInputs = ['hourlyRate', 'enableVolumeDiscounts', 'projectComplexity', 'methodistRole', 'domainKnowledge', 'projectType', 'contentComplexity', 'urgency', 'qualityLevel', 'clientType', 'showTaxSeparately'];
+// Обработчик для подсказок сложности проекта
+        const projectComplexitySelect = safeGetElement('projectComplexity');
+        if (projectComplexitySelect) {
+            projectComplexitySelect.addEventListener('change', updateComplexityHint);
+        }
 // Обработчики для кастомных услуг
         const customHoursInput = safeGetElement('customServiceHours');
         const customCountInput = safeGetElement('customServiceCount');
@@ -2726,6 +3394,17 @@ if (componentCosts.length > 0) {
     updateCalculationInfo();
     handleServiceAutoActivation();
 });
+            }
+        });
+
+// Обработчики для полей фиксированных цен
+        Object.keys(fixedPrices).forEach(presetType => {
+            const priceInput = safeGetElement('fixedPrice_' + presetType);
+            if (priceInput) {
+                priceInput.addEventListener('input', () => {
+                    fixedPrices[presetType].current = parseFloat(priceInput.value) || fixedPrices[presetType].default;
+                    calculateCost();
+                });
             }
         });
 
@@ -2770,8 +3449,8 @@ if (taxSlider) {
                 if (countInput) {
                     const currentCount = parseInt(countInput.value) || 0;
                     countInput.value = currentCount === 0 ? 1 : 0;
-                    applyPreset(presetType);
-updatePresetPrices();
+                       applyPreset(presetType);
+                    calculateCost();
                 }
             });
 
@@ -2784,6 +3463,7 @@ updatePresetPrices();
                 input.addEventListener('input', () => {
                     applyPreset(presetType);
                     updatePresetPrices();
+                    calculateCost();
                 });
             });
         });
@@ -2807,14 +3487,13 @@ updatePresetPrices();
                     e.stopPropagation();
                 });
                 
-                input.addEventListener('input', () => {
+input.addEventListener('input', () => {
                     if (input.id.includes('Hours')) {
                         const displayElement = safeGetElement(componentId + 'HoursDisplay');
                         if (displayElement) {
                             displayElement.textContent = parseFloat(input.value).toFixed(1) + 'ч/шт';
                         }
                     }
-                    updateComponentPrices();
                     calculateCost();
                 });
             });
@@ -3002,16 +3681,17 @@ function copyCalculationToClipboard() {
     });
 }
 
-    // Инициализация приложения
-    function initialize() {
-        updateLessonDurationDisplay();
-updateCalculationInfo();
+
+// Инициализация приложения
+function initialize() {
+        updateInterfaceVisibility();
+        updateComplexityHint();
         initializeEventListeners();
         updateDiscountDisplay();
-updateTaxDisplay();
-updateComponentPrices();
-updateCustomServicePrice();
-handleServiceAutoActivation();
+        updateTaxDisplay();
+        updateIndividualComponentPrices();
+        updateCustomServicePrice();
+        handleServiceAutoActivation();
     }
 
     // Запуск после загрузки DOM
