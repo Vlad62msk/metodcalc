@@ -254,6 +254,186 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
+
+        /* =================================================================
+           ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ КАЛЬКУЛЯТОРА v2.0
+           ================================================================= */
+
+        /* Модальные окна */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 90vw;
+            max-height: 90vh;
+            width: 800px;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .modal-body {
+            padding: 16px 24px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 16px 24px 24px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        /* Шаблоны */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 24px;
+            height: 60vh;
+        }
+
+        .templates-categories {
+            border-right: 1px solid #e5e7eb;
+            padding-right: 20px;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .category-item:hover {
+            background: #f9fafb;
+        }
+
+        .category-item.active {
+            background: #f0f9ff;
+            border-color: #0ea5e9;
+            color: #0369a1;
+        }
+
+        .template-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            background: white;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            height: fit-content;
+        }
+
+        .template-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
     </style>
 </head>
 <body>
@@ -1277,11 +1457,24 @@
         const ErrorHandler = new ErrorHandlerClass();
         const LoadingManager = new LoadingManager();
 
+        // Создаем основные движки
+        const PricingEngine = new PricingEngine(StateManager, EventBus, ErrorHandler);
+        const PresetManager = new PresetManager(StateManager, EventBus, ErrorHandler);
+        const ComponentManager = new ComponentManager(StateManager, EventBus, ErrorHandler);
+        
+        // Создаем UI и финансовые модули
+        const UIManager = new UIManager(StateManager, EventBus, ErrorHandler, PricingEngine, PresetManager, ComponentManager);
+        const FinancialControls = new FinancialControls(StateManager, EventBus, ErrorHandler);
+        const ResultsPanel = new ResultsPanel(StateManager, EventBus, ErrorHandler);
+        
+        // Создаем продвинутые модули
+        const StorageManager = new StorageManager(StateManager, EventBus, ErrorHandler);
+        const ExportManager = new ExportManager(StateManager, EventBus, ErrorHandler);
+        const TemplateSystem = new TemplateSystem(StateManager, EventBus, ErrorHandler, PresetManager, ComponentManager);
+
         // Middleware для логирования
         StateManager.use((action, state) => {
-            console.log('🔄 State change:', action.type, 'Current state size:', JSON.stringify(state).length);
-            return action;
-        });
+            console.log('🔄 State change:', action.type, 'Current state size:', JSON.stringify(state).length
 
         // Подписка на изменения состояния для разработки
         StateManager.subscribe((state, action) => {
@@ -13166,6 +13359,1732 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = ExportManager;
 } else if (typeof window !== 'undefined') {
     window.ExportManager = ExportManager;
+}
+
+   /**
+ * TemplateSystem.js - Система готовых шаблонов проектов
+ * Отвечает за управление, создание и применение шаблонов расчетов
+ */
+
+class TemplateSystem {
+    constructor(stateManager, eventBus, errorHandler, presetManager, componentManager) {
+        this.state = stateManager;
+        this.events = eventBus;
+        this.errors = errorHandler;
+        this.presets = presetManager;
+        this.components = componentManager;
+        
+        this.templates = this.initializeDefaultTemplates();
+        this.userTemplates = new Map();
+        this.categories = this.initializeCategories();
+        this.tags = this.initializeTags();
+        
+        this.currentTemplate = null;
+        this.templateHistory = [];
+        this.maxHistorySize = 20;
+        
+        this.init();
+        console.log('📋 TemplateSystem initialized');
+    }
+
+    /**
+     * Инициализация модуля
+     */
+    init() {
+        // Подписка на события
+        this.events.on('templates:apply', (data) => this.applyTemplate(data.templateId, data.options));
+        this.events.on('templates:create', (data) => this.createTemplate(data.templateData));
+        this.events.on('templates:save', (data) => this.saveCurrentAsTemplate(data.name, data.description, data.category));
+        this.events.on('templates:delete', (data) => this.deleteTemplate(data.templateId));
+        this.events.on('templates:duplicate', (data) => this.duplicateTemplate(data.templateId, data.newName));
+        this.events.on('templates:search', (data) => this.searchTemplates(data.query, data.filters));
+        this.events.on('templates:get-recommendations', () => this.getRecommendations());
+        this.events.on('templates:export', (data) => this.exportTemplate(data.templateId));
+        this.events.on('templates:import', (data) => this.importTemplate(data.templateData));
+        this.events.on('templates:get-all', () => this.getAllTemplates());
+
+        // Загружаем пользовательские шаблоны
+        this.loadUserTemplates();
+        
+        console.log('TemplateSystem setup complete');
+    }
+
+    /**
+     * Инициализация базовых шаблонов
+     */
+    initializeDefaultTemplates() {
+        return {
+            quickStart: {
+                id: 'quickStart',
+                name: 'Быстрый старт',
+                description: 'Простой проект для новичков',
+                category: 'basic',
+                tags: ['быстро', 'простой', 'новичок'],
+                author: 'system',
+                created: Date.now(),
+                isDefault: true,
+                difficulty: 'easy',
+                estimatedTime: '20 часов',
+                estimatedCost: 15000,
+                config: {
+                    pricing: {
+                        method: 'hourly',
+                        hourlyRate: 220,
+                        detailLevel: 'quick'
+                    },
+                    complexity: {
+                        projectComplexity: 1.0
+                    },
+                    financial: {
+                        discountRate: 0,
+                        taxRate: 13,
+                        enableVolumeDiscounts: true,
+                        clientType: 20
+                    },
+                    presets: {
+                        textLesson: { count: 3, duration: 30 },
+                        videoLesson: { count: 2, duration: 45 }
+                    },
+                    components: {},
+                    services: {},
+                    customServices: []
+                },
+                features: ['Быстрая настройка', 'Базовый функционал', 'Подходит новичкам'],
+                targetAudience: 'Начинающие методисты',
+                usageCount: 0
+            },
+
+            basicCourse: {
+                id: 'basicCourse',
+                name: 'Базовый онлайн-курс',
+                description: 'Стандартный курс с видео и практическими заданиями',
+                category: 'courses',
+                tags: ['курс', 'онлайн', 'базовый', 'видео'],
+                author: 'system',
+                created: Date.now(),
+                isDefault: true,
+                difficulty: 'medium',
+                estimatedTime: '95 часов',
+                estimatedCost: 45000,
+                config: {
+                    pricing: {
+                        method: 'hourly',
+                        hourlyRate: 250,
+                        detailLevel: 'detailed'
+                    },
+                    complexity: {
+                        methodistRole: 1.2,
+                        domainKnowledge: 1.1,
+                        projectType: 1.0,
+                        contentComplexity: 1.2,
+                        urgency: 1.0,
+                        qualityLevel: 1.1
+                    },
+                    financial: {
+                        discountRate: -5,
+                        taxRate: 13,
+                        enableVolumeDiscounts: true,
+                        clientType: 15
+                    },
+                    presets: {
+                        videoLesson: { count: 8, duration: 45 },
+                        textLesson: { count: 4, duration: 25 },
+                        workshop: { count: 2, duration: 90 }
+                    },
+                    components: {
+                        quizzes: { hours: 1.5, count: 4, questions: 7 },
+                        illustrations: { hours: 0.5, count: 8 }
+                    },
+                    services: {
+                        currentTests: { hours: 2, count: 4 },
+                        finalAssessment: { hours: 6, count: 1 }
+                    },
+                    customServices: []
+                },
+                features: ['Видеоуроки', 'Практические задания', 'Система тестирования', 'Итоговая аттестация'],
+                targetAudience: 'Корпоративные клиенты',
+                usageCount: 0
+            },
+
+            intensiveCourse: {
+                id: 'intensiveCourse',
+                name: 'Интенсивный курс',
+                description: 'Насыщенная программа с максимумом практики',
+                category: 'courses',
+                tags: ['интенсив', 'практика', 'продвинутый'],
+                author: 'system',
+                created: Date.now(),
+                isDefault: true,
+                difficulty: 'hard',
+                estimatedTime: '165 часов',
+                estimatedCost: 85000,
+                config: {
+                    pricing: {
+                        method: 'fixed',
+                        hourlyRate: 300,
+                        detailLevel: 'detailed'
+                    },
+                    complexity: {
+                        methodistRole: 1.4,
+                        domainKnowledge: 1.3,
+                        projectType: 1.0,
+                        contentComplexity: 1.4,
+                        urgency: 1.2,
+                        qualityLevel: 1.3
+                    },
+                    financial: {
+                        discountRate: 0,
+                        taxRate: 20,
+                        enableVolumeDiscounts: true,
+                        clientType: 10
+                    },
+                    presets: {
+                        videoLesson: { count: 12, duration: 60 },
+                        workshop: { count: 6, duration: 120 },
+                        caseStudy: { count: 4, duration: 45 },
+                        masterClass: { count: 2, duration: 90 }
+                    },
+                    components: {
+                        instructions: { hours: 3, count: 6 },
+                        templates: { hours: 2, count: 4 },
+                        examples: { hours: 2, count: 8 },
+                        quizzes: { hours: 1.5, count: 8, questions: 10 }
+                    },
+                    services: {
+                        currentTests: { hours: 2, count: 8 },
+                        moduleProjects: { hours: 4, count: 3 },
+                        finalAssessment: { hours: 6, count: 1 },
+                        research: { hours: 6, count: 1 }
+                    },
+                    customServices: []
+                },
+                features: ['Максимум практики', 'Кейсы и мастер-классы', 'Исследование области', 'Комплексная проверка'],
+                targetAudience: 'Продвинутые специалисты',
+                usageCount: 0
+            },
+
+            webinarSeries: {
+                id: 'webinarSeries',
+                name: 'Серия вебинаров',
+                description: 'Цикл интерактивных онлайн-сессий',
+                category: 'webinars',
+                tags: ['вебинары', 'онлайн', 'интерактив'],
+                author: 'system',
+                created: Date.now(),
+                isDefault: true,
+                difficulty: 'medium',
+                estimatedTime: '57 часов',
+                estimatedCost: 28000,
+                config: {
+                    pricing: {
+                        method: 'hourly',
+                        hourlyRate: 280,
+                        detailLevel: 'quick'
+                    },
+                    complexity: {
+                        projectComplexity: 1.2
+                    },
+                    financial: {
+                        discountRate: -10,
+                        taxRate: 6,
+                        enableVolumeDiscounts: true,
+                        clientType: 15
+                    },
+                    presets: {
+                        webinar: { count: 6, duration: 90 },
+                        textLesson: { count: 6, duration: 20 }
+                    },
+                    components: {
+                        engagementMechanics: { hours: 2, count: 6 },
+                        presentations: { hours: 6, count: 6 }
+                    },
+                    services: {
+                        currentTests: { hours: 2, count: 3 }
+                    },
+                    customServices: []
+                },
+                features: ['Живое взаимодействие', 'Механики вовлечения', 'Быстрая обратная связь'],
+                targetAudience: 'Широкая аудитория',
+                usageCount: 0
+            },
+
+            practicalIntensive: {
+                id: 'practicalIntensive',
+                name: 'Практический интенсив',
+                description: 'Максимум практики и отработки навыков',
+                category: 'workshops',
+                tags: ['практика', 'воркшопы', 'навыки'],
+                author: 'system',
+                created: Date.now(),
+                isDefault: true,
+                difficulty: 'hard',
+                estimatedTime: '113 часов',
+                estimatedCost: 52000,
+                config: {
+                    pricing: {
+                        method: 'hourly',
+                        hourlyRate: 260,
+                        detailLevel: 'detailed'
+                    },
+                    complexity: {
+                        methodistRole: 1.3,
+                        domainKnowledge: 1.2,
+                        projectType: 1.0,
+                        contentComplexity: 1.3,
+                        urgency: 1.0,
+                        qualityLevel: 1.2
+                    },
+                    financial: {
+                        discountRate: 0,
+                        taxRate: 13,
+                        enableVolumeDiscounts: true,
+                        clientType: 20
+                    },
+                    presets: {
+                        workshop: { count: 8, duration: 180 },
+                        caseStudy: { count: 6, duration: 60 },
+                        textLesson: { count: 2, duration: 30 }
+                    },
+                    components: {
+                        instructions: { hours: 3, count: 8 },
+                        templates: { hours: 2, count: 6 },
+                        examples: { hours: 2, count: 8 }
+                    },
+                    services: {
+                        moduleProjects: { hours: 4, count: 4 },
+                        finalAssessment: { hours: 6, count: 1 }
+                    },
+                    customServices: []
+                },
+                features: ['Интенсивная практика', 'Множество воркшопов', 'Реальные кейсы'],
+                targetAudience: 'Практики и исполнители',
+                usageCount: 0
+            },
+
+            expertProgram: {
+                id: 'expertProgram',
+                name: 'Экспертная программа',
+                description: 'Глубокое погружение с мастер-классами',
+                category: 'expert',
+                tags: ['эксперт', 'мастер-класс', 'глубина'],
+                author: 'system',
+                created: Date.now(),
+                isDefault: true,
+                difficulty: 'expert',
+                estimatedTime: '125 часов',
+                estimatedCost: 95000,
+                config: {
+                    pricing: {
+                        method: 'fixed',
+                        hourlyRate: 400,
+                        detailLevel: 'detailed'
+                    },
+                    complexity: {
+                        methodistRole: 1.5,
+                        domainKnowledge: 1.4,
+                        projectType: 1.0,
+                        contentComplexity: 1.5,
+                        urgency: 1.0,
+                        qualityLevel: 1.4
+                    },
+                    financial: {
+                        discountRate: 5,
+                        taxRate: 20,
+                        enableVolumeDiscounts: true,
+                        clientType: 10
+                    },
+                    presets: {
+                        masterClass: { count: 4, duration: 90 },
+                        videoLesson: { count: 6, duration: 75 },
+                        caseStudy: { count: 8, duration: 45 },
+                        workshop: { count: 3, duration: 120 }
+                    },
+                    components: {
+                        caseDescription: { hours: 3, count: 8 },
+                        caseQuestions: { hours: 1, count: 8 },
+                        caseSolution: { hours: 1, count: 8 },
+                        instructions: { hours: 3, count: 3 }
+                    },
+                    services: {
+                        currentTests: { hours: 2, count: 6 },
+                        moduleProjects: { hours: 4, count: 2 },
+                        finalAssessment: { hours: 6, count: 1 },
+                        research: { hours: 6, count: 1 },
+                        methodology: { hours: 5, count: 1 }
+                    },
+                    customServices: []
+                },
+                features: ['Экспертный уровень', 'Мастер-классы', 'Методические артефакты', 'Исследования'],
+                targetAudience: 'Эксперты и консультанты',
+                usageCount: 0
+            },
+
+            compactCourse: {
+                id: 'compactCourse',
+                name: 'Компактный курс',
+                description: 'Краткая программа с основными элементами',
+                category: 'basic',
+                tags: ['компактный', 'быстрый', 'основы'],
+                author: 'system',
+                created: Date.now(),
+                isDefault: true,
+                difficulty: 'easy',
+                estimatedTime: '35 часов',
+                estimatedCost: 18000,
+                config: {
+                    pricing: {
+                        method: 'hourly',
+                        hourlyRate: 240,
+                        detailLevel: 'quick'
+                    },
+                    complexity: {
+                        projectComplexity: 1.1
+                    },
+                    financial: {
+                        discountRate: 0,
+                        taxRate: 13,
+                        enableVolumeDiscounts: false,
+                        clientType: 15
+                    },
+                    presets: {
+                        videoLesson: { count: 4, duration: 30 },
+                        textLesson: { count: 3, duration: 20 },
+                        caseStudy: { count: 2, duration: 30 }
+                    },
+                    components: {
+                        quizzes: { hours: 1.5, count: 2, questions: 5 }
+                    },
+                    services: {
+                        finalAssessment: { hours: 6, count: 1 }
+                    },
+                    customServices: []
+                },
+                features: ['Быстрое создание', 'Основные элементы', 'Минимальный состав'],
+                targetAudience: 'Занятые профессионалы',
+                usageCount: 0
+            }
+        };
+    }
+
+    /**
+     * Инициализация категорий
+     */
+    initializeCategories() {
+        return {
+            basic: {
+                name: 'Базовые',
+                description: 'Простые шаблоны для начинающих',
+                icon: '🌱',
+                color: '#10b981'
+            },
+            courses: {
+                name: 'Курсы',
+                description: 'Полноценные обучающие программы',
+                icon: '🎓',
+                color: '#3b82f6'
+            },
+            webinars: {
+                name: 'Вебинары',
+                description: 'Интерактивные онлайн-сессии',
+                icon: '🌐',
+                color: '#8b5cf6'
+            },
+            workshops: {
+                name: 'Воркшопы',
+                description: 'Практические занятия',
+                icon: '🛠️',
+                color: '#f59e0b'
+            },
+            expert: {
+                name: 'Экспертные',
+                description: 'Сложные профессиональные программы',
+                icon: '🎯',
+                color: '#ef4444'
+            },
+            custom: {
+                name: 'Пользовательские',
+                description: 'Созданные пользователем',
+                icon: '⚙️',
+                color: '#6b7280'
+            }
+        };
+    }
+
+    /**
+     * Инициализация тегов
+     */
+    initializeTags() {
+        return [
+            'быстро', 'простой', 'новичок', 'курс', 'онлайн', 'базовый', 'видео',
+            'интенсив', 'практика', 'продвинутый', 'вебинары', 'интерактив',
+            'воркшопы', 'навыки', 'эксперт', 'мастер-класс', 'глубина',
+            'компактный', 'основы', 'кейсы', 'тестирование', 'проверка'
+        ];
+    }
+
+    /**
+     * Применение шаблона
+     */
+    async applyTemplate(templateId, options = {}) {
+        try {
+            const template = this.getTemplate(templateId);
+            if (!template) {
+                throw new Error(`Шаблон "${templateId}" не найден`);
+            }
+
+            // Проверяем, нужно ли подтверждение
+            if (!options.force && this.hasUnsavedChanges()) {
+                const confirmed = await this.confirmTemplateApplication(template);
+                if (!confirmed) return false;
+            }
+
+            // Применяем конфигурацию шаблона
+            await this.applyTemplateConfig(template.config, options);
+
+            // Обновляем статистику использования
+            this.incrementUsageCount(templateId);
+
+            // Сохраняем в историю
+            this.addToHistory(template);
+
+            // Устанавливаем текущий шаблон
+            this.currentTemplate = template;
+
+            this.errors.showSuccess(`Применен шаблон: ${template.name}`);
+            this.events.emit('templates:applied', { template, options });
+
+            return true;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.applyTemplate', templateId });
+            return false;
+        }
+    }
+
+    /**
+     * Получение шаблона
+     */
+    getTemplate(templateId) {
+        // Ищем в системных шаблонах
+        if (this.templates[templateId]) {
+            return this.templates[templateId];
+        }
+        
+        // Ищем в пользовательских шаблонах
+        return this.userTemplates.get(templateId) || null;
+    }
+
+    /**
+     * Проверка несохраненных изменений
+     */
+    hasUnsavedChanges() {
+        const state = this.state.getState();
+        
+        // Простая проверка - есть ли активные элементы
+        const hasActivePresets = Object.values(state.presets).some(p => p.count > 0);
+        const hasActiveComponents = Object.keys(state.components).length > 0;
+        const hasActiveServices = Object.keys(state.services).length > 0;
+        const hasCustomServices = state.customServices.length > 0;
+        
+        return hasActivePresets || hasActiveComponents || hasActiveServices || hasCustomServices;
+    }
+
+    /**
+     * Подтверждение применения шаблона
+     */
+    async confirmTemplateApplication(template) {
+        return new Promise((resolve) => {
+            const confirmed = confirm(
+                `Применить шаблон "${template.name}"?\n\n` +
+                `Это действие заменит текущие настройки.\n` +
+                `Рекомендуется сохранить текущий расчет перед применением шаблона.`
+            );
+            resolve(confirmed);
+        });
+    }
+
+    /**
+     * Применение конфигурации шаблона
+     */
+    async applyTemplateConfig(config, options) {
+        const actions = [];
+
+        // Применяем настройки ценообразования
+        if (config.pricing && !options.skipPricing) {
+            actions.push({
+                type: 'PRICING_UPDATE',
+                payload: config.pricing
+            });
+        }
+
+        // Применяем настройки сложности
+        if (config.complexity && !options.skipComplexity) {
+            actions.push({
+                type: 'COMPLEXITY_UPDATE',
+                payload: config.complexity
+            });
+        }
+
+        // Применяем финансовые настройки
+        if (config.financial && !options.skipFinancial) {
+            actions.push({
+                type: 'FINANCIAL_UPDATE',
+                payload: config.financial
+            });
+        }
+
+        // Сбрасываем текущее состояние если требуется
+        if (!options.merge) {
+            actions.push({ type: 'STATE_RESET' });
+        }
+
+        // Применяем пресеты
+        if (config.presets) {
+            Object.entries(config.presets).forEach(([presetType, presetData]) => {
+                if (presetData.count > 0) {
+                    actions.push({
+                        type: 'PRESET_UPDATE',
+                        payload: { presetType, data: presetData }
+                    });
+                }
+            });
+        }
+
+        // Применяем компоненты
+        if (config.components) {
+            Object.entries(config.components).forEach(([componentId, componentData]) => {
+                actions.push({
+                    type: 'COMPONENT_TOGGLE',
+                    payload: { componentId, enabled: true, config: componentData }
+                });
+            });
+        }
+
+        // Применяем услуги
+        if (config.services) {
+            Object.entries(config.services).forEach(([serviceId, serviceData]) => {
+                actions.push({
+                    type: 'SERVICE_TOGGLE',
+                    payload: { serviceId, enabled: true, config: serviceData }
+                });
+            });
+        }
+
+        // Применяем кастомные услуги
+        if (config.customServices) {
+            config.customServices.forEach(customService => {
+                actions.push({
+                    type: 'CUSTOM_SERVICE_ADD',
+                    payload: customService
+                });
+            });
+        }
+
+        // Выполняем все действия
+        actions.forEach(action => {
+            this.state.dispatch(action);
+        });
+    }
+
+    /**
+     * Создание нового шаблона
+     */
+    async createTemplate(templateData) {
+        try {
+            const template = this.buildTemplate(templateData);
+            
+            // Валидация
+            const validation = this.validateTemplate(template);
+            if (!validation.isValid) {
+                throw new Error(`Ошибка в шаблоне: ${validation.errors.join(', ')}`);
+            }
+
+            // Сохраняем
+            this.userTemplates.set(template.id, template);
+            this.saveUserTemplates();
+
+            this.errors.showSuccess(`Шаблон "${template.name}" создан`);
+            this.events.emit('templates:created', template);
+
+            return template;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.createTemplate' });
+            return null;
+        }
+    }
+
+    /**
+     * Построение шаблона из данных
+     */
+    buildTemplate(templateData) {
+        const id = templateData.id || this.generateTemplateId();
+        const timestamp = Date.now();
+
+        return {
+            id,
+            name: templateData.name,
+            description: templateData.description || '',
+            category: templateData.category || 'custom',
+            tags: templateData.tags || [],
+            author: templateData.author || 'user',
+            created: timestamp,
+            updated: timestamp,
+            isDefault: false,
+            difficulty: templateData.difficulty || 'medium',
+            estimatedTime: templateData.estimatedTime || '',
+            estimatedCost: templateData.estimatedCost || 0,
+            config: templateData.config,
+            features: templateData.features || [],
+            targetAudience: templateData.targetAudience || '',
+            usageCount: 0,
+            version: '1.0'
+        };
+    }
+
+    /**
+     * Сохранение текущего состояния как шаблон
+     */
+    async saveCurrentAsTemplate(name, description = '', category = 'custom') {
+        try {
+            const state = this.state.getState();
+            
+            const templateData = {
+                name,
+                description,
+                category,
+                config: {
+                    pricing: state.pricing,
+                    complexity: state.complexity,
+                    financial: state.financial,
+                    presets: this.extractActivePresets(state),
+                    components: state.components,
+                    services: state.services,
+                    customServices: state.customServices
+                },
+                estimatedCost: state.results.totalCost,
+                estimatedTime: `${Math.round(state.results.totalHours)} часов`,
+                features: this.extractFeatures(state),
+                tags: this.generateTags(state)
+            };
+
+            return await this.createTemplate(templateData);
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.saveCurrentAsTemplate' });
+            return null;
+        }
+    }
+
+    /**
+     * Извлечение активных пресетов
+     */
+    extractActivePresets(state) {
+        const activePresets = {};
+        Object.entries(state.presets).forEach(([presetType, data]) => {
+            if (data.count > 0) {
+                activePresets[presetType] = data;
+            }
+        });
+        return activePresets;
+    }
+
+    /**
+     * Извлечение функций проекта
+     */
+    extractFeatures(state) {
+        const features = [];
+        
+        // Анализируем пресеты
+        Object.entries(state.presets).forEach(([presetType, data]) => {
+            if (data.count > 0) {
+                const presetName = this.getPresetDisplayName(presetType);
+                features.push(`${presetName} (${data.count} шт.)`);
+            }
+        });
+
+        // Анализируем компоненты
+        if (Object.keys(state.components).length > 0) {
+            features.push(`Дополнительные компоненты (${Object.keys(state.components).length})`);
+        }
+
+        // Анализируем услуги
+        if (Object.keys(state.services).length > 0) {
+            features.push(`Дополнительные услуги (${Object.keys(state.services).length})`);
+        }
+
+        // Анализируем кастомные услуги
+        if (state.customServices.length > 0) {
+            features.push(`Кастомные услуги (${state.customServices.length})`);
+        }
+
+        return features;
+    }
+
+    /**
+     * Генерация тегов на основе состояния
+     */
+    generateTags(state) {
+        const tags = [];
+        
+        // Теги на основе метода ценообразования
+        if (state.pricing.method === 'fixed') {
+            tags.push('фиксированные цены');
+        } else {
+            tags.push('почасовой');
+        }
+
+        // Теги на основе сложности
+        if (state.pricing.detailLevel === 'detailed') {
+            tags.push('детальный расчет');
+        } else {
+            tags.push('быстрый расчет');
+        }
+
+        // Теги на основе пресетов
+        Object.entries(state.presets).forEach(([presetType, data]) => {
+            if (data.count > 0) {
+                switch (presetType) {
+                    case 'videoLesson':
+                        tags.push('видео');
+                        break;
+                    case 'webinar':
+                        tags.push('вебинары');
+                        break;
+                    case 'workshop':
+                        tags.push('практика');
+                        break;
+                    case 'masterClass':
+                        tags.push('мастер-класс');
+                        break;
+                }
+            }
+        });
+
+        // Теги на основе объема
+        const totalItems = Object.values(state.presets).reduce((sum, p) => sum + (p.count || 0), 0);
+        if (totalItems < 5) {
+            tags.push('компактный');
+        } else if (totalItems > 15) {
+            tags.push('объемный');
+        }
+
+        return [...new Set(tags)]; // Убираем дубликаты
+    }
+
+    /**
+     * Удаление шаблона
+     */
+    async deleteTemplate(templateId) {
+        try {
+            const template = this.getTemplate(templateId);
+            if (!template) {
+                throw new Error(`Шаблон "${templateId}" не найден`);
+            }
+
+            if (template.isDefault) {
+                throw new Error('Нельзя удалить системный шаблон');
+            }
+
+            // Подтверждение удаления
+            const confirmed = confirm(`Удалить шаблон "${template.name}"?`);
+            if (!confirmed) return false;
+
+            this.userTemplates.delete(templateId);
+            this.saveUserTemplates();
+
+            this.errors.showSuccess(`Шаблон "${template.name}" удален`);
+            this.events.emit('templates:deleted', { templateId, template });
+
+            return true;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.deleteTemplate', templateId });
+            return false;
+        }
+    }
+
+    /**
+     * Дублирование шаблона
+     */
+    async duplicateTemplate(templateId, newName) {
+        try {
+            const originalTemplate = this.getTemplate(templateId);
+            if (!originalTemplate) {
+                throw new Error(`Шаблон "${templateId}" не найден`);
+            }
+
+            const duplicatedTemplate = {
+                ...originalTemplate,
+                id: this.generateTemplateId(),
+                name: newName || `${originalTemplate.name} (копия)`,
+                created: Date.now(),
+                updated: Date.now(),
+                isDefault: false,
+                usageCount: 0,
+                version: '1.0'
+            };
+
+            this.userTemplates.set(duplicatedTemplate.id, duplicatedTemplate);
+            this.saveUserTemplates();
+
+            this.errors.showSuccess(`Создана копия шаблона: ${duplicatedTemplate.name}`);
+            this.events.emit('templates:duplicated', { originalId: templateId, newTemplate: duplicatedTemplate });
+
+            return duplicatedTemplate;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.duplicateTemplate', templateId });
+            return null;
+        }
+    }
+
+    /**
+     * Поиск шаблонов
+     */
+    searchTemplates(query = '', filters = {}) {
+        try {
+            const allTemplates = this.getAllTemplatesArray();
+            let results = allTemplates;
+
+            // Фильтр по тексту
+            if (query.trim()) {
+                const searchText = query.toLowerCase().trim();
+                results = results.filter(template => 
+                    template.name.toLowerCase().includes(searchText) ||
+                    template.description.toLowerCase().includes(searchText) ||
+                    template.tags.some(tag => tag.toLowerCase().includes(searchText)) ||
+                    template.targetAudience.toLowerCase().includes(searchText)
+                );
+            }
+
+            // Фильтр по категории
+            if (filters.category) {
+                results = results.filter(template => template.category === filters.category);
+            }
+
+            // Фильтр по сложности
+            if (filters.difficulty) {
+                results = results.filter(template => template.difficulty === filters.difficulty);
+            }
+
+            // Фильтр по тегам
+            if (filters.tags && filters.tags.length > 0) {
+                results = results.filter(template => 
+                    filters.tags.some(tag => template.tags.includes(tag))
+                );
+            }
+
+            // Фильтр по автору
+            if (filters.author) {
+                results = results.filter(template => template.author === filters.author);
+            }
+
+            // Фильтр по диапазону стоимости
+            if (filters.minCost !== undefined || filters.maxCost !== undefined) {
+                results = results.filter(template => {
+                    const cost = template.estimatedCost || 0;
+                    return (!filters.minCost || cost >= filters.minCost) &&
+                           (!filters.maxCost || cost <= filters.maxCost);
+                });
+            }
+
+            // Сортировка
+            if (filters.sortBy) {
+                results.sort((a, b) => {
+                    switch (filters.sortBy) {
+                        case 'name':
+                            return a.name.localeCompare(b.name);
+                        case 'created':
+                            return b.created - a.created;
+                        case 'updated':
+                            return b.updated - a.updated;
+                        case 'usage':
+                            return b.usageCount - a.usageCount;
+                        case 'cost':
+                            return (a.estimatedCost || 0) - (b.estimatedCost || 0);
+                        default:
+                            return 0;
+                    }
+                });
+            }
+
+            this.events.emit('templates:search-completed', { query, filters, results });
+            return results;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.searchTemplates' });
+            return [];
+        }
+    }
+
+    /**
+     * Получение всех шаблонов как массива
+     */
+    getAllTemplatesArray() {
+        const systemTemplates = Object.values(this.templates);
+        const userTemplates = Array.from(this.userTemplates.values());
+        return [...systemTemplates, ...userTemplates];
+    }
+
+    /**
+     * Получение рекомендаций шаблонов
+     */
+    getRecommendations() {
+        try {
+            const state = this.state.getState();
+            const recommendations = [];
+
+            // Анализируем текущее состояние для рекомендаций
+            const currentComplexity = this.analyzeCurrentComplexity(state);
+            const currentScope = this.analyzeCurrentScope(state);
+
+            // Рекомендации на основе сложности
+            if (currentComplexity === 'simple') {
+                recommendations.push(...this.getSimpleProjectRecommendations());
+            } else if (currentComplexity === 'complex') {
+                recommendations.push(...this.getComplexProjectRecommendations());
+            }
+
+            // Рекомендации на основе объема
+            if (currentScope === 'small') {
+                recommendations.push(...this.getSmallProjectRecommendations());
+            } else if (currentScope === 'large') {
+                recommendations.push(...this.getLargeProjectRecommendations());
+            }
+
+            // Рекомендации на основе популярности
+            recommendations.push(...this.getPopularTemplatesRecommendations());
+
+            // Убираем дубликаты и ограничиваем количество
+            const uniqueRecommendations = this.removeDuplicateRecommendations(recommendations);
+            const limitedRecommendations = uniqueRecommendations.slice(0, 6);
+
+            this.events.emit('templates:recommendations-generated', limitedRecommendations);
+            return limitedRecommendations;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.getRecommendations' });
+            return [];
+        }
+    }
+
+    /**
+     * Анализ текущей сложности
+     */
+    analyzeCurrentComplexity(state) {
+        if (state.pricing.detailLevel === 'quick' && 
+            (state.complexity.projectComplexity || 1) <= 1.2) {
+            return 'simple';
+        } else if (state.pricing.detailLevel === 'detailed' || 
+                   (state.complexity.projectComplexity || 1) > 1.3) {
+            return 'complex';
+        }
+        return 'medium';
+    }
+
+    /**
+     * Анализ текущего объема
+     */
+    analyzeCurrentScope(state) {
+        const totalItems = Object.values(state.presets).reduce((sum, p) => sum + (p.count || 0), 0) +
+                          Object.keys(state.components).length +
+                          Object.keys(state.services).length +
+                          state.customServices.length;
+
+        if (totalItems <= 5) return 'small';
+        if (totalItems >= 15) return 'large';
+        return 'medium';
+    }
+
+    /**
+     * Рекомендации для простых проектов
+     */
+    getSimpleProjectRecommendations() {
+        return [
+            {
+                templateId: 'quickStart',
+                reason: 'Идеален для быстрого старта',
+                confidence: 0.9
+            },
+            {
+                templateId: 'compactCourse',
+                reason: 'Компактное решение',
+                confidence: 0.8
+            }
+        ];
+    }
+
+    /**
+     * Рекомендации для сложных проектов
+     */
+    getComplexProjectRecommendations() {
+        return [
+            {
+                templateId: 'intensiveCourse',
+                reason: 'Подходит для сложных задач',
+                confidence: 0.9
+            },
+            {
+                templateId: 'expertProgram',
+                reason: 'Экспертный уровень',
+                confidence: 0.8
+            }
+        ];
+    }
+
+    /**
+     * Рекомендации для небольших проектов
+     */
+    getSmallProjectRecommendations() {
+        return [
+            {
+                templateId: 'webinarSeries',
+                reason: 'Оптимален для небольшого объема',
+                confidence: 0.8
+            },
+            {
+                templateId: 'compactCourse',
+                reason: 'Краткая программа',
+                confidence: 0.7
+            }
+        ];
+    }
+
+    /**
+     * Рекомендации для крупных проектов
+     */
+    getLargeProjectRecommendations() {
+        return [
+            {
+                templateId: 'basicCourse',
+                reason: 'Полноценный курс',
+                confidence: 0.9
+            },
+            {
+                templateId: 'practicalIntensive',
+                reason: 'Много практики',
+                confidence: 0.8
+            }
+        ];
+    }
+
+    /**
+     * Рекомендации популярных шаблонов
+     */
+    getPopularTemplatesRecommendations() {
+        const allTemplates = this.getAllTemplatesArray();
+        
+        return allTemplates
+            .sort((a, b) => b.usageCount - a.usageCount)
+            .slice(0, 3)
+            .map(template => ({
+                templateId: template.id,
+                reason: 'Популярный выбор',
+                confidence: 0.6
+            }));
+    }
+
+    /**
+     * Удаление дублирующихся рекомендаций
+     */
+    removeDuplicateRecommendations(recommendations) {
+        const seen = new Set();
+        return recommendations.filter(rec => {
+            if (seen.has(rec.templateId)) {
+                return false;
+            }
+            seen.add(rec.templateId);
+            return true;
+        });
+    }
+
+    /**
+     * Экспорт шаблона
+     */
+    async exportTemplate(templateId) {
+        try {
+            const template = this.getTemplate(templateId);
+            if (!template) {
+                throw new Error(`Шаблон "${templateId}" не найден`);
+            }
+
+            const exportData = {
+                version: '2.0',
+                exported: new Date().toISOString(),
+                template: {
+                    ...template,
+                    // Убираем статистику использования при экспорте
+                    usageCount: undefined
+                }
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+                type: 'application/json'
+            });
+
+            const filename = `template_${template.name.replace(/\s+/g, '_')}_${Date.now()}.json`;
+            this.downloadFile(blob, filename);
+
+            this.errors.showSuccess(`Шаблон "${template.name}" экспортирован`);
+            this.events.emit('templates:exported', { templateId, filename });
+
+            return true;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.exportTemplate', templateId });
+            return false;
+        }
+    }
+
+    /**
+     * Импорт шаблона
+     */
+    async importTemplate(templateData) {
+        try {
+            let template;
+
+            // Проверяем формат данных
+            if (typeof templateData === 'string') {
+                template = JSON.parse(templateData);
+            } else if (templateData.template) {
+                template = templateData.template;
+            } else {
+                template = templateData;
+            }
+
+            // Валидация импортируемого шаблона
+            const validation = this.validateTemplate(template);
+            if (!validation.isValid) {
+                throw new Error(`Неверный формат шаблона: ${validation.errors.join(', ')}`);
+            }
+
+            // Проверяем, существует ли уже шаблон с таким ID
+            if (this.getTemplate(template.id)) {
+                // Генерируем новый ID и имя
+                template.id = this.generateTemplateId();
+                template.name = `${template.name} (импорт)`;
+            }
+
+            // Устанавливаем метаданные импорта
+            template.imported = Date.now();
+            template.isDefault = false;
+            template.usageCount = 0;
+
+            // Сохраняем
+            this.userTemplates.set(template.id, template);
+            this.saveUserTemplates();
+
+            this.errors.showSuccess(`Шаблон "${template.name}" импортирован`);
+            this.events.emit('templates:imported', template);
+
+            return template;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.importTemplate' });
+            return null;
+        }
+    }
+
+    /**
+     * Получение всех шаблонов для UI
+     */
+    getAllTemplates() {
+        const result = {
+            categories: this.categories,
+            templates: {},
+            statistics: this.getStatistics()
+        };
+
+        // Группируем шаблоны по категориям
+        const allTemplates = this.getAllTemplatesArray();
+        
+        allTemplates.forEach(template => {
+            if (!result.templates[template.category]) {
+                result.templates[template.category] = [];
+            }
+            result.templates[template.category].push(template);
+        });
+
+        // Сортируем шаблоны в каждой категории
+        Object.keys(result.templates).forEach(category => {
+            result.templates[category].sort((a, b) => {
+                // Системные шаблоны сначала
+                if (a.isDefault && !b.isDefault) return -1;
+                if (!a.isDefault && b.isDefault) return 1;
+                
+                // Затем по популярности
+                if (a.usageCount !== b.usageCount) {
+                    return b.usageCount - a.usageCount;
+                }
+                
+                // Затем по алфавиту
+                return a.name.localeCompare(b.name);
+            });
+        });
+
+        this.events.emit('templates:all-loaded', result);
+        return result;
+    }
+
+    /**
+     * Валидация шаблона
+     */
+    validateTemplate(template) {
+        const errors = [];
+
+        // Проверяем обязательные поля
+        if (!template.id || typeof template.id !== 'string') {
+            errors.push('Отсутствует или неверный ID');
+        }
+
+        if (!template.name || typeof template.name !== 'string') {
+            errors.push('Отсутствует или неверное название');
+        }
+
+        if (!template.config || typeof template.config !== 'object') {
+            errors.push('Отсутствует или неверная конфигурация');
+        }
+
+        // Проверяем конфигурацию
+        if (template.config) {
+            if (!template.config.pricing) {
+                errors.push('Отсутствуют настройки ценообразования');
+            }
+
+            if (!template.config.financial) {
+                errors.push('Отсутствуют финансовые настройки');
+            }
+
+            // Проверяем, что есть хотя бы что-то для расчета
+            const hasPresets = template.config.presets && Object.keys(template.config.presets).length > 0;
+            const hasComponents = template.config.components && Object.keys(template.config.components).length > 0;
+            const hasServices = template.config.services && Object.keys(template.config.services).length > 0;
+            const hasCustom = template.config.customServices && template.config.customServices.length > 0;
+
+            if (!hasPresets && !hasComponents && !hasServices && !hasCustom) {
+                errors.push('Шаблон не содержит элементов для расчета');
+            }
+        }
+
+        return {
+            isValid: errors.length === 0,
+            errors
+        };
+    }
+
+    /**
+     * Увеличение счетчика использования
+     */
+    incrementUsageCount(templateId) {
+        const template = this.getTemplate(templateId);
+        if (template) {
+            template.usageCount = (template.usageCount || 0) + 1;
+            template.lastUsed = Date.now();
+
+            // Сохраняем если это пользовательский шаблон
+            if (!template.isDefault) {
+                this.saveUserTemplates();
+            }
+        }
+    }
+
+    /**
+     * Добавление в историю
+     */
+    addToHistory(template) {
+        this.templateHistory.unshift({
+            template,
+            appliedAt: Date.now()
+        });
+
+        // Ограничиваем размер истории
+        if (this.templateHistory.length > this.maxHistorySize) {
+            this.templateHistory = this.templateHistory.slice(0, this.maxHistorySize);
+        }
+    }
+
+    /**
+     * Загрузка пользовательских шаблонов
+     */
+    loadUserTemplates() {
+        try {
+            const savedTemplates = localStorage.getItem('calculator_user_templates');
+            if (savedTemplates) {
+                const templates = JSON.parse(savedTemplates);
+                templates.forEach(template => {
+                    this.userTemplates.set(template.id, template);
+                });
+                console.log(`Loaded ${templates.length} user templates`);
+            }
+        } catch (error) {
+            console.warn('Failed to load user templates:', error);
+        }
+    }
+
+    /**
+     * Сохранение пользовательских шаблонов
+     */
+    saveUserTemplates() {
+        try {
+            const templates = Array.from(this.userTemplates.values());
+            localStorage.setItem('calculator_user_templates', JSON.stringify(templates));
+        } catch (error) {
+            console.warn('Failed to save user templates:', error);
+        }
+    }
+
+    /**
+     * Генерация ID шаблона
+     */
+    generateTemplateId() {
+        return 'template_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    /**
+     * Получение отображаемого имени пресета
+     */
+    getPresetDisplayName(presetType) {
+        const names = {
+            textLesson: 'Текстовые уроки',
+            videoLesson: 'Видео уроки',
+            webinar: 'Вебинары',
+            workshop: 'Практикумы',
+            caseStudy: 'Кейс-стади',
+            masterClass: 'Мастер-классы'
+        };
+        return names[presetType] || presetType;
+    }
+
+    /**
+     * Скачивание файла
+     */
+    downloadFile(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    /**
+     * Получение статистики
+     */
+    getStatistics() {
+        const allTemplates = this.getAllTemplatesArray();
+        
+        return {
+            total: allTemplates.length,
+            system: allTemplates.filter(t => t.isDefault).length,
+            user: allTemplates.filter(t => !t.isDefault).length,
+            categories: Object.keys(this.categories).length,
+            totalUsage: allTemplates.reduce((sum, t) => sum + (t.usageCount || 0), 0),
+            mostUsed: allTemplates
+                .filter(t => t.usageCount > 0)
+                .sort((a, b) => b.usageCount - a.usageCount)
+                .slice(0, 5)
+                .map(t => ({ id: t.id, name: t.name, usageCount: t.usageCount }))
+        };
+    }
+
+    /**
+     * Получение истории применения шаблонов
+     */
+    getHistory() {
+        return this.templateHistory.map(entry => ({
+            template: {
+                id: entry.template.id,
+                name: entry.template.name,
+                category: entry.template.category
+            },
+            appliedAt: entry.appliedAt,
+            timeAgo: this.getTimeAgo(entry.appliedAt)
+        }));
+    }
+
+    /**
+     * Получение времени "назад"
+     */
+    getTimeAgo(timestamp) {
+        const now = Date.now();
+        const diff = now - timestamp;
+        
+        const minutes = Math.floor(diff / (1000 * 60));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        
+        if (days > 0) {
+            return `${days} дн. назад`;
+        } else if (hours > 0) {
+            return `${hours} ч. назад`;
+        } else if (minutes > 0) {
+            return `${minutes} мин. назад`;
+        } else {
+            return 'только что';
+        }
+    }
+
+    /**
+     * Очистка истории
+     */
+    clearHistory() {
+        this.templateHistory = [];
+        this.events.emit('templates:history-cleared');
+    }
+
+    /**
+     * Получение шаблона для редактирования
+     */
+    getTemplateForEdit(templateId) {
+        const template = this.getTemplate(templateId);
+        if (!template) return null;
+
+        if (template.isDefault) {
+            throw new Error('Системные шаблоны нельзя редактировать. Создайте копию для изменения.');
+        }
+
+        return { ...template }; // Возвращаем копию
+    }
+
+    /**
+     * Обновление шаблона
+     */
+    async updateTemplate(templateId, updates) {
+        try {
+            const template = this.getTemplate(templateId);
+            if (!template) {
+                throw new Error(`Шаблон "${templateId}" не найден`);
+            }
+
+            if (template.isDefault) {
+                throw new Error('Системные шаблоны нельзя редактировать');
+            }
+
+            // Применяем обновления
+            const updatedTemplate = {
+                ...template,
+                ...updates,
+                updated: Date.now()
+            };
+
+            // Валидация
+            const validation = this.validateTemplate(updatedTemplate);
+            if (!validation.isValid) {
+                throw new Error(`Ошибка в шаблоне: ${validation.errors.join(', ')}`);
+            }
+
+            // Сохраняем
+            this.userTemplates.set(templateId, updatedTemplate);
+            this.saveUserTemplates();
+
+            this.errors.showSuccess(`Шаблон "${updatedTemplate.name}" обновлен`);
+            this.events.emit('templates:updated', updatedTemplate);
+
+            return updatedTemplate;
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.updateTemplate', templateId });
+            return null;
+        }
+    }
+
+    /**
+     * Получение совместимых шаблонов
+     */
+    getCompatibleTemplates() {
+        const state = this.state.getState();
+        const allTemplates = this.getAllTemplatesArray();
+        
+        return allTemplates.filter(template => {
+            // Проверяем совместимость на основе текущих настроек
+            const configCompatible = this.checkConfigCompatibility(state, template.config);
+            const scopeCompatible = this.checkScopeCompatibility(state, template);
+            
+            return configCompatible && scopeCompatible;
+        });
+    }
+
+    /**
+     * Проверка совместимости конфигурации
+     */
+    checkConfigCompatibility(currentState, templateConfig) {
+        // Базовая проверка совместимости
+        if (currentState.pricing.method !== templateConfig.pricing.method) {
+            return false;
+        }
+        
+        return true; // Упрощенная версия
+    }
+
+    /**
+     * Проверка совместимости объема
+     */
+    checkScopeCompatibility(currentState, template) {
+        const currentScope = this.analyzeCurrentScope(currentState);
+        const templateScope = this.analyzeTemplateScope(template);
+        
+        // Разрешаем применение шаблонов схожего или большего объема
+        const scopeOrder = { small: 0, medium: 1, large: 2 };
+        return scopeOrder[templateScope] >= scopeOrder[currentScope];
+    }
+
+    /**
+     * Анализ объема шаблона
+     */
+    analyzeTemplateScope(template) {
+        const config = template.config;
+        const totalItems = (config.presets ? Object.keys(config.presets).length : 0) +
+                          (config.components ? Object.keys(config.components).length : 0) +
+                          (config.services ? Object.keys(config.services).length : 0) +
+                          (config.customServices ? config.customServices.length : 0);
+
+        if (totalItems <= 5) return 'small';
+        if (totalItems >= 15) return 'large';
+        return 'medium';
+    }
+
+    /**
+     * Автоматическое создание шаблона на основе паттернов
+     */
+    async createSmartTemplate(name, description, analysisData) {
+        try {
+            const state = this.state.getState();
+            
+            // Анализируем текущее состояние и создаем оптимизированную конфигурацию
+            const optimizedConfig = this.optimizeConfigForTemplate(state, analysisData);
+            
+            const templateData = {
+                name,
+                description,
+                category: analysisData.suggestedCategory || 'custom',
+                tags: analysisData.suggestedTags || this.generateTags(state),
+                config: optimizedConfig,
+                features: analysisData.features || this.extractFeatures(state),
+                difficulty: analysisData.difficulty || this.assessDifficulty(state),
+                targetAudience: analysisData.targetAudience || 'Универсальная аудитория'
+            };
+
+            return await this.createTemplate(templateData);
+
+        } catch (error) {
+            this.errors.handleError(error, { context: 'TemplateSystem.createSmartTemplate' });
+            return null;
+        }
+    }
+
+    /**
+     * Оптимизация конфигурации для шаблона
+     */
+    optimizeConfigForTemplate(state, analysisData) {
+        // Создаем копию текущей конфигурации
+        const config = {
+            pricing: { ...state.pricing },
+            complexity: { ...state.complexity },
+            financial: { ...state.financial },
+            presets: this.extractActivePresets(state),
+            components: { ...state.components },
+            services: { ...state.services },
+            customServices: [...state.customServices]
+        };
+
+        // Применяем оптимизации на основе анализа
+        if (analysisData.optimizations) {
+            if (analysisData.optimizations.reduceComplexity) {
+                config.complexity = this.reduceComplexity(config.complexity);
+            }
+            
+            if (analysisData.optimizations.standardizeRates) {
+                config.pricing.hourlyRate = this.getStandardRate(config.pricing.hourlyRate);
+            }
+        }
+
+        return config;
+    }
+
+    /**
+     * Снижение сложности для шаблона
+     */
+    reduceComplexity(complexity) {
+        if (complexity.projectComplexity) {
+            complexity.projectComplexity = Math.min(complexity.projectComplexity, 1.2);
+        } else {
+            // Для детального режима
+            Object.keys(complexity).forEach(key => {
+                if (typeof complexity[key] === 'number' && complexity[key] > 1.0) {
+                    complexity[key] = Math.min(complexity[key], 1.2);
+                }
+            });
+        }
+        return complexity;
+    }
+
+    /**
+     * Получение стандартной ставки
+     */
+    getStandardRate(currentRate) {
+        const standardRates = [200, 220, 250, 300, 350, 400, 450, 500];
+        
+        // Находим ближайшую стандартную ставку
+        return standardRates.reduce((prev, curr) => 
+            Math.abs(curr - currentRate) < Math.abs(prev - currentRate) ? curr : prev
+        );
+    }
+
+    /**
+     * Оценка сложности проекта
+     */
+    assessDifficulty(state) {
+        const totalItems = Object.values(state.presets).reduce((sum, p) => sum + (p.count || 0), 0) +
+                          Object.keys(state.components).length +
+                          Object.keys(state.services).length +
+                          state.customServices.length;
+
+        const complexityScore = state.pricing.detailLevel === 'detailed' ? 
+            Object.values(state.complexity).reduce((sum, val) => sum + (val || 1), 0) / 6 :
+            state.complexity.projectComplexity || 1;
+
+        if (totalItems <= 5 && complexityScore <= 1.2) return 'easy';
+        if (totalItems >= 15 || complexityScore >= 1.4) return 'hard';
+        if (complexityScore >= 1.8) return 'expert';
+        
+        return 'medium';
+    }
+
+    /**
+     * Уничтожение модуля
+     */
+    destroy() {
+        // Отписка от событий
+        this.events.off('templates:apply');
+        this.events.off('templates:create');
+        this.events.off('templates:save');
+        this.events.off('templates:delete');
+        this.events.off('templates:duplicate');
+        this.events.off('templates:search');
+        this.events.off('templates:get-recommendations');
+        this.events.off('templates:export');
+        this.events.off('templates:import');
+        this.events.off('templates:get-all');
+
+        // Финальное сохранение пользовательских шаблонов
+        this.saveUserTemplates();
+
+        // Очистка данных
+        this.userTemplates.clear();
+        this.templateHistory = [];
+
+        console.log('📋 TemplateSystem destroyed');
+    }
+}
+
+// Экспорт для использования в других модулях
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = TemplateSystem;
+} else if (typeof window !== 'undefined') {
+    window.TemplateSystem = TemplateSystem;
 }
 
         
