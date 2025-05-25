@@ -1829,9 +1829,6 @@ class EventBusClass {
     window.EventBus.emit('error:occurred', errorInfo);
 }
 
-                return errorInfo;
-            }
-
             /**
              * Показ уведомления об ошибке
              */
@@ -3293,9 +3290,6 @@ window.testErrorHandler = function() {
             return results;
         };
        
-    </script>
-
-    <script>
         /**
  /**
  * PricingEngine.js - Модуль расчета стоимости
