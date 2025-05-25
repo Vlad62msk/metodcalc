@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -2709,7 +2709,7 @@
         // ===========================================
 
         // Глобальные переменные
-        let stateManager, calculator, uiManager, storageManager;
+       let stateManager, calculator, uiManager, storageManager, componentsManager;
 
         // Инициализация после загрузки DOM
         document.addEventListener('DOMContentLoaded', () => {
@@ -2719,6 +2719,7 @@
                 calculator = new Calculator(stateManager);
                 uiManager = new UIManager(stateManager);
                 storageManager = new StorageManager(stateManager);
+                componentsManager = new ComponentsManager(stateManager);
 
                 // Загружаем сохраненное состояние
                 const savedState = storageManager.loadState();
@@ -2737,6 +2738,13 @@
                 // Обработчики модальных окон
                 setupModalHandlers();
 
+                // Обновляем цены при изменении ставки
+                stateManager.subscribe((state, changedFields) => {
+                    if (changedFields.includes('hourlyRate')) {
+                        componentsManager.updateAllPrices();
+                    }
+                });
+                
                 // Первичный расчет
                 calculator.calculate();
 
