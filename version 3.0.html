@@ -347,93 +347,1064 @@
             justify-content: flex-end;
         }
 
-        /* Шаблоны */
-        .templates-grid {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 24px;
-            height: 60vh;
-        }
+        /* Шаблоны - сетка */
+.templates-grid {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 24px;
+    height: 60vh;
+}
 
-        .templates-categories {
-            border-right: 1px solid #e5e7eb;
-            padding-right: 20px;
-        }
+.templates-categories {
+    border-right: 1px solid #e5e7eb;
+    padding-right: 20px;
+}
 
-        .category-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+.templates-categories h4 {
+    margin: 0 0 16px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
 
-        .category-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
-        }
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
 
-        .category-item:hover {
-            background: #f9fafb;
-        }
+.category-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
 
-        .category-item.active {
-            background: #f0f9ff;
-            border-color: #0ea5e9;
-            color: #0369a1;
-        }
+.category-item:hover {
+    background: #f9fafb;
+}
 
-        .template-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 16px;
-            background: white;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            height: fit-content;
-        }
+.category-item.active {
+    background: #f0f9ff;
+    border-color: #0ea5e9;
+    color: #0369a1;
+}
 
-        .template-card:hover {
-            border-color: #3b82f6;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-            transform: translateY(-2px);
-        }
+.category-item.empty {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
-        .btn-primary {
-            background: #3b82f6;
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+.category-item.empty:hover {
+    background: transparent;
+}
 
-        .btn-primary:hover {
-            background: #2563eb;
-        }
+.category-icon {
+    font-size: 1.2rem;
+}
 
-        .btn-secondary {
-            background: #f3f4f6;
-            color: #374151;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+.category-name {
+    flex: 1;
+    font-weight: 500;
+}
 
-        .btn-secondary:hover {
-            background: #e5e7eb;
-        }
+.category-count {
+    background: #e5e7eb;
+    color: #6b7280;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.category-item.active .category-count {
+    background: #0ea5e9;
+    color: white;
+}
+
+/* Список шаблонов */
+.templates-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.templates-header {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.sort-select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    background: white;
+}
+
+.templates-content {
+    flex: 1;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    align-content: start;
+}
+
+/* Карточки шаблонов */
+.template-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    background: white;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    height: fit-content;
+}
+
+.template-card:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
+}
+
+.template-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.template-title {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.template-difficulty {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.template-difficulty.easy {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.template-difficulty.medium {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.template-difficulty.hard {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.template-difficulty.expert {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.template-description {
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.template-stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.template-cost {
+    font-weight: 600;
+    color: #059669;
+}
+
+.template-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.feature-tag {
+    background: #f3f4f6;
+    color: #374151;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+.template-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.template-actions button {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.btn-secondary:hover {
+    background: #e5e7eb;
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+/* Сохранения */
+.saves-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.save-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.2s ease;
+}
+
+.save-item:hover {
+    border-color: #3b82f6;
+    background: #f9fafb;
+}
+
+.save-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.save-name {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 1rem;
+}
+
+.save-date {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.save-description {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.save-stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.save-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.no-saves, .no-templates {
+    text-align: center;
+    color: #6b7280;
+    padding: 40px 20px;
+    font-style: italic;
+}
+
+/* Поделиться */
+.share-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.share-option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.share-option:hover {
+    border-color: #3b82f6;
+    background: #f9fafb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.share-icon {
+    font-size: 2rem;
+    min-width: 48px;
+    text-align: center;
+}
+
+.share-label {
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+
+.share-description {
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.3;
+}
+
+/* Справка */
+.help-content {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.help-section {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.help-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.help-section h4 {
+    margin: 0 0 16px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.help-section p {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.help-section ol, .help-section ul {
+    color: #374151;
+    line-height: 1.6;
+    padding-left: 20px;
+}
+
+.help-section li {
+    margin-bottom: 8px;
+}
+
+.help-section strong {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+kbd {
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: monospace;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+/* Улучшенные индикаторы автосохранения */
+#autoSaveIndicator {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#autoSaveIndicator::before {
+    content: "💾";
+    font-size: 1.1rem;
+}
+
+/* Кнопка установки PWA */
+.install-button {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.install-button:hover {
+    background: #4338ca !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4) !important;
+}
+
+/* Улучшенная панель разработчика */
+.dev-panel {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    border: 1px solid #374151;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.dev-panel h4 {
+    color: #10b981;
+    border-bottom: 1px solid #374151;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.state-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #374151;
+}
+
+.state-item:last-child {
+    border-bottom: none;
+}
+
+.state-key {
+    color: #fbbf24;
+    font-weight: 500;
+}
+
+.state-value {
+    color: #60a5fa;
+    font-weight: 400;
+    text-align: right;
+}
+
+/* Адаптивность для модальных окон */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95vw;
+        height: 90vh;
+        margin: 5vh auto;
+    }
+    
+    .templates-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    
+    .templates-categories {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+        padding-right: 0;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .category-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 8px;
+    }
+    
+    .templates-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .template-card {
+        margin-bottom: 16px;
+    }
+    
+    .share-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .help-content {
+        max-height: 60vh;
+    }
+}
+
+/* Дополнительные стили для пресетов */
+.preset-item {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.preset-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.preset-item[data-active="true"]::before {
+    transform: translateX(0);
+}
+
+.preset-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.preset-item[data-active="true"] {
+    border-color: #3b82f6;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+/* Анимация обновления карточек */
+.preset-item.updating,
+.component-item.updating,
+.service-item.updating {
+    animation: cardPulse 0.5s ease-in-out;
+}
+
+@keyframes cardPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+/* Улучшенные кнопки действий */
+.action-button {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.action-button.primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.action-button.secondary {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+}
+
+.action-button.danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.action-button.success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.action-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.action-button:active::after {
+    width: 200px;
+    height: 200px;
+}
+
+/* Стили для тестовых кнопок */
+.test-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.test-button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.test-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Улучшенные финансовые контролы */
+.financial-preset-card {
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.financial-preset-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--preset-color, #3b82f6), var(--preset-color-light, #93c5fd));
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.financial-preset-card:hover::before,
+.financial-preset-card.selected::before {
+    transform: translateX(0);
+}
+
+.financial-preset-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    border-color: #3b82f6;
+}
+
+.financial-preset-card.selected {
+    border-color: #3b82f6;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+.preset-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.preset-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.preset-description {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.preset-advantages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.advantage-tag {
+    background: #f0fdf4;
+    color: #166534;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid #bbf7d0;
+}
+
+.preset-tax-rate {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #3b82f6;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+/* Калькуляторы */
+.calculator-container {
+    margin-top: 24px;
+}
+
+.calculator-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.calculator-button {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.calculator-button:hover {
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+}
+
+.calculator-icon {
+    font-size: 2rem;
+    min-width: 48px;
+    text-align: center;
+}
+
+.calculator-name {
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+
+.calculator-description {
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.3;
+}
+
+/* Результаты */
+.results-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.summary-item {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.summary-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+}
+
+.summary-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.summary-icon {
+    font-size: 2rem;
+    min-width: 48px;
+    text-align: center;
+}
+
+.summary-content {
+    flex: 1;
+}
+
+.summary-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.summary-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.summary-subtitle {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+/* Статусные индикаторы */
+.status-indicators {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.status-indicator {
+    background: #f3f4f6;
+    color: #374151;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid #d1d5db;
+}
+
+.status-indicator.method-hourly {
+    background: #ecfdf5;
+    color: #047857;
+    border-color: #10b981;
+}
+
+.status-indicator.method-fixed {
+    background: #fef3c7;
+    color: #d97706;
+    border-color: #f59e0b;
+}
+
+.status-indicator.volume-discounts {
+    background: #f0f9ff;
+    color: #0369a1;
+    border-color: #0ea5e9;
+}
+
+.status-indicator.detailed-calc {
+    background: #f3e8ff;
+    color: #7c3aed;
+    border-color: #8b5cf6;
+}
+
+/* Анимации загрузки */
+.loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Микро-анимации */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.slide-up {
+    animation: slideUp 0.5s ease-out;
+}
+
+.bounce-in {
+    animation: bounceIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes bounceIn {
+    0% { 
+        opacity: 0; 
+        transform: scale(0.3); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.05); 
+    }
+    70% { transform: scale(0.9); }
+    100% { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+}
+
+/* Улучшения для мобильных устройств */
+@media (max-width: 768px) {
+    .action-button {
+        padding: 10px 16px;
+        font-size: 0.875rem;
+    }
+    
+    .results-summary {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .summary-item {
+        padding: 16px;
+    }
+    
+    .summary-value {
+        font-size: 1.25rem;
+    }
+    
+    .financial-preset-card {
+        padding: 16px;
+    }
+    
+    .calculator-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .test-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .test-button {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Темная тема (заготовка) */
+@media (prefers-color-scheme: dark) {
+    .modal-content {
+        background: #1f2937;
+        color: #f9fafb;
+    }
+    
+    .modal-header {
+        border-bottom-color: #374151;
+    }
+    
+    .modal-footer {
+        border-top-color: #374151;
+    }
+    
+    .search-input, .sort-select {
+        background: #374151;
+        border-color: #4b5563;
+        color: #f9fafb;
+    }
+    
+    .template-card, .save-item {
+        background: #374151;
+        border-color: #4b5563;
+        color: #f9fafb;
+    }
+    
+    .category-item:hover {
+        background: #374151;
+    }
+}
+
+/* Печатные стили */
+@media print {
+    .modal-overlay,
+    .dev-panel,
+    #autoSaveIndicator,
+    .install-button,
+    .test-buttons {
+        display: none !important;
+    }
+    
+    .container {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+    
+    .results-summary {
+        break-inside: avoid;
+    }
+}
     </style>
 </head>
 <body>
@@ -1472,22 +2443,699 @@
         const ExportManager = new ExportManager(StateManager, EventBus, ErrorHandler);
         const TemplateSystem = new TemplateSystem(StateManager, EventBus, ErrorHandler, PresetManager, ComponentManager);
 
-        // Middleware для логирования
+         // Middleware для логирования
         StateManager.use((action, state) => {
-            console.log('🔄 State change:', action.type, 'Current state size:', JSON.stringify(state).length
+            console.log('🔄 State change:', action.type, 'Current state size:', JSON.stringify(state).length);
+            return action;
+        });
 
-        // Подписка на изменения состояния для разработки
+        // Подписка на изменения состояния для отображения в dev panel
         StateManager.subscribe((state, action) => {
             updateDevPanel(state);
         });
 
-        // Event listeners для отладки
-        EventBus.onAll((event, data) => {
-            if (!event.startsWith('state:')) {
-                console.log(`📡 Event: ${event}`, data);
+        // Устанавливаем глобальные ссылки для доступа из HTML
+        window.StateManager = StateManager;
+        window.EventBus = EventBus;
+        window.ErrorHandler = ErrorHandler;
+        window.LoadingManager = LoadingManager;
+        window.PricingEngine = PricingEngine;
+        window.PresetManager = PresetManager;
+        window.ComponentManager = ComponentManager;
+        window.UIManager = UIManager;
+        window.FinancialControls = FinancialControls;
+        window.ResultsPanel = ResultsPanel;
+        window.StorageManager = StorageManager;
+        window.ExportManager = ExportManager;
+        window.TemplateSystem = TemplateSystem;
+        window.Utils = Utils;
+
+ /**
+         * Advanced Event Handlers - Продвинутые обработчики событий
+         */
+        
+        // Обработка событий ценообразования
+        EventBus.on('pricing:method-changed', (method) => {
+            StateManager.dispatch({
+                type: 'PRICING_UPDATE',
+                payload: { method }
+            });
+        });
+
+        EventBus.on('pricing:detail-level-changed', (detailLevel) => {
+            StateManager.dispatch({
+                type: 'PRICING_UPDATE',
+                payload: { detailLevel }
+            });
+        });
+
+        // Обработка событий сложности
+        document.addEventListener('input', (e) => {
+            if (e.target.matches('[data-complexity]')) {
+                const factor = e.target.dataset.complexity;
+                const value = parseFloat(e.target.value) || 1.0;
+                
+                StateManager.dispatch({
+                    type: 'COMPLEXITY_UPDATE',
+                    payload: { [factor]: value }
+                });
             }
         });
 
+        // Обработка событий финансовых настроек
+        document.addEventListener('change', (e) => {
+            if (e.target.matches('[data-financial]')) {
+                const setting = e.target.dataset.financial;
+                let value;
+                
+                if (e.target.type === 'checkbox') {
+                    value = e.target.checked;
+                } else if (e.target.type === 'number' || e.target.type === 'range') {
+                    value = parseFloat(e.target.value) || 0;
+                } else {
+                    value = e.target.value;
+                }
+                
+                StateManager.dispatch({
+                    type: 'FINANCIAL_UPDATE',
+                    payload: { [setting]: value }
+                });
+            }
+        });
+
+        // Обработка кнопок действий
+        document.addEventListener('click', (e) => {
+            const actionButton = e.target.closest('[data-action]');
+            if (!actionButton) return;
+            
+            const action = actionButton.dataset.action;
+            const params = actionButton.dataset.params ? JSON.parse(actionButton.dataset.params) : {};
+            
+            handleGlobalAction(action, params, actionButton);
+        });
+
+        /**
+         * Global Action Handler - Глобальный обработчик действий
+         */
+        function handleGlobalAction(action, params, element) {
+            try {
+                switch (action) {
+                    // Действия с шаблонами
+                    case 'apply-template':
+                        if (params.templateId) {
+                            TemplateSystem.applyTemplate(params.templateId, params.options);
+                        }
+                        break;
+                        
+                    case 'save-template':
+                        const templateName = prompt('Введите название шаблона:');
+                        if (templateName) {
+                            const description = prompt('Описание шаблона (необязательно):') || '';
+                            TemplateSystem.saveCurrentAsTemplate(templateName, description);
+                        }
+                        break;
+                        
+                    case 'show-templates':
+                        showTemplatesModal();
+                        break;
+
+                    // Действия с экспортом
+                    case 'export-pdf':
+                        ExportManager.exportDocument({
+                            format: 'pdf',
+                            template: params.template || 'commercial',
+                            options: params.options || {}
+                        });
+                        break;
+                        
+                    case 'export-excel':
+                        ExportManager.exportDocument({
+                            format: 'excel',
+                            template: params.template || 'detailed',
+                            options: params.options || {}
+                        });
+                        break;
+                        
+                    case 'bulk-export':
+                        ExportManager.bulkExport({
+                            formats: ['pdf', 'excel', 'word'],
+                            template: 'commercial'
+                        });
+                        break;
+
+                    // Действия с сохранением
+                    case 'save-state':
+                        const saveName = prompt('Название сохранения:');
+                        if (saveName) {
+                            StorageManager.saveCurrentState(saveName);
+                        }
+                        break;
+                        
+                    case 'load-state':
+                        showLoadStateModal();
+                        break;
+                        
+                    case 'auto-save-toggle':
+                        toggleAutoSave();
+                        break;
+
+                    // Действия с пресетами
+                    case 'reset-presets':
+                        if (confirm('Сбросить все пресеты?')) {
+                            PresetManager.resetAllPresets();
+                        }
+                        break;
+                        
+                    case 'preset-suggestions':
+                        showPresetSuggestions();
+                        break;
+
+                    // Действия с результатами
+                    case 'copy-results':
+                        ResultsPanel.copyToClipboard();
+                        break;
+                        
+                    case 'print-results':
+                        ResultsPanel.printResults();
+                        break;
+                        
+                    case 'share-results':
+                        showShareModal();
+                        break;
+
+                    // Общие действия
+                    case 'reset-all':
+                        if (confirm('Сбросить все настройки? Это действие нельзя отменить.')) {
+                            StateManager.dispatch({ type: 'STATE_RESET' });
+                            ErrorHandler.showInfo('Все настройки сброшены');
+                        }
+                        break;
+                        
+                    case 'undo':
+                        StateManager.undo();
+                        break;
+                        
+                    case 'show-help':
+                        showHelpModal();
+                        break;
+                        
+                    case 'toggle-dev-panel':
+                        toggleDevPanel();
+                        break;
+
+                    default:
+                        console.warn('Unknown action:', action);
+                        ErrorHandler.showWarning(`Неизвестное действие: ${action}`);
+                }
+            } catch (error) {
+                ErrorHandler.handleError(error, { context: 'handleGlobalAction', action });
+            }
+        }
+
+        /**
+         * Modal Windows - Модальные окна
+         */
+        
+        function showTemplatesModal() {
+            const templates = TemplateSystem.getAllTemplates();
+            const modal = createModal('templates-modal', 'Шаблоны проектов');
+            
+            let modalContent = `
+                <div class="templates-grid">
+                    <div class="templates-categories">
+                        <h4>Категории</h4>
+                        <div class="category-list">
+            `;
+            
+            Object.entries(templates.categories).forEach(([categoryId, category]) => {
+                const count = templates.templates[categoryId]?.length || 0;
+                modalContent += `
+                    <div class="category-item ${count === 0 ? 'empty' : ''}" data-category="${categoryId}">
+                        <span class="category-icon">${category.icon}</span>
+                        <span class="category-name">${category.name}</span>
+                        <span class="category-count">${count}</span>
+                    </div>
+                `;
+            });
+            
+            modalContent += `
+                        </div>
+                    </div>
+                    <div class="templates-list" id="templatesList">
+                        <div class="templates-header">
+                            <input type="text" id="templateSearch" placeholder="Поиск шаблонов..." class="search-input">
+                            <select id="templateSort" class="sort-select">
+                                <option value="name">По названию</option>
+                                <option value="usage">По популярности</option>
+                                <option value="created">По дате создания</option>
+                            </select>
+                        </div>
+                        <div class="templates-content" id="templatesContent">
+                            <!-- Templates will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.querySelector('.modal-body').innerHTML = modalContent;
+            
+            // Обработчики для модального окна шаблонов
+            setupTemplatesModalHandlers(modal, templates);
+            
+            showModal(modal);
+        }
+
+        function setupTemplatesModalHandlers(modal, templates) {
+            const searchInput = modal.querySelector('#templateSearch');
+            const sortSelect = modal.querySelector('#templateSort');
+            const categoriesList = modal.querySelector('.category-list');
+            const templatesContent = modal.querySelector('#templatesContent');
+            
+            let selectedCategory = null;
+            
+            // Поиск
+            searchInput.addEventListener('input', () => {
+                filterAndDisplayTemplates();
+            });
+            
+            // Сортировка
+            sortSelect.addEventListener('change', () => {
+                filterAndDisplayTemplates();
+            });
+            
+            // Выбор категории
+            categoriesList.addEventListener('click', (e) => {
+                const categoryItem = e.target.closest('.category-item');
+                if (!categoryItem || categoryItem.classList.contains('empty')) return;
+                
+                // Обновляем выбранную категорию
+                categoriesList.querySelectorAll('.category-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                if (selectedCategory === categoryItem.dataset.category) {
+                    selectedCategory = null;
+                } else {
+                    selectedCategory = categoryItem.dataset.category;
+                    categoryItem.classList.add('active');
+                }
+                
+                filterAndDisplayTemplates();
+            });
+            
+            function filterAndDisplayTemplates() {
+                const searchQuery = searchInput.value;
+                const sortBy = sortSelect.value;
+                
+                const filters = {
+                    category: selectedCategory,
+                    sortBy: sortBy
+                };
+                
+                const filteredTemplates = TemplateSystem.searchTemplates(searchQuery, filters);
+                displayTemplates(filteredTemplates);
+            }
+            
+            function displayTemplates(templatesList) {
+                if (templatesList.length === 0) {
+                    templatesContent.innerHTML = '<div class="no-templates">Шаблоны не найдены</div>';
+                    return;
+                }
+                
+                let html = '';
+                templatesList.forEach(template => {
+                    html += `
+                        <div class="template-card" data-template="${template.id}">
+                            <div class="template-header">
+                                <div class="template-title">${template.name}</div>
+                                <div class="template-difficulty ${template.difficulty}">${getDifficultyLabel(template.difficulty)}</div>
+                            </div>
+                            <div class="template-description">${template.description}</div>
+                            <div class="template-stats">
+                                <span class="template-cost">${formatCurrency(template.estimatedCost)}</span>
+                                <span class="template-time">${template.estimatedTime}</span>
+                                <span class="template-usage">Использований: ${template.usageCount}</span>
+                            </div>
+                            <div class="template-features">
+                                ${template.features.slice(0, 3).map(feature => `<span class="feature-tag">${feature}</span>`).join('')}
+                            </div>
+                            <div class="template-actions">
+                                <button class="btn-primary" onclick="applyTemplateFromModal('${template.id}')">Применить</button>
+                                <button class="btn-secondary" onclick="previewTemplate('${template.id}')">Предпросмотр</button>
+                                ${!template.isDefault ? `<button class="btn-danger" onclick="deleteTemplateFromModal('${template.id}')">Удалить</button>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                templatesContent.innerHTML = html;
+            }
+            
+            // Изначально показываем все шаблоны
+            filterAndDisplayTemplates();
+        }
+
+        function showLoadStateModal() {
+            StorageManager.getSavesList().then(saves => {
+                const modal = createModal('load-state-modal', 'Загрузить сохранение');
+                
+                let modalContent = '<div class="saves-list">';
+                
+                if (saves.length === 0) {
+                    modalContent += '<div class="no-saves">Нет сохраненных состояний</div>';
+                } else {
+                    saves.forEach(save => {
+                        modalContent += `
+                            <div class="save-item" data-save-id="${save.id}">
+                                <div class="save-header">
+                                    <div class="save-name">${save.name}</div>
+                                    <div class="save-date">${save.timeAgo}</div>
+                                </div>
+                                <div class="save-description">${save.description || 'Без описания'}</div>
+                                <div class="save-stats">
+                                    <span>Стоимость: ${formatCurrency(save.summary.totalCost)}</span>
+                                    <span>Элементов: ${save.summary.totalItems}</span>
+                                </div>
+                                <div class="save-actions">
+                                    <button class="btn-primary" onclick="loadStateFromModal('${save.id}')">Загрузить</button>
+                                    <button class="btn-danger" onclick="deleteStateFromModal('${save.id}')">Удалить</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                modalContent += '</div>';
+                modal.querySelector('.modal-body').innerHTML = modalContent;
+                showModal(modal);
+            });
+        }
+
+        function showShareModal() {
+            const modal = createModal('share-modal', 'Поделиться результатами');
+            
+            const modalContent = `
+                <div class="share-options">
+                    <div class="share-option" onclick="shareViaEmail()">
+                        <div class="share-icon">📧</div>
+                        <div class="share-label">Email</div>
+                        <div class="share-description">Отправить расчет по электронной почте</div>
+                    </div>
+                    <div class="share-option" onclick="shareViaLink()">
+                        <div class="share-icon">🔗</div>
+                        <div class="share-label">Ссылка</div>
+                        <div class="share-description">Скопировать ссылку на расчет</div>
+                    </div>
+                    <div class="share-option" onclick="shareViaTelegram()">
+                        <div class="share-icon">📱</div>
+                        <div class="share-label">Telegram</div>
+                        <div class="share-description">Поделиться в Telegram</div>
+                    </div>
+                    <div class="share-option" onclick="shareViaWhatsApp()">
+                        <div class="share-icon">💬</div>
+                        <div class="share-label">WhatsApp</div>
+                        <div class="share-description">Поделиться в WhatsApp</div>
+                    </div>
+                </div>
+            `;
+            
+            modal.querySelector('.modal-body').innerHTML = modalContent;
+            showModal(modal);
+        }
+
+        function showHelpModal() {
+            const modal = createModal('help-modal', 'Справка по использованию');
+            
+            const modalContent = `
+                <div class="help-content">
+                    <div class="help-section">
+                        <h4>🚀 Быстрый старт</h4>
+                        <ol>
+                            <li>Выберите метод ценообразования (почасовой или фиксированные цены)</li>
+                            <li>Укажите часовую ставку</li>
+                            <li>Добавьте элементы проекта через пресеты или компоненты</li>
+                            <li>Настройте финансовые параметры</li>
+                            <li>Получите готовый расчет</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h4>📦 Пресеты</h4>
+                        <p>Готовые пакеты услуг для быстрого создания расчетов. Включают все необходимые компоненты и настройки.</p>
+                        <ul>
+                            <li><strong>Текстовые уроки</strong> - статьи для самостоятельного изучения</li>
+                            <li><strong>Видео уроки</strong> - видеоконтент с презентациями</li>
+                            <li><strong>Вебинары</strong> - интерактивные онлайн-сессии</li>
+                            <li><strong>Практикумы</strong> - воркшопы с практическими заданиями</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h4>🧩 Компоненты и услуги</h4>
+                        <p>Дополнительные элементы для детальной настройки проекта:</p>
+                        <ul>
+                            <li><strong>Компоненты</strong> - отдельные элементы контента</li>
+                            <li><strong>Услуги</strong> - проверки знаний и дополнительные работы</li>
+                            <li><strong>Кастомные услуги</strong> - ваши собственные элементы</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h4>💰 Финансовые настройки</h4>
+                        <ul>
+                            <li><strong>Скидки/наценки</strong> - корректировка итоговой стоимости</li>
+                            <li><strong>Налоги</strong> - учет налогового режима</li>
+                            <li><strong>Правки</strong> - процент на доработки</li>
+                            <li><strong>Объемные скидки</strong> - автоматические скидки при больших заказах</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h4>⌨️ Горячие клавиши</h4>
+                        <ul>
+                            <li><kbd>Ctrl</kbd> + <kbd>S</kbd> - сохранить состояние</li>
+                            <li><kbd>Ctrl</kbd> + <kbd>Z</kbd> - отменить последнее действие</li>
+                            <li><kbd>Esc</kbd> - закрыть модальные окна</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            modal.querySelector('.modal-body').innerHTML = modalContent;
+            showModal(modal);
+        }
+
+        /**
+         * Modal Helper Functions - Вспомогательные функции для модальных окон
+         */
+        
+        function createModal(id, title) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.id = id;
+            
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>${title}</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Content will be added here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-secondary modal-close">Закрыть</button>
+                    </div>
+                </div>
+            `;
+            
+            // Обработчики закрытия
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal || e.target.classList.contains('modal-close')) {
+                    hideModal(modal);
+                }
+            });
+            
+            return modal;
+        }
+        
+        function showModal(modal) {
+            document.body.appendChild(modal);
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+        
+        function hideModal(modal) {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                if (modal.parentNode) {
+                    modal.parentNode.removeChild(modal);
+                }
+            }, 300);
+        }
+
+        /**
+         * Template Modal Actions - Действия в модальном окне шаблонов
+         */
+        
+        window.applyTemplateFromModal = function(templateId) {
+            TemplateSystem.applyTemplate(templateId);
+            hideModal(document.getElementById('templates-modal'));
+        };
+        
+        window.previewTemplate = function(templateId) {
+            const template = TemplateSystem.getTemplate(templateId);
+            if (template) {
+                alert(`Предпросмотр шаблона: ${template.name}\n\nОписание: ${template.description}\n\nОценочная стоимость: ${formatCurrency(template.estimatedCost)}\nВремя: ${template.estimatedTime}`);
+            }
+        };
+        
+        window.deleteTemplateFromModal = function(templateId) {
+            if (TemplateSystem.deleteTemplate(templateId)) {
+                // Перезагружаем модальное окно
+                hideModal(document.getElementById('templates-modal'));
+                setTimeout(() => showTemplatesModal(), 100);
+            }
+        };
+
+        /**
+         * Save State Modal Actions - Действия в модальном окне сохранений
+         */
+        
+        window.loadStateFromModal = function(saveId) {
+            StorageManager.loadState(saveId);
+            hideModal(document.getElementById('load-state-modal'));
+        };
+        
+        window.deleteStateFromModal = function(saveId) {
+            if (confirm('Удалить это сохранение?')) {
+                StorageManager.deleteSave(saveId);
+                // Перезагружаем модальное окно
+                hideModal(document.getElementById('load-state-modal'));
+                setTimeout(() => showLoadStateModal(), 100);
+            }
+        };
+
+        /**
+         * Share Actions - Действия для поделиться
+         */
+        
+        window.shareViaEmail = function() {
+            ExportManager.prepareEmailExport({
+                format: 'pdf',
+                template: 'commercial',
+                emailOptions: {
+                    subject: 'Расчет стоимости методических услуг',
+                    greeting: 'formal',
+                    signature: true
+                }
+            });
+            hideModal(document.getElementById('share-modal'));
+        };
+        
+        window.shareViaLink = function() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                ErrorHandler.showSuccess('Ссылка скопирована в буфер обмена');
+            }).catch(() => {
+                prompt('Скопируйте ссылку:', url);
+            });
+            hideModal(document.getElementById('share-modal'));
+        };
+        
+        window.shareViaTelegram = function() {
+            const state = StateManager.getState();
+            const text = `Расчет методических услуг:\n💰 Стоимость: ${formatCurrency(state.results.totalCost)}\n⏱️ Время: ${state.results.totalHours} ч\n\nРассчитано с помощью калькулятора методических услуг`;
+            const url = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+            hideModal(document.getElementById('share-modal'));
+        };
+        
+        window.shareViaWhatsApp = function() {
+            const state = StateManager.getState();
+            const text = `Расчет методических услуг:\n💰 Стоимость: ${formatCurrency(state.results.totalCost)}\n⏱️ Время: ${state.results.totalHours} ч\n\nРассчитано с помощью калькулятора методических услуг\n${window.location.href}`;
+            const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+            hideModal(document.getElementById('share-modal'));
+        };
+
+/**
+         * Utility Functions - Вспомогательные функции
+         */
+        
+        function getDifficultyLabel(difficulty) {
+            const labels = {
+                easy: 'Легкий',
+                medium: 'Средний',
+                hard: 'Сложный',
+                expert: 'Экспертный'
+            };
+            return labels[difficulty] || difficulty;
+        }
+        
+        function formatCurrency(amount) {
+            if (typeof amount !== 'number' || isNaN(amount)) return '0 ₽';
+            return Math.round(amount).toLocaleString('ru-RU') + ' ₽';
+        }
+        
+        function toggleAutoSave() {
+            // Переключение автосохранения будет реализовано в StorageManager
+            ErrorHandler.showInfo('Функция переключения автосохранения в разработке');
+        }
+        
+        function showPresetSuggestions() {
+            PresetManager.generateAutoSuggestions();
+        }
+        
+        function toggleDevPanel() {
+            const panel = document.getElementById('devPanel');
+            if (panel) {
+                panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        /**
+         * Enhanced Dev Panel Update - Улучшенное обновление панели разработчика
+         */
+        function updateDevPanel(state) {
+            const panel = document.getElementById('devPanel');
+            const display = document.getElementById('stateDisplay');
+            
+            if (!panel || !display) return;
+
+            const importantFields = {
+                'Метод': state.pricing?.method,
+                'Ставка': state.pricing?.hourlyRate + ' ₽/ч',
+                'Сложность': state.complexity?.projectComplexity || 'детальная',
+                'Скидка': state.financial?.discountRate + '%',
+                'Налог': state.financial?.taxRate + '%',
+                'Итого': formatCurrency(state.results?.totalCost),
+                'Время': (state.results?.totalHours || 0) + ' ч',
+                'Элементов': countActiveElements(state),
+                'Ошибки': ErrorHandler.getErrors().length,
+                'События': getEventCount()
+            };
+
+            display.innerHTML = Object.entries(importantFields)
+                .map(([key, value]) => `
+                    <div class="state-item">
+                        <span class="state-key">${key}:</span>
+                        <span class="state-value">${value}</span>
+                    </div>
+                `).join('');
+        }
+        
+        function countActiveElements(state) {
+            const presets = Object.values(state.presets || {}).reduce((sum, p) => sum + (p.count || 0), 0);
+            const components = Object.keys(state.components || {}).length;
+            const services = Object.keys(state.services || {}).length;
+            const custom = (state.customServices || []).length;
+            return presets + components + services + custom;
+        }
+        
+        function getEventCount() {
+            return EventBus.getStats().totalListeners;
+        }
+        
         /**
          * Development Panel - Панель для отладки
          */
@@ -1514,6 +3162,33 @@
                     </div>
                 `).join('');
         }
+
+         /**
+         * Advanced Test Functions - Продвинутые тестовые функции
+         */
+        
+        window.testFullWorkflow = function() {
+            console.log('🧪 Testing full workflow...');
+            
+            // 1. Применяем шаблон
+            TemplateSystem.applyTemplate('basicCourse');
+            
+            setTimeout(() => {
+                // 2. Добавляем кастомную услуги
+                ComponentManager.addCustomService({
+                    name: 'Тестовая услуга',
+                    description: 'Для тестирования workflow',
+                    hours: 5,
+                    count: 1,
+                    pricePerUnit: 1000
+                });
+                
+                setTimeout(() => {
+                    // 3. Экспортируем результат
+                    ExportManager.exportDocument({
+                        format: 'pdf',
+                        template: 'commercial'
+                    });
 
         /**
          * Test functions - Функции для тестирования
