@@ -44,7 +44,7 @@
             font-size: 1.1rem;
         }
 
-        /* Error notifications */
+       /* Error notifications */
         .error-notification {
             position: fixed;
             top: 20px;
@@ -255,1159 +255,1151 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        /* =================================================================
-   ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ КАЛЬКУЛЯТОРА v2.0
-   Модальные окна, шаблоны, улучшенные компоненты
-   ================================================================= */
+ /* =================================================================
+           ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ КАЛЬКУЛЯТОРА v2.0
+           Модальные окна, шаблоны, улучшенные компоненты
+           ================================================================= */
 
-/* Модальные окна */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
+        /* Модальные окна */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
 
-.modal-overlay.show {
-    opacity: 1;
-    visibility: visible;
-}
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
 
-.modal-content {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    max-width: 90vw;
-    max-height: 90vh;
-    width: 800px;
-    display: flex;
-    flex-direction: column;
-    transform: scale(0.9) translateY(20px);
-    transition: all 0.3s ease;
-}
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 90vw;
+            max-height: 90vh;
+            width: 800px;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s ease;
+        }
 
-.modal-overlay.show .modal-content {
-    transform: scale(1) translateY(0);
-}
+        .modal-overlay.show .modal-content {
+            transform: scale(1) translateY(0);
+        }
 
-.modal-header {
-    padding: 24px 24px 16px;
-    border-bottom: 1px solid #e5e7eb;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+        .modal-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-.modal-header h3 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1f2937;
-}
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
 
-.modal-close {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #6b7280;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
 
-.modal-close:hover {
-    background: #f3f4f6;
-    color: #374151;
-}
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
 
-.modal-body {
-    padding: 16px 24px;
-    flex: 1;
-    overflow-y: auto;
-}
+        .modal-body {
+            padding: 16px 24px;
+            flex: 1;
+            overflow-y: auto;
+        }
 
-.modal-footer {
-    padding: 16px 24px 24px;
-    border-top: 1px solid #e5e7eb;
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-}
+        .modal-footer {
+            padding: 16px 24px 24px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
 
-/* Шаблоны - сетка */
-.templates-grid {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 24px;
-    height: 60vh;
-}
+        /* Шаблоны - сетка */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 24px;
+            height: 60vh;
+        }
 
-.templates-categories {
-    border-right: 1px solid #e5e7eb;
-    padding-right: 20px;
-}
+        .templates-categories {
+            border-right: 1px solid #e5e7eb;
+            padding-right: 20px;
+        }
 
-.templates-categories h4 {
-    margin: 0 0 16px 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1f2937;
-}
+        .templates-categories h4 {
+            margin: 0 0 16px 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
 
-.category-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-.category-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: 1px solid transparent;
-}
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
 
-.category-item:hover {
-    background: #f9fafb;
-}
+        .category-item:hover {
+            background: #f9fafb;
+        }
 
-.category-item.active {
-    background: #f0f9ff;
-    border-color: #0ea5e9;
-    color: #0369a1;
-}
+        .category-item.active {
+            background: #f0f9ff;
+            border-color: #0ea5e9;
+            color: #0369a1;
+        }
 
-.category-item.empty {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
+        .category-item.empty {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
-.category-item.empty:hover {
-    background: transparent;
-}
+        .category-item.empty:hover {
+            background: transparent;
+        }
 
-.category-icon {
-    font-size: 1.2rem;
-}
+        .category-icon {
+            font-size: 1.2rem;
+        }
 
-.category-name {
-    flex: 1;
-    font-weight: 500;
-}
+        .category-name {
+            flex: 1;
+            font-weight: 500;
+        }
 
-.category-count {
-    background: #e5e7eb;
-    color: #6b7280;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
+        .category-count {
+            background: #e5e7eb;
+            color: #6b7280;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
 
-.category-item.active .category-count {
-    background: #0ea5e9;
-    color: white;
-}
+        .category-item.active .category-count {
+            background: #0ea5e9;
+            color: white;
+        }
 
-/* Список шаблонов */
-.templates-list {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
+        /* Список шаблонов */
+        .templates-list {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
 
-.templates-header {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #e5e7eb;
-}
+        .templates-header {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
 
-.search-input {
-    flex: 1;
-    padding: 8px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 0.875rem;
-}
+        .search-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
 
-.search-input:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
 
-.sort-select {
-    padding: 8px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    background: white;
-}
+        .sort-select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            background: white;
+        }
 
-.templates-content {
-    flex: 1;
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-    align-content: start;
-}
+        .templates-content {
+            flex: 1;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            align-content: start;
+        }
 
-/* Карточки шаблонов */
-.template-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 16px;
-    background: white;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    height: fit-content;
-}
+        /* Карточки шаблонов */
+        .template-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            background: white;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            height: fit-content;
+        }
 
-.template-card:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-    transform: translateY(-2px);
-}
+        .template-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+        }
 
-.template-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 12px;
-}
+        .template-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
 
-.template-title {
-    font-weight: 600;
-    color: #1f2937;
-    font-size: 1rem;
-    line-height: 1.2;
-}
+        .template-title {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1rem;
+            line-height: 1.2;
+        }
 
-.template-difficulty {
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.025em;
-}
+        .template-difficulty {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
 
-.template-difficulty.easy {
-    background: #ecfdf5;
-    color: #047857;
-}
+        .template-difficulty.easy {
+            background: #ecfdf5;
+            color: #047857;
+        }
 
-.template-difficulty.medium {
-    background: #fef3c7;
-    color: #d97706;
-}
+        .template-difficulty.medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
 
-.template-difficulty.hard {
-    background: #fee2e2;
-    color: #dc2626;
-}
+        .template-difficulty.hard {
+            background: #fee2e2;
+            color: #dc2626;
+        }
 
-.template-difficulty.expert {
-    background: #f3e8ff;
-    color: #7c3aed;
-}
+        .template-difficulty.expert {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
 
-.template-description {
-    color: #6b7280;
-    font-size: 0.875rem;
-    line-height: 1.4;
-    margin-bottom: 12px;
-}
+        .template-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
 
-.template-stats {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 12px;
-    font-size: 0.75rem;
-    color: #6b7280;
-}
+        .template-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
 
-.template-cost {
-    font-weight: 600;
-    color: #059669;
-}
+        .template-cost {
+            font-weight: 600;
+            color: #059669;
+        }
 
-.template-features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 16px;
-}
+        .template-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
 
-.feature-tag {
-    background: #f3f4f6;
-    color: #374151;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-}
+        .feature-tag {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
 
-.template-actions {
-    display: flex;
-    gap: 8px;
-}
+        .template-actions {
+            display: flex;
+            gap: 8px;
+        }
 
-.template-actions button {
-    flex: 1;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
+        .template-actions button {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-.btn-primary {
-    background: #3b82f6;
-    color: white;
-}
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
 
-.btn-primary:hover {
-    background: #2563eb;
-}
+        .btn-primary:hover {
+            background: #2563eb;
+        }
 
-.btn-secondary {
-    background: #f3f4f6;
-    color: #374151;
-}
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
 
-.btn-secondary:hover {
-    background: #e5e7eb;
-}
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
 
-.btn-danger {
-    background: #ef4444;
-    color: white;
-}
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
 
-.btn-danger:hover {
-    background: #dc2626;
-}
+        .btn-danger:hover {
+            background: #dc2626;
+        }
 
 /* Сохранения */
-.saves-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-height: 60vh;
-    overflow-y: auto;
-}
-
-.save-item {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 16px;
-    transition: all 0.2s ease;
-}
-
-.save-item:hover {
-    border-color: #3b82f6;
-    background: #f9fafb;
-}
-
-.save-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
-}
-
-.save-name {
-    font-weight: 600;
-    color: #1f2937;
-    font-size: 1rem;
-}
-
-.save-date {
-    color: #6b7280;
-    font-size: 0.875rem;
-}
-
-.save-description {
-    color: #6b7280;
-    font-size: 0.875rem;
-    margin-bottom: 8px;
-    line-height: 1.4;
-}
-
-.save-stats {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 12px;
-    font-size: 0.75rem;
-    color: #6b7280;
-}
-
-.save-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.no-saves, .no-templates {
-    text-align: center;
-    color: #6b7280;
-    padding: 40px 20px;
-    font-style: italic;
-}
-
-/* Поделиться */
-.share-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 16px;
-}
-
-.share-option {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.share-option:hover {
-    border-color: #3b82f6;
-    background: #f9fafb;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-}
-
-.share-icon {
-    font-size: 2rem;
-    min-width: 48px;
-    text-align: center;
-}
-
-.share-label {
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 4px;
-}
-
-.share-description {
-    color: #6b7280;
-    font-size: 0.875rem;
-    line-height: 1.3;
-}
-
-/* Справка */
-.help-content {
-    max-height: 70vh;
-    overflow-y: auto;
-}
-
-.help-section {
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.help-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.help-section h4 {
-    margin: 0 0 16px 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-.help-section p {
-    color: #6b7280;
-    line-height: 1.6;
-    margin-bottom: 12px;
-}
-
-.help-section ol, .help-section ul {
-    color: #374151;
-    line-height: 1.6;
-    padding-left: 20px;
-}
-
-.help-section li {
-    margin-bottom: 8px;
-}
-
-.help-section strong {
-    color: #1f2937;
-    font-weight: 600;
-}
-
-kbd {
-    background: #f3f4f6;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
-    padding: 2px 6px;
-    font-family: monospace;
-    font-size: 0.875rem;
-    color: #374151;
-}
-
-/* Улучшенные индикаторы автосохранения */
-#autoSaveIndicator {
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-#autoSaveIndicator::before {
-    content: "💾";
-    font-size: 1.1rem;
-}
-
-/* Кнопка установки PWA */
-.install-button {
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap;
-}
-
-.install-button:hover {
-    background: #4338ca !important;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4) !important;
-}
-
-/* Улучшенная панель разработчика */
-.dev-panel {
-    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-    border: 1px solid #374151;
-    border-radius: 8px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
-.dev-panel h4 {
-    color: #10b981;
-    border-bottom: 1px solid #374151;
-    padding-bottom: 8px;
-    margin-bottom: 12px;
-}
-
-.state-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 0;
-    border-bottom: 1px solid #374151;
-}
-
-.state-item:last-child {
-    border-bottom: none;
-}
-
-.state-key {
-    color: #fbbf24;
-    font-weight: 500;
-}
-
-.state-value {
-    color: #60a5fa;
-    font-weight: 400;
-    text-align: right;
-}
-
-/* Адаптивность для модальных окон */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95vw;
-        height: 90vh;
-        margin: 5vh auto;
-    }
-    
-    .templates-grid {
-        grid-template-columns: 1fr;
-        height: auto;
-    }
-    
-    .templates-categories {
-        border-right: none;
-        border-bottom: 1px solid #e5e7eb;
-        padding-right: 0;
-        padding-bottom: 16px;
-        margin-bottom: 16px;
-    }
-    
-    .category-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 8px;
-    }
-    
-    .templates-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .template-card {
-        margin-bottom: 16px;
-    }
-    
-    .share-options {
-        grid-template-columns: 1fr;
-    }
-    
-    .help-content {
-        max-height: 60vh;
-    }
-}
-
-/* Дополнительные стили для пресетов */
-.preset-item {
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.preset-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
-
-.preset-item[data-active="true"]::before {
-    transform: translateX(0);
-}
-
-.preset-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.preset-item[data-active="true"] {
-    border-color: #3b82f6;
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-}
-
-/* Анимация обновления карточек */
-.preset-item.updating,
-.component-item.updating,
-.service-item.updating {
-    animation: cardPulse 0.5s ease-in-out;
-}
-
-@keyframes cardPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-    100% { transform: scale(1); }
-}
-
-/* Улучшенные кнопки действий */
-.action-button {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    border: none;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.action-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-}
-
-.action-button.primary {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-}
-
-.action-button.secondary {
-    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-}
-
-.action-button.danger {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-}
-
-.action-button.success {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
-
-.action-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease;
-}
-
-.action-button:active::after {
-    width: 200px;
-    height: 200px;
-}
-
-/* Стили для тестовых кнопок */
-.test-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 30px;
-    flex-wrap: wrap;
-}
-
-.test-button {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 140px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.test-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Улучшенные финансовые контролы */
-.financial-preset-card {
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: white;
-    position: relative;
-    overflow: hidden;
-}
-
-.financial-preset-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--preset-color, #3b82f6), var(--preset-color-light, #93c5fd));
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
-
-.financial-preset-card:hover::before,
-.financial-preset-card.selected::before {
-    transform: translateX(0);
-}
-
-.financial-preset-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-    border-color: #3b82f6;
-}
-
-.financial-preset-card.selected {
-    border-color: #3b82f6;
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-}
-
-.preset-icon {
-    font-size: 2rem;
-    margin-bottom: 12px;
-    display: block;
-}
-
-.preset-name {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #1f2937;
-    margin-bottom: 8px;
-}
-
-.preset-description {
-    color: #6b7280;
-    font-size: 0.875rem;
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
-
-.preset-advantages {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.advantage-tag {
-    background: #f0fdf4;
-    color: #166534;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    border: 1px solid #bbf7d0;
-}
-
-.preset-tax-rate {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: #3b82f6;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 0.875rem;
-}
-
-/* Калькуляторы */
-.calculator-container {
-    margin-top: 24px;
-}
-
-.calculator-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 16px;
-}
-
-.calculator-button {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: white;
-}
-
-.calculator-button:hover {
-    border-color: #3b82f6;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
-}
-
-.calculator-icon {
-    font-size: 2rem;
-    min-width: 48px;
-    text-align: center;
-}
-
-.calculator-name {
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 4px;
-}
-
-.calculator-description {
-    color: #6b7280;
-    font-size: 0.875rem;
-    line-height: 1.3;
-}
+        .saves-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .save-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .save-item:hover {
+            border-color: #3b82f6;
+            background: #f9fafb;
+        }
+
+        .save-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .save-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1rem;
+        }
+
+        .save-date {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .save-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .save-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .save-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .no-saves, .no-templates {
+            text-align: center;
+            color: #6b7280;
+            padding: 40px 20px;
+            font-style: italic;
+        }
+
+        /* Поделиться */
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .share-option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .share-option:hover {
+            border-color: #3b82f6;
+            background: #f9fafb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+
+        .share-icon {
+            font-size: 2rem;
+            min-width: 48px;
+            text-align: center;
+        }
+
+        .share-label {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .share-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+            line-height: 1.3;
+        }
+
+        /* Справка */
+        .help-content {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .help-section {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .help-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .help-section h4 {
+            margin: 0 0 16px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .help-section p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .help-section ol, .help-section ul {
+            color: #374151;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+
+        .help-section li {
+            margin-bottom: 8px;
+        }
+
+        .help-section strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        kbd {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+
+        /* Улучшенные индикаторы автосохранения */
+        #autoSaveIndicator {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #autoSaveIndicator::before {
+            content: "💾";
+            font-size: 1.1rem;
+        }
+
+        /* Кнопка установки PWA */
+        .install-button {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .install-button:hover {
+            background: #4338ca !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4) !important;
+        }
+
+        /* Улучшенная панель разработчика */
+        .dev-panel {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            border: 1px solid #374151;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .dev-panel h4 {
+            color: #10b981;
+            border-bottom: 1px solid #374151;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .state-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid #374151;
+        }
+
+        .state-item:last-child {
+            border-bottom: none;
+        }
+
+        .state-key {
+            color: #fbbf24;
+            font-weight: 500;
+        }
+
+        .state-value {
+            color: #60a5fa;
+            font-weight: 400;
+            text-align: right;
+        }
+
+        /* Финансовые пресеты */
+        .financial-presets-container {
+            margin: 20px 0;
+        }
+
+        .financial-presets-header h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            color: #1f2937;
+        }
+
+        .financial-presets-header p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .financial-presets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .financial-preset-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .financial-preset-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--preset-color, #3b82f6), var(--preset-color-light, #93c5fd));
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .financial-preset-card:hover::before,
+        .financial-preset-card.selected::before {
+            transform: translateX(0);
+        }
+
+        .financial-preset-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+            border-color: #3b82f6;
+        }
+
+        .financial-preset-card.selected {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .preset-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .preset-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .preset-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .preset-advantages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .advantage-tag {
+            background: #f0fdf4;
+            color: #166534;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid #bbf7d0;
+        }
+
+        .preset-tax-rate {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #3b82f6;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        /* Калькуляторы */
+        .calculator-container {
+            margin-top: 24px;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .calculator-button {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .calculator-button:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+
+        .calculator-icon {
+            font-size: 2rem;
+            min-width: 48px;
+            text-align: center;
+        }
+
+        .calculator-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .calculator-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+            line-height: 1.3;
+        }
 
 /* Результаты */
-.results-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 24px;
-}
+        .results-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
 
-.summary-item {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
+        .summary-item {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-.summary-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-}
+        .summary-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        }
 
-.summary-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
+        .summary-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
 
-.summary-icon {
-    font-size: 2rem;
-    min-width: 48px;
-    text-align: center;
-}
+        .summary-icon {
+            font-size: 2rem;
+            min-width: 48px;
+            text-align: center;
+        }
 
-.summary-content {
-    flex: 1;
-}
+        .summary-content {
+            flex: 1;
+        }
 
-.summary-label {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-bottom: 4px;
-}
+        .summary-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
 
-.summary-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1f2937;
-    line-height: 1.2;
-    margin-bottom: 4px;
-}
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
 
-.summary-subtitle {
-    font-size: 0.75rem;
-    color: #6b7280;
-}
+        .summary-subtitle {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
 
-/* Статусные индикаторы */
-.status-indicators {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
-}
+        /* Статусные индикаторы */
+        .status-indicators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
 
-.status-indicator {
-    background: #f3f4f6;
-    color: #374151;
-    padding: 4px 12px;
-    border-radius: 16px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    border: 1px solid #d1d5db;
-}
+        .status-indicator {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid #d1d5db;
+        }
 
-.status-indicator.method-hourly {
-    background: #ecfdf5;
-    color: #047857;
-    border-color: #10b981;
-}
+        .status-indicator.method-hourly {
+            background: #ecfdf5;
+            color: #047857;
+            border-color: #10b981;
+        }
 
-.status-indicator.method-fixed {
-    background: #fef3c7;
-    color: #d97706;
-    border-color: #f59e0b;
-}
+        .status-indicator.method-fixed {
+            background: #fef3c7;
+            color: #d97706;
+            border-color: #f59e0b;
+        }
 
-.status-indicator.volume-discounts {
-    background: #f0f9ff;
-    color: #0369a1;
-    border-color: #0ea5e9;
-}
+        .status-indicator.volume-discounts {
+            background: #f0f9ff;
+            color: #0369a1;
+            border-color: #0ea5e9;
+        }
 
-.status-indicator.detailed-calc {
-    background: #f3e8ff;
-    color: #7c3aed;
-    border-color: #8b5cf6;
-}
+        .status-indicator.detailed-calc {
+            background: #f3e8ff;
+            color: #7c3aed;
+            border-color: #8b5cf6;
+        }
 
-/* Анимации загрузки */
-.loading-skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-    border-radius: 4px;
-}
+        /* Анимации загрузки */
+        .loading-skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
 
-@keyframes loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
 
-/* Микро-анимации */
-.fade-in {
-    animation: fadeIn 0.5s ease-in-out;
-}
+        /* Микро-анимации */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
-.slide-up {
-    animation: slideUp 0.5s ease-out;
-}
+        .slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
 
-.bounce-in {
-    animation: bounceIn 0.6s ease-out;
-}
+        .bounce-in {
+            animation: bounceIn 0.6s ease-out;
+        }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-@keyframes slideUp {
-    from { 
-        opacity: 0; 
-        transform: translateY(20px); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); 
-    }
-}
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
 
-@keyframes bounceIn {
-    0% { 
-        opacity: 0; 
-        transform: scale(0.3); 
-    }
-    50% { 
-        opacity: 1; 
-        transform: scale(1.05); 
-    }
-    70% { transform: scale(0.9); }
-    100% { 
-        opacity: 1; 
-        transform: scale(1); 
-    }
-}
+        @keyframes bounceIn {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.3); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.05); 
+            }
+            70% { transform: scale(0.9); }
+            100% { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
 
-/* Улучшения для мобильных устройств */
-@media (max-width: 768px) {
-    .action-button {
-        padding: 10px 16px;
-        font-size: 0.875rem;
-    }
-    
-    .results-summary {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-    
-    .summary-item {
-        padding: 16px;
-    }
-    
-    .summary-value {
-        font-size: 1.25rem;
-    }
-    
-    .financial-preset-card {
-        padding: 16px;
-    }
-    
-    .calculator-buttons {
-        grid-template-columns: 1fr;
-    }
-    
-    .test-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .test-button {
-        width: 100%;
-        max-width: 300px;
-    }
-}
+        /* Дополнительные стили для пресетов */
+        .preset-item {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-/* Темная тема (заготовка) */
-@media (prefers-color-scheme: dark) {
-    .modal-content {
-        background: #1f2937;
-        color: #f9fafb;
-    }
-    
-    .modal-header {
-        border-bottom-color: #374151;
-    }
-    
-    .modal-footer {
-        border-top-color: #374151;
-    }
-    
-    .search-input, .sort-select {
-        background: #374151;
-        border-color: #4b5563;
-        color: #f9fafb;
-    }
-    
-    .template-card, .save-item {
-        background: #374151;
-        border-color: #4b5563;
-        color: #f9fafb;
-    }
-    
-    .category-item:hover {
-        background: #374151;
-    }
-}
+        .preset-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
 
-/* Печатные стили */
-@media print {
-    .modal-overlay,
-    .dev-panel,
-    #autoSaveIndicator,
-    .install-button,
-    .test-buttons {
-        display: none !important;
-    }
-    
-    .container {
-        box-shadow: none;
-        border: 1px solid #000;
-    }
-    
-    .results-summary {
-        break-inside: avoid;
-    }
-}
+        .preset-item[data-active="true"]::before {
+            transform: translateX(0);
+        }
+
+        .preset-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .preset-item[data-active="true"] {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        /* Анимация обновления карточек */
+        .preset-item.updating,
+        .component-item.updating,
+        .service-item.updating {
+            animation: cardPulse 0.5s ease-in-out;
+        }
+
+        @keyframes cardPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* Улучшенные кнопки действий */
+        .action-button {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .action-button.primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+
+        .action-button.secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+
+        .action-button.danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .action-button.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .action-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .action-button:active::after {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95vw;
+                height: 90vh;
+                margin: 5vh auto;
+            }
+            
+            .templates-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .templates-categories {
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+                padding-right: 0;
+                padding-bottom: 16px;
+                margin-bottom: 16px;
+            }
+            
+            .category-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 8px;
+            }
+            
+            .templates-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .template-card {
+                margin-bottom: 16px;
+            }
+            
+            .share-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .help-content {
+                max-height: 60vh;
+            }
+
+            .action-button {
+                padding: 10px 16px;
+                font-size: 0.875rem;
+            }
+            
+            .results-summary {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .summary-item {
+                padding: 16px;
+            }
+            
+            .summary-value {
+                font-size: 1.25rem;
+            }
+            
+            .financial-preset-card {
+                padding: 16px;
+            }
+            
+            .calculator-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .test-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .test-button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* Темная тема (заготовка) */
+        @media (prefers-color-scheme: dark) {
+            .modal-content {
+                background: #1f2937;
+                color: #f9fafb;
+            }
+            
+            .modal-header {
+                border-bottom-color: #374151;
+            }
+            
+            .modal-footer {
+                border-top-color: #374151;
+            }
+            
+            .search-input, .sort-select {
+                background: #374151;
+                border-color: #4b5563;
+                color: #f9fafb;
+            }
+            
+            .template-card, .save-item {
+                background: #374151;
+                border-color: #4b5563;
+                color: #f9fafb;
+            }
+            
+            .category-item:hover {
+                background: #374151;
+            }
+        }
+
+        /* Печатные стили */
+        @media print {
+            .modal-overlay,
+            .dev-panel,
+            #autoSaveIndicator,
+            .install-button,
+            .test-buttons {
+                display: none !important;
+            }
+            
+            .container {
+                box-shadow: none;
+                border: 1px solid #000;
+            }
+            
+            .results-summary {
+                break-inside: avoid;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -1447,7 +1439,97 @@ kbd {
         <div id="stateDisplay"></div>
     </div>
 
+  
     <script>
+
+class EventBusClass {
+    constructor() {
+        this.events = new Map();
+        this.onceEvents = new Set();
+        this.wildcardListeners = [];
+        this.stats = {
+            totalEmitted: 0,
+            totalListeners: 0
+        };
+        console.log('📡 EventBus initialized');
+    }
+
+    on(event, listener) {
+        if (!this.events.has(event)) {
+            this.events.set(event, new Set());
+        }
+        this.events.get(event).add(listener);
+        this.stats.totalListeners++;
+        return () => this.off(event, listener);
+    }
+
+    once(event, listener) {
+        const onceWrapper = (...args) => {
+            this.off(event, onceWrapper);
+            listener(...args);
+        };
+        this.onceEvents.add(onceWrapper);
+        return this.on(event, onceWrapper);
+    }
+
+    off(event, listener) {
+        if (this.events.has(event)) {
+            this.events.get(event).delete(listener);
+            this.stats.totalListeners--;
+            if (this.events.get(event).size === 0) {
+                this.events.delete(event);
+            }
+        }
+    }
+
+    emit(event, data) {
+        this.stats.totalEmitted++;
+        
+        if (this.events.has(event)) {
+            this.events.get(event).forEach(listener => {
+                try {
+                    listener(data);
+                } catch (error) {
+                    console.error(`Event listener error for ${event}:`, error);
+                }
+            });
+        }
+
+        this.wildcardListeners.forEach(listener => {
+            try {
+                listener(event, data);
+            } catch (error) {
+                console.error(`Wildcard listener error:`, error);
+            }
+        });
+    }
+
+    onAll(listener) {
+        this.wildcardListeners.push(listener);
+        return () => {
+            const index = this.wildcardListeners.indexOf(listener);
+            if (index > -1) {
+                this.wildcardListeners.splice(index, 1);
+            }
+        };
+    }
+
+    getStats() {
+        return {
+            ...this.stats,
+            eventTypes: this.events.size,
+            wildcardListeners: this.wildcardListeners.length
+        };
+    }
+
+    clear() {
+        this.events.clear();
+        this.wildcardListeners = [];
+        this.onceEvents.clear();
+        this.stats = { totalEmitted: 0, totalListeners: 0 };
+    }
+}
+
         /**
          * State Manager - Централизованное управление состоянием
          * Реализует паттерн Redux/Flux с immutable state
@@ -1592,318 +1674,97 @@ kbd {
                 }
             }
 
-            /**
-             * Reducer для обработки actions
-             */
-            reducer(state, action) {
-                switch (action.type) {
-                    case 'PRICING_UPDATE':
-                        return {
-                            ...state,
-                            pricing: { ...state.pricing, ...action.payload }
-                        };
-
-                    case 'COMPLEXITY_UPDATE':
-                        return {
-                            ...state,
-                            complexity: { ...state.complexity, ...action.payload }
-                        };
-
-                    case 'FINANCIAL_UPDATE':
-                        return {
-                            ...state,
-                            financial: { ...state.financial, ...action.payload }
-                        };
-
-                    case 'PRESET_UPDATE':
-                        return {
-                            ...state,
-                            presets: {
-                                ...state.presets,
-                                [action.payload.presetType]: {
-                                    ...state.presets[action.payload.presetType],
-                                    ...action.payload.data
-                                }
-                            }
-                        };
-
-                    case 'COMPONENT_TOGGLE':
-                        const { componentId, enabled, config } = action.payload;
-                        return {
-                            ...state,
-                            components: enabled 
-                                ? { ...state.components, [componentId]: config || {} }
-                                : Object.fromEntries(
-                                    Object.entries(state.components).filter(([id]) => id !== componentId)
-                                )
-                        };
-
-                    case 'SERVICE_TOGGLE':
-                        const { serviceId, enabled: serviceEnabled, config: serviceConfig } = action.payload;
-                        return {
-                            ...state,
-                            services: serviceEnabled 
-                                ? { ...state.services, [serviceId]: serviceConfig || {} }
-                                : Object.fromEntries(
-                                    Object.entries(state.services).filter(([id]) => id !== serviceId)
-                                )
-                        };
-
-                    case 'CUSTOM_SERVICE_ADD':
-                        return {
-                            ...state,
-                            customServices: [...state.customServices, action.payload]
-                        };
-
-                    case 'CUSTOM_SERVICE_REMOVE':
-                        return {
-                            ...state,
-                            customServices: state.customServices.filter(s => s.id !== action.payload.id)
-                        };
-
-                    case 'RESULTS_UPDATE':
-                        return {
-                            ...state,
-                            results: { ...state.results, ...action.payload }
-                        };
-
-                    case 'UI_UPDATE':
-                        return {
-                            ...state,
-                            ui: { ...state.ui, ...action.payload }
-                        };
-
-                    case 'STATE_RESET':
-                        return this.getInitialState();
-
-                    case 'STATE_LOAD':
-                        return { ...action.payload, meta: { ...state.meta, lastUpdated: Date.now() } };
-
-                    default:
-                        console.warn('Unknown action type:', action.type);
-                        return state;
-                }
-            }
-
-            /**
-             * Подписка на изменения состояния
-             */
-            subscribe(listener) {
-                this.listeners.add(listener);
-                return () => this.listeners.delete(listener);
-            }
-
-            /**
-             * Получение текущего состояния
-             */
-            getState() {
-                return { ...this.state }; // Возвращаем копию для immutability
-            }
-
-            /**
-             * Уведомление подписчиков
-             */
-            notifyListeners(action) {
-                this.listeners.forEach(listener => {
-                    try {
-                        listener(this.state, action);
-                    } catch (error) {
-                        ErrorHandler.handleError(error, {
-                            context: 'StateManager.notifyListeners',
-                            listener: listener.name
-                        });
-                    }
-                });
-            }
-
-            /**
-             * Добавление в историю для undo/redo
-             */
-            addToHistory(action, prevState) {
-                this.history.push({
-                    action,
-                    state: prevState,
-                    timestamp: Date.now()
-                });
-
-                if (this.history.length > this.maxHistorySize) {
-                    this.history.shift();
-                }
-            }
-
-            /**
-             * Undo последнего действия
-             */
-            undo() {
-                if (this.history.length === 0) return;
-
-                const lastEntry = this.history.pop();
-                this.state = lastEntry.state;
-                this.notifyListeners({ type: 'UNDO', payload: lastEntry.action });
-
-                EventBus.emit('state:undo', lastEntry);
-            }
-
-            /**
-             * Генерация уникального ID
-             */
-            generateId() {
-                return Math.random().toString(36).substr(2, 9);
-            }
-
-            /**
-             * Валидация состояния
-             */
-            validateState(state = this.state) {
-                const errors = [];
-
-                // Проверка pricing
-                if (!state.pricing || typeof state.pricing.hourlyRate !== 'number' || state.pricing.hourlyRate <= 0) {
-                    errors.push('Invalid hourly rate');
-                }
-
-                // Проверка complexity
-                if (!state.complexity) {
-                    errors.push('Missing complexity settings');
-                }
-
-                // Проверка financial
-                if (!state.financial) {
-                    errors.push('Missing financial settings');
-                }
-
+       /**
+     * Reducer для обработки actions
+     */
+    reducer(state, action) {
+        switch (action.type) {
+            case 'PRICING_UPDATE':
                 return {
-                    isValid: errors.length === 0,
-                    errors
+                    ...state,
+                    pricing: { ...state.pricing, ...action.payload }
                 };
-            }
-        }
-
-        /**
-         * Event Bus - Система событий для связи между модулями
-         */
-        class EventBusClass {
-            constructor() {
-                this.listeners = new Map();
-                this.onceListeners = new Map();
-                this.globalListeners = new Set();
-                
-                console.log('📡 EventBus initialized');
-            }
-
-            /**
-             * Подписка на событие
-             */
-            on(event, callback, context = null) {
-                if (!this.listeners.has(event)) {
-                    this.listeners.set(event, new Set());
-                }
-
-                const wrappedCallback = context ? callback.bind(context) : callback;
-                this.listeners.get(event).add(wrappedCallback);
-
-                // Возвращаем функцию отписки
-                return () => this.off(event, wrappedCallback);
-            }
-
-            /**
-             * Одноразовая подписка на событие
-             */
-            once(event, callback, context = null) {
-                const wrappedCallback = (...args) => {
-                    this.off(event, wrappedCallback);
-                    const fn = context ? callback.bind(context) : callback;
-                    return fn(...args);
-                };
-
-                return this.on(event, wrappedCallback);
-            }
-
-            /**
-             * Отписка от события
-             */
-            off(event, callback) {
-                if (this.listeners.has(event)) {
-                    this.listeners.get(event).delete(callback);
-                    
-                    if (this.listeners.get(event).size === 0) {
-                        this.listeners.delete(event);
-                    }
-                }
-            }
-
-            /**
-             * Испускание события
-             */
-            emit(event, data = null) {
-                try {
-                    console.log(`📡 Emitting event: ${event}`, data);
-
-                    // Уведомляем конкретных слушателей
-                    if (this.listeners.has(event)) {
-                        this.listeners.get(event).forEach(callback => {
-                            try {
-                                callback(data, event);
-                            } catch (error) {
-                                ErrorHandler.handleError(error, {
-                                    context: 'EventBus.emit',
-                                    event,
-                                    callback: callback.name
-                                });
-                            }
-                        });
-                    }
-
-                    // Уведомляем глобальных слушателей
-                    this.globalListeners.forEach(callback => {
-                        try {
-                            callback(event, data);
-                        } catch (error) {
-                            ErrorHandler.handleError(error, {
-                                context: 'EventBus.emit.global',
-                                event,
-                                callback: callback.name
-                            });
-                        }
-                    });
-
-                } catch (error) {
-                    ErrorHandler.handleError(error, {
-                        context: 'EventBus.emit',
-                        event
-                    });
-                }
-            }
-
-            /**
-             * Подписка на все события (для отладки)
-             */
-            onAll(callback) {
-                this.globalListeners.add(callback);
-                return () => this.globalListeners.delete(callback);
-            }
-
-            /**
-             * Очистка всех подписок
-             */
-            clear() {
-                this.listeners.clear();
-                this.onceListeners.clear();
-                this.globalListeners.clear();
-            }
-
-            /**
-             * Получение информации о подписках
-             */
-            getStats() {
+            case 'COMPLEXITY_UPDATE':
                 return {
-                    events: Array.from(this.listeners.keys()),
-                    totalListeners: Array.from(this.listeners.values())
-                        .reduce((sum, set) => sum + set.size, 0),
-                    globalListeners: this.globalListeners.size
+                    ...state,
+                    complexity: { ...state.complexity, ...action.payload }
                 };
-            }
+            case 'FINANCIAL_UPDATE':
+                return {
+                    ...state,
+                    financial: { ...state.financial, ...action.payload }
+                };
+            case 'PRESET_UPDATE':
+                return {
+                    ...state,
+                    presets: {
+                        ...state.presets,
+                        [action.payload.presetType]: action.payload.data
+                    }
+                };
+            case 'RESULTS_UPDATE':
+                return {
+                    ...state,
+                    results: { ...state.results, ...action.payload }
+                };
+            case 'STATE_RESET':
+                return this.getInitialState();
+            default:
+                return state;
         }
+    }
+
+
+
+    /**
+     * Подписка на изменения состояния
+     */
+    subscribe(listener) {
+        this.listeners.add(listener);
+        return () => this.listeners.delete(listener);
+    }
+
+    /**
+     * Уведомление подписчиков
+     */
+    notifyListeners(action) {
+        this.listeners.forEach(listener => {
+            try {
+                listener(this.state, action);
+            } catch (error) {
+                console.error('Listener error:', error);
+            }
+        });
+    }
+
+    /**
+     * Добавление в историю
+     */
+    addToHistory(action, prevState) {
+        this.history.push({
+            action,
+            prevState,
+            timestamp: Date.now()
+        });
+
+        if (this.history.length > this.maxHistorySize) {
+            this.history = this.history.slice(-this.maxHistorySize);
+        }
+    }
+
+    /**
+     * Генерация ID
+     */
+    generateId() {
+        return Math.random().toString(36).substr(2, 9);
+    }
+
+    /**
+     * Получение состояния
+     */
+    getState() {
+        return this.state;
+    }
 
         /**
          * Error Handler - Обработка ошибок и уведомления
@@ -1964,7 +1825,9 @@ kbd {
                 this.showNotification(errorInfo);
 
                 // Отправляем событие
-                EventBus.emit('error:occurred', errorInfo);
+                if (window.EventBus) {
+    window.EventBus.emit('error:occurred', errorInfo);
+}
 
                 return errorInfo;
             }
@@ -2421,27 +2284,13 @@ kbd {
             getActiveLoadings() {
                 return Array.from(this.loadingStates.keys());
             }
+}
 
        // Создаем экземпляры всех модулей в правильном порядке
 const stateManager = new StateManager();
 const eventBus = new EventBusClass();
 const errorHandler = new ErrorHandlerClass();
 const loadingManager = new LoadingManager();
-
-// Создаем основные движки
-const pricingEngine = new PricingEngine(stateManager, eventBus, errorHandler);
-const presetManager = new PresetManager(stateManager, eventBus, errorHandler);
-const componentManager = new ComponentManager(stateManager, eventBus, errorHandler);
-
-// Создаем UI и финансовые модули
-const uiManager = new UIManager(stateManager, eventBus, errorHandler, pricingEngine, presetManager, componentManager);
-const financialControls = new FinancialControls(stateManager, eventBus, errorHandler);
-const resultsPanel = new ResultsPanel(stateManager, eventBus, errorHandler);
-
-// Создаем продвинутые модули
-const storageManager = new StorageManager(stateManager, eventBus, errorHandler);
-const exportManager = new ExportManager(stateManager, eventBus, errorHandler);
-const templateSystem = new TemplateSystem(stateManager, eventBus, errorHandler, presetManager, componentManager);
 
         // Middleware для логирования
 stateManager.use((action, state) => {
@@ -2460,22 +2309,6 @@ eventBus.onAll((event, data) => {
 stateManager.subscribe((state, action) => {
     updateDevPanel(state);
 });
-
-// Устанавливаем глобальные ссылки для доступа из HTML
-window.StateManager = stateManager;
-window.EventBus = eventBus;
-window.ErrorHandler = errorHandler;
-window.LoadingManager = loadingManager;
-window.PricingEngine = pricingEngine;
-window.PresetManager = presetManager;
-window.ComponentManager = componentManager;
-window.UIManager = uiManager;
-window.FinancialControls = financialControls;
-window.ResultsPanel = resultsPanel;
-window.StorageManager = storageManager;
-window.ExportManager = exportManager;
-window.TemplateSystem = templateSystem;
-window.Utils = Utils;
 
        /**
  * Advanced Event Handlers - Продвинутые обработчики событий
@@ -2508,50 +2341,6 @@ document.addEventListener('input', (e) => {
         });
     }
 });
-
-// Функция инициализации модулей
-function initializeModules() {
-    try {
-        // Проверяем, что все базовые классы загружены
-        if (typeof PricingEngine === 'undefined') {
-            console.error('PricingEngine not loaded');
-            return false;
-        }
-        if (typeof PresetManager === 'undefined') {
-            console.error('PresetManager not loaded');
-            return false;
-        }
-        
-        // Создаем основные движки
-        window.pricingEngine = new PricingEngine(stateManager, eventBus, errorHandler);
-        window.presetManager = new PresetManager(stateManager, eventBus, errorHandler);
-        window.componentManager = new ComponentManager(stateManager, eventBus, errorHandler);
-
-        // Создаем UI и финансовые модули
-        window.uiManager = new UIManager(stateManager, eventBus, errorHandler, window.pricingEngine, window.presetManager, window.componentManager);
-        window.financialControls = new FinancialControls(stateManager, eventBus, errorHandler);
-        window.resultsPanel = new ResultsPanel(stateManager, eventBus, errorHandler);
-
-        // Создаем продвинутые модули
-        window.storageManager = new StorageManager(stateManager, eventBus, errorHandler);
-        window.exportManager = new ExportManager(stateManager, eventBus, errorHandler);
-        window.templateSystem = new TemplateSystem(stateManager, eventBus, errorHandler, window.presetManager, window.componentManager);
-
-        return true;
-    } catch (error) {
-        console.error('Failed to initialize modules:', error);
-        return false;
-    }
-}
-
-// Запускаем инициализацию после загрузки всех скриптов
-setTimeout(() => {
-    if (initializeModules()) {
-        console.log('All modules initialized successfully');
-    } else {
-        console.error('Module initialization failed');
-    }
-}, 100);
 
 // Обработка событий финансовых настроек
 document.addEventListener('change', (e) => {
@@ -3503,51 +3292,7 @@ window.testErrorHandler = function() {
             
             return results;
         };
-
-window.addEventListener('DOMContentLoaded', () => {
-    // Функция проверки готовности всех модулей
-    function checkModulesReady() {
-        const modules = [
-            'StateManager', 'EventBus', 'ErrorHandler', 
-            'PricingEngine', 'PresetManager', 'ComponentManager',
-            'TemplateSystem', 'StorageManager', 'ExportManager'
-        ];
-        
-        const ready = modules.every(moduleName => 
-            window[moduleName] && typeof window[moduleName] === 'object'
-        );
-        
-        return ready;
-    }
-    
-    // Ожидаем готовности модулей
-    function waitForModules() {
-        if (checkModulesReady()) {
-            console.log('🚀 All modules ready, starting workflow test...');
-            testFullWorkflow();
-        } else {
-            console.log('⏳ Waiting for modules to initialize...');
-            setTimeout(waitForModules, 500);
-        }
-    }
-    
-    // Начинаем проверку через 1 секунду после загрузки DOM
-    setTimeout(waitForModules, 1000);
-});
-
-// Автозапуск тестирования при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-    // Проверяем модули через некоторое время
-    setTimeout(() => {
-        if (window.testFullWorkflow && typeof window.testFullWorkflow === 'function') {
-            console.log('🚀 Starting workflow test...');
-            window.testFullWorkflow();
-        } else {
-            console.log('⏳ Test functions not ready yet');
-        }
-    }, 2000);
-});
-        
+       
     </script>
 
     <script>
@@ -4670,9 +4415,7 @@ if (typeof module !== 'undefined' && module.exports) {
     window.PricingEngine = PricingEngine;
 }
         }
-    </script>
 
-    <script>
 /**
  * PresetManager.js - Управление пресетами
  * Отвечает за логику работы с готовыми пакетами услуг
@@ -5791,9 +5534,7 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof window !== 'undefined') {
     window.PresetManager = PresetManager;
 }
-    </script>
 
-    <script>
         /**
  * ComponentManager.js - Управление компонентами и услугами
  * Отвечает за логику работы с отдельными компонентами, услугами и кастомными элементами
@@ -7176,9 +6917,7 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof window !== 'undefined') {
     window.ComponentManager = ComponentManager;
 }
-    </script>
 
-    <script>
         /**
  * UIManager.js - Управление интерфейсом
  * Отвечает за рендеринг, обновление и взаимодействие с пользовательским интерфейсом
@@ -8628,9 +8367,7 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof window !== 'undefined') {
     window.UIManager = UIManager;
 }
-    </script>
 
-    <script>
         /**
  * FinancialControls.js - Финансовые настройки
  * Отвечает за управление скидками, налогами, правками и финансовыми расчетами
@@ -10111,9 +9848,7 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof window !== 'undefined') {
     window.FinancialControls = FinancialControls;
 }
-    </script>
 
-    <script>
         /**
  * ResultsPanel.js - Панель результатов
  * Отвечает за отображение итогов расчета, детализации и экспорт данных
@@ -11266,60 +11001,6 @@ class ResultsPanel {
         };
     }
 
-    /**
-     * Генерация шаблона письма
-     */
-    generateEmailTemplate(options) {
-        const state = this.state.getState();
-        const { results } = state;
-
-        let template = `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>${options.subject}</title>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .email-container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { border-bottom: 2px solid #4f46e5; padding-bottom: 20px; margin-bottom: 20px; }
-        .results-summary { background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .cost-highlight { font-size: 24px; font-weight: bold; color: #4f46e5; }
-        .footer { border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 30px; font-size: 14px; color: #6b7280; }
-    </style>
-</head>
-<body>
-    <div class="email-container">
-        <div class="header">
-            <h1>Расчет стоимости методических услуг</h1>
-            <p>Дата: ${new Date().toLocaleDateString('ru-RU')}</p>
-        </div>
-        
-        ${options.greeting === 'formal' ? 
-            '<p>Уважаемый клиент!</p>' : 
-            '<p>Здравствуйте!</p>'}
-        
-        <p>Подготовил для Вас расчет стоимости методических услуг согласно техническому заданию.</p>
-        
-        <div class="results-summary">
-            <h2>Итоговая стоимость</h2>
-            <div class="cost-highlight">${this.formatCurrency(results.totalCost)}</div>
-            <p>Общее время выполнения: ${this.formatHours(results.totalHours)}</p>
-        </div>
-        
-        ${this.generateEmailBreakdown(state)}
-        
-        <p>Стоимость действительна в течение 30 дней с момента отправки.</p>
-        <p>Готов обсудить детали и ответить на вопросы.</p>
-        
-        ${options.signature ? this.generateEmailSignature() : ''}
-    </div>
-</body>
-</html>
-        `;
-        
-        return template;
-    }
 
     /**
      * Генерация детализации для письма
@@ -11691,53 +11372,6 @@ class ResultsPanel {
         printWindow.print();
     }
 
-    /**
-     * Генерация контента для печати
-     */
-    generatePrintContent() {
-        const state = this.state.getState();
-        
-        return `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Расчет стоимости методических услуг</title>
-    <style>
-        body { font-family: Arial, sans-serif; font-size: 12px; line-height: 1.4; }
-        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
-        .summary { background: #f5f5f5; padding: 15px; margin: 15px 0; }
-        .breakdown { margin: 20px 0; }
-        .section { margin-bottom: 15px; }
-        .section-title { font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-        .item { display: flex; justify-content: space-between; padding: 2px 0; }
-        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-        td, th { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #f0f0f0; }
-        @media print { .no-print { display: none; } }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>Расчет стоимости методических услуг</h1>
-        <p>Дата: ${new Date().toLocaleDateString('ru-RU')}</p>
-    </div>
-    
-    <div class="summary">
-        <h2>Итоговые показатели</h2>
-        <p><strong>Общая стоимость:</strong> ${this.formatCurrency(state.results.totalCost)}</p>
-        <p><strong>Время выполнения:</strong> ${this.formatHours(state.results.totalHours)}</p>
-    </div>
-    
-    ${this.generatePrintBreakdown(state)}
-    
-    <div class="footer" style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px; font-size: 10px;">
-        <p>Расчет выполнен автоматически с помощью калькулятора методических услуг v2.0</p>
-    </div>
-</body>
-</html>
-        `;
-    }
 
     /**
      * Генерация детализации для печати
@@ -11901,9 +11535,7 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof window !== 'undefined') {
     window.ResultsPanel = ResultsPanel;
 }                
-    </script>
 
-    <script>
         /**
  * StorageManager.js - Управление данными и автосохранение
  * Отвечает за сохранение/загрузку состояния, автосохранение, версионность и синхронизацию
@@ -13296,9 +12928,7 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof window !== 'undefined') {
     window.StorageManager = StorageManager;
 }
-    </script>
 
-    <script>
         /**
  * ExportManager.js - Расширенные возможности экспорта
  * Отвечает за создание документов, отчетов и интеграцию с внешними системами
@@ -14276,134 +13906,6 @@ class ExportManager {
     }
 
     /**
-     * Генерация HTML отчета
-     */
-    async generateHTML(exportData, options) {
-        try {
-            const htmlContent = this.createHTMLContent(exportData, options);
-            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
-            const filename = this.generateFilename('html', exportData);
-            
-            return {
-                success: true,
-                blob,
-                filename,
-                size: blob.size
-            };
-
-        } catch (error) {
-            return {
-                success: false,
-                error: error.message
-            };
-        }
-    }
-
-    /**
-     * Создание HTML контента
-     */
-    createHTMLContent(exportData, options) {
-        let html = `<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Расчет стоимости методических услуг</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
-        .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 20px; }
-        .summary { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 8px; }
-        .section { margin: 30px 0; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background: #f2f2f2; font-weight: bold; }
-        .total { font-size: 1.2em; font-weight: bold; color: #2c5282; }
-        .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 0.9em; color: #666; }
-        ${options.responsive ? '@media (max-width: 768px) { body { margin: 20px; } table { font-size: 0.9em; } }' : ''}
-        ${options.printable ? '@media print { .no-print { display: none; } }' : ''}
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>РАСЧЕТ СТОИМОСТИ МЕТОДИЧЕСКИХ УСЛУГ</h1>
-        <p>Дата создания: ${exportData.formatted.exportDate}</p>
-    </div>
-    
-    <div class="summary">
-        <h2>Итоговые показатели</h2>
-        <div class="total">Общая стоимость: ${exportData.formatted.totalCost}</div>
-        <p>Время выполнения: ${exportData.formatted.totalHours}</p>
-        <p>Эффективная ставка: ${exportData.formatted.effectiveRate}</p>
-    </div>`;
-
-        if (exportData.composition.length > 0) {
-            html += `
-    <div class="section">
-        <h2>Состав проекта</h2>
-        <table>
-            <thead>
-                <tr><th>Название</th><th>Количество</th><th>Единица</th><th>Стоимость</th></tr>
-            </thead>
-            <tbody>`;
-            
-            exportData.composition.forEach(item => {
-                html += `<tr>
-                    <td>${item.name}</td>
-                    <td>${item.quantity}</td>
-                    <td>${item.unit}</td>
-                    <td>${this.formatters.currency(item.price)}</td>
-                </tr>`;
-            });
-            
-            html += `
-            </tbody>
-        </table>
-    </div>`;
-        }
-
-        if (exportData.breakdown.sections.length > 0) {
-            html += `
-    <div class="section">
-        <h2>Детализация</h2>`;
-        
-            exportData.breakdown.sections.forEach(section => {
-                html += `
-        <h3>${section.name}</h3>
-        <table>
-            <thead>
-                <tr><th>Элемент</th><th>Количество</th><th>Цена за единицу</th><th>Общая стоимость</th></tr>
-            </thead>
-            <tbody>`;
-            
-                section.items.forEach(item => {
-                    html += `<tr>
-                        <td>${item.name}</td>
-                        <td>${item.quantity}</td>
-                        <td>${this.formatters.currency(item.unitPrice)}</td>
-                        <td>${this.formatters.currency(item.totalPrice)}</td>
-                    </tr>`;
-                });
-                
-                html += `
-            </tbody>
-        </table>`;
-            });
-            
-            html += `</div>`;
-        }
-
-        html += `
-    <div class="footer">
-        <p>Документ создан с помощью Калькулятора методических услуг v2.0</p>
-        <p>Время создания: ${exportData.formatted.exportTime}</p>
-    </div>
-</body>
-</html>`;
-
-        return html;
-    }
-
-    /**
      * Массовый экспорт
      */
     async bulkExport(data) {
@@ -15275,9 +14777,7 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof window !== 'undefined') {
     window.ExportManager = ExportManager;
 }
-    </script>
 
-    <script>
         /**
  * TemplateSystem.js - Система готовых шаблонов проектов
  * Отвечает за управление, создание и применение шаблонов расчетов
@@ -17003,6 +16503,65 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof window !== 'undefined') {
     window.TemplateSystem = TemplateSystem;
 }
+    
+       // Даем время загрузиться всем модулям, затем инициализируем
+setTimeout(() => {
+    console.log('🚀 Starting final initialization...');
+    
+    try {
+        // Проверяем, что базовые модули доступны
+        if (!stateManager || !eventBus || !errorHandler) {
+            throw new Error('Base modules not initialized');
+        }
+
+        // Устанавливаем глобальные ссылки на базовые модули
+        window.StateManager = stateManager;
+        window.EventBus = eventBus;
+        window.ErrorHandler = errorHandler;
+        window.LoadingManager = loadingManager;
+
+        console.log('✅ Base modules set to window');
+
+        // Создаем основные движки
+        window.PricingEngine = new PricingEngine(stateManager, eventBus, errorHandler);
+        console.log('✅ PricingEngine created');
+
+        window.PresetManager = new PresetManager(stateManager, eventBus, errorHandler);
+        console.log('✅ PresetManager created');
+
+        window.ComponentManager = new ComponentManager(stateManager, eventBus, errorHandler);
+        console.log('✅ ComponentManager created');
+
+        // Создаем UI и финансовые модули
+        window.UIManager = new UIManager(stateManager, eventBus, errorHandler, window.PricingEngine, window.PresetManager, window.ComponentManager);
+        console.log('✅ UIManager created');
+
+        window.FinancialControls = new FinancialControls(stateManager, eventBus, errorHandler);
+        console.log('✅ FinancialControls created');
+
+        window.ResultsPanel = new ResultsPanel(stateManager, eventBus, errorHandler);
+        console.log('✅ ResultsPanel created');
+
+        // Создаем продвинутые модули
+        window.StorageManager = new StorageManager(stateManager, eventBus, errorHandler);
+        console.log('✅ StorageManager created');
+
+        window.ExportManager = new ExportManager(stateManager, eventBus, errorHandler);
+        console.log('✅ ExportManager created');
+
+        window.TemplateSystem = new TemplateSystem(stateManager, eventBus, errorHandler, window.PresetManager, window.ComponentManager);
+        console.log('✅ TemplateSystem created');
+
+        console.log('✅ All modules initialized successfully!');
+        
+        // Показываем уведомление об успешной инициализации
+        window.ErrorHandler.showSuccess('Калькулятор готов к работе!');
+        
+    } catch (error) {
+        console.error('❌ Failed to initialize modules:', error);
+        alert('Ошибка инициализации калькулятора: ' + error.message);
+    }
+}, 200); // Увеличили время ожидания
     </script>
         
 </body>
