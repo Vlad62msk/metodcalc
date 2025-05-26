@@ -2666,18 +2666,16 @@ function hideTooltip(tooltipId) {
 
 // Функция для безопасного получения значения
     function safeGetValue(id, defaultValue = 0) {
-        const element = safeGetElement(id);
-        if (!element) return defaultValue;
-        
-        // Для селектора calculationMode возвращаем строку, а не число
-        if (id === 'calculationMode') {
-            console.log('Getting calculationMode value:', element.value);
-            return element.value;
-        }
-        
-        const value = parseFloat(element.value);
-        return isNaN(value) ? defaultValue : value;
-    }
+    const element = safeGetElement(id);
+    if (!element) return defaultValue;
+    
+    const value = parseFloat(element.value);
+    // Проверяем на валидность и разумные пределы
+    if (isNaN(value) || value < 0) return defaultValue;
+    if (value > 100000) return defaultValue; // Защита от экстремальных значений
+    
+    return value;
+}
 
 // Система валидации и предупреждений
     function showWarning(message, type = 'warning') {
@@ -2874,8 +2872,8 @@ function updateCalculationInfo() {
     calculateCost();
 }
 	function calculateCost() {
-      const hourlyRate = safeGetValue('hourlyRate', 220);
-		let complexityBonus = 0; // Объявляем в начале функции
+    const hourlyRate = safeGetValue('hourlyRate', 220);
+    let complexityBonus = 0; // Инициализируем сразу
      const methodistRole = safeGetValue('methodistRole', 1.0);
         const domainKnowledge = safeGetValue('domainKnowledge', 1.0);
         const projectType = safeGetValue('projectType', 1.0);
@@ -2913,15 +2911,15 @@ function updateCalculationInfo() {
                 cost = pricePerUnit * count;
                 adjustedHours = cost / hourlyRate; // Примерное время для отчетности
             } else {
-                // Почасовой расчет (как было)
+                // Почасовой расчет
                 const durationFactor = presetDuration / presets[presetType].defaultDuration;
                 let baseHours = 0;
-
+                
                 presets[presetType].components.forEach(componentId => {
                     const hours = safeGetValue(componentId + 'Hours', components[componentId]?.defaultHours || 1);
                     baseHours += hours;
                 });
-
+                
                 const complexityMultiplier = calculateAdaptiveMultiplier(domainKnowledge, projectType, contentComplexity, urgency, methodistRole);
                 const volumeDiscount = getVolumeDiscount(count);
                 adjustedHours = baseHours * durationFactor * complexityMultiplier * qualityLevel * volumeDiscount;
@@ -3074,7 +3072,6 @@ const totalHours = totalContentHours + totalAssessmentHours + totalServiceHours;
         updateIndividualComponentPrices();
 
         // Обновление интерфейса
-        console.log('Financial data:', { subtotal, discountAmount, afterDiscount, taxAmount, discountRate: safeGetValue('discountRate', 0), taxRate: safeGetValue('taxRate', 13) });
         updateResults(totalCost, totalHours, componentCosts, assessmentCosts, serviceCosts, activePresets, revisionFactor, clientType, subtotal, discountAmount, afterDiscount, taxAmount, complexityBonus, pricingMethod);
         
         // Запускаем валидацию после обновления результатов
@@ -3223,11 +3220,6 @@ if (componentCosts.length > 0) {
             const discountRate = safeGetValue('discountRate', 0);
             const taxRate = safeGetValue('taxRate', 13);
             const showTaxSeparately = safeGetElement('showTaxSeparately')?.checked || false;
-
-// Убеждаемся что complexityBonus определен
-if (typeof complexityBonus === 'undefined') {
-    complexityBonus = 0;
-}
 		
 // Показываем надбавку за сложность ТОЛЬКО для фиксированных цен
             if (pricingMethod === 'fixed' && complexityBonus > 0) {
@@ -3307,19 +3299,27 @@ if (typeof complexityBonus === 'undefined') {
                 }
             });
         }
-        basicInputs.forEach(inputId => {
-            const element = safeGetElement(inputId);
-            if (element) {
-                element.addEventListener('input', () => {
-    updateCalculationInfo();
-    calculateCost();
+       basicInputs.forEach(inputId => {
+    const element = safeGetElement(inputId);
+    if (element) {
+        // Для чекбоксов и селектов достаточно change
+        if (element.type === 'checkbox' || element.tagName === 'SELECT') {
+            element.addEventListener('change', () => {
+                updateCalculationInfo();
+                calculateCost();
+            });
+        } else {
+            // Для числовых полей - и input и change
+            element.addEventListener('input', () => {
+                calculateCost();
+            });
+            element.addEventListener('change', () => {
+                updateCalculationInfo();
+                calculateCost();
+            });
+        }
+    }
 });
-element.addEventListener('change', () => {
-    updateCalculationInfo();
-    calculateCost();
-});
-            }
-        });
 
 // Обработчики для полей фиксированных цен
         Object.keys(fixedPrices).forEach(presetType => {
