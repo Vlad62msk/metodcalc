@@ -2425,96 +2425,27 @@ function calculateAdaptiveMultiplier(domain, project, complexity, urgency, role)
 let customServices = [];
 let customServiceCounter = 0;
 
-// Отслеживание автоматически активированных услуг (только услуги, не компоненты!)
-let autoActivatedServices = new Set();
+// Автовключения отключены для упрощения логики
 
-// Автоматическая активация услуг
+// Автоматическая активация услуг (отключена)
 function handleServiceAutoActivation() {
-    const domainKnowledge = safeGetValue('domainKnowledge', 1.0);
-    const projectType = safeGetValue('projectType', 1.0);
-    
-    // Проверяем пресеты с видеоуроками
-    const videoLessonCount = parseInt(safeGetValue('videoLessonPreset', 0));
-    
-    // Логика автоактивации услуг
-    if (projectType === 1.0) {
-        // Новая программа по моей методике → Исследование + Методические артефакты
-        activateService('research', true);
-        activateService('methodology', true);
-    } else {
-        // Доработка или чужая программа → Методический аудит
-        activateService('audit', true);
-        // Убираем исследование и методические артефакты если они были автоактивированы
-        deactivateService('research');
-        deactivateService('methodology');
-    }
-    
-    // Автоактивация подготовки спикера для видеоуроков
-    if (videoLessonCount > 0) {
-        activateService('speakerPrep', true);
-    } else {
-        deactivateService('speakerPrep');
-    }
-    
+    // Автовключения отключены - пользователь сам выбирает нужные услуги
     calculateCost();
 }
 
 function activateService(serviceId, isAuto) {
-    const checkbox = safeGetElement(serviceId);
-    if (!checkbox) return;
-    
-    const element = checkbox.closest('.service-item');
-    if (!element) return;
-    
-    const quantityGroups = element.querySelectorAll('.quantity-input-group');
-
-    if (!checkbox.checked) {
-        checkbox.checked = true;
-        if (isAuto) {
-            element.classList.add('auto-selected');
-            element.classList.remove('selected');
-            autoActivatedServices.add(serviceId);
-            updateAutoLabel(element, true);
-        } else {
-            element.classList.add('selected');
-            element.classList.remove('auto-selected');
-        }
-        quantityGroups.forEach(group => group.classList.add('visible'));
-    }
+    // Функция оставлена для совместимости, но автовключения отключены
+    return;
 }
 
 function deactivateService(serviceId) {
-    if (!autoActivatedServices.has(serviceId)) return;
-    
-    const checkbox = safeGetElement(serviceId);
-    if (!checkbox) return;
-    
-    const element = checkbox.closest('.service-item');
-    if (!element) return;
-    
-    const quantityGroups = element.querySelectorAll('.quantity-input-group');
-
-    checkbox.checked = false;
-    element.classList.remove('auto-selected', 'selected');
-    autoActivatedServices.delete(serviceId);
-    updateAutoLabel(element, false);
-    quantityGroups.forEach(group => group.classList.remove('visible'));
+    // Функция оставлена для совместимости, но автовключения отключены
+    return;
 }
 
 function updateAutoLabel(element, isAuto) {
-    const title = element.querySelector('.service-title');
-    if (!title) return;
-    
-    let label = title.querySelector('.auto-selected-label');
-
-    if (isAuto && !label) {
-        label = document.createElement('span');
-        label.className = 'auto-selected-label';
-        label.textContent = 'АВТО';
-        title.appendChild(label);
-    } else if (!isAuto && label) {
-        label.remove();
-    }
+    // Автолейблы отключены
+    return;
 }
 
 // Функции для кастомных услуг
@@ -2932,20 +2863,13 @@ function updateCalculationInfo() {
     checkbox.checked = !checkbox.checked;
 
     if (checkbox.checked) {
-        if (autoActivatedServices.has(serviceId)) {
-            element.classList.add('auto-selected');
-            element.classList.remove('selected');
-        } else {
-            element.classList.add('selected');
-            element.classList.remove('auto-selected');
-        }
-        showServiceQuantities(serviceId, true);
-    } else {
-        element.classList.remove('selected', 'auto-selected');
-        autoActivatedServices.delete(serviceId);
-        showServiceQuantities(serviceId, false);
-        updateAutoLabel(element, false);
-    }
+    element.classList.add('selected');
+    element.classList.remove('auto-selected');
+    showServiceQuantities(serviceId, true);
+} else {
+    element.classList.remove('selected', 'auto-selected');
+    showServiceQuantities(serviceId, false);
+}
 
     calculateCost();
 }
@@ -3388,11 +3312,11 @@ if (typeof complexityBonus === 'undefined') {
             if (element) {
                 element.addEventListener('input', () => {
     updateCalculationInfo();
-    handleServiceAutoActivation();
+    calculateCost();
 });
-                element.addEventListener('change', () => {
+element.addEventListener('change', () => {
     updateCalculationInfo();
-    handleServiceAutoActivation();
+    calculateCost();
 });
             }
         });
@@ -3691,7 +3615,7 @@ function initialize() {
         updateTaxDisplay();
         updateIndividualComponentPrices();
         updateCustomServicePrice();
-        handleServiceAutoActivation();
+        calculateCost();
     }
 
     // Запуск после загрузки DOM
