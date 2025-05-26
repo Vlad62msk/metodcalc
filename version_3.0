@@ -1442,95 +1442,43 @@
   
     <script>
 
-class EventBusClass {
-    constructor() {
-        this.events = new Map();
-        this.onceEvents = new Set();
-        this.wildcardListeners = [];
-        this.stats = {
-            totalEmitted: 0,
-            totalListeners: 0
-        };
-        console.log('📡 EventBus initialized');
-    }
-
-    on(event, listener) {
-        if (!this.events.has(event)) {
-            this.events.set(event, new Set());
+// Глобальные тестовые функции - определяем их сразу
+window.testStateManager = function() {
+    console.log('🧪 Testing StateManager...');
+    if (stateManager) {
+        const state = stateManager.getState();
+        console.log('Current state:', state);
+        if (errorHandler) {
+            errorHandler.showSuccess('StateManager test completed');
         }
-        this.events.get(event).add(listener);
-        this.stats.totalListeners++;
-        return () => this.off(event, listener);
+    } else {
+        console.warn('StateManager not ready yet');
     }
+};
 
-    once(event, listener) {
-        const onceWrapper = (...args) => {
-            this.off(event, onceWrapper);
-            listener(...args);
-        };
-        this.onceEvents.add(onceWrapper);
-        return this.on(event, onceWrapper);
-    }
-
-    off(event, listener) {
-        if (this.events.has(event)) {
-            this.events.get(event).delete(listener);
-            this.stats.totalListeners--;
-            if (this.events.get(event).size === 0) {
-                this.events.delete(event);
-            }
+window.testEventBus = function() {
+    console.log('🧪 Testing EventBus...');
+    if (eventBus) {
+        eventBus.emit('test-event', { message: 'Test successful' });
+        if (errorHandler) {
+            errorHandler.showSuccess('EventBus test completed');
         }
+    } else {
+        console.warn('EventBus not ready yet');
     }
+};
 
-    emit(event, data) {
-        this.stats.totalEmitted++;
-        
-        if (this.events.has(event)) {
-            this.events.get(event).forEach(listener => {
-                try {
-                    listener(data);
-                } catch (error) {
-                    console.error(`Event listener error for ${event}:`, error);
-                }
-            });
-        }
-
-        this.wildcardListeners.forEach(listener => {
-            try {
-                listener(event, data);
-            } catch (error) {
-                console.error(`Wildcard listener error:`, error);
-            }
-        });
+window.testErrorHandler = function() {
+    console.log('🧪 Testing ErrorHandler...');
+    if (errorHandler) {
+        errorHandler.showInfo('Test notification from ErrorHandler');
+        errorHandler.showSuccess('ErrorHandler test completed');
+    } else {
+        console.warn('ErrorHandler not ready yet');
     }
+};
 
-    onAll(listener) {
-        this.wildcardListeners.push(listener);
-        return () => {
-            const index = this.wildcardListeners.indexOf(listener);
-            if (index > -1) {
-                this.wildcardListeners.splice(index, 1);
-            }
-        };
-    }
-
-    getStats() {
-        return {
-            ...this.stats,
-            eventTypes: this.events.size,
-            wildcardListeners: this.wildcardListeners.length
-        };
-    }
-
-    clear() {
-        this.events.clear();
-        this.wildcardListeners = [];
-        this.onceEvents.clear();
-        this.stats = { totalEmitted: 0, totalListeners: 0 };
-    }
-}
-
-        /**
+       /**
          * State Manager - Централизованное управление состоянием
          * Реализует паттерн Redux/Flux с immutable state
          */
@@ -1621,6 +1569,160 @@ class EventBusClass {
                 };
             }
 
+/**
+ * EventBusClass - Система событий для связи между модулями
+ */
+class EventBusClass {
+    constructor() {
+        this.events = new Map();
+        this.onceEvents = new Set();
+        this.wildcardListeners = [];
+        this.stats = {
+            totalEmitted: 0,
+            totalListeners: 0
+        };
+        console.log('📡 EventBus initialized');
+    }
+
+    on(event, listener) {
+        if (!this.events.has(event)) {
+            this.events.set(event, new Set());
+        }
+        this.events.get(event).add(listener);
+        this.stats.totalListeners++;
+        return () => this.off(event, listener);
+    }
+
+    once(event, listener) {
+        const onceWrapper = (...args) => {
+            this.off(event, onceWrapper);
+            listener(...args);
+        };
+        this.onceEvents.add(onceWrapper);
+        return this.on(event, onceWrapper);
+    }
+
+    off(event, listener) {
+        if (this.events.has(event)) {
+            this.events.get(event).delete(listener);
+            this.stats.totalListeners--;
+            if (this.events.get(event).size === 0) {
+                this.events.delete(event);
+            }
+        }
+    }
+
+    emit(event, data) {
+        this.stats.totalEmitted++;
+        
+        if (this.events.has(event)) {
+            this.events.get(event).forEach(listener => {
+                try {
+                    listener(data);
+                } catch (error) {
+                    console.error(`Event listener error for ${event}:`, error);
+                }
+            });
+        }
+
+        this.wildcardListeners.forEach(listener => {
+            try {
+                listener(event, data);
+            } catch (error) {
+                console.error(`Wildcard listener error:`, error);
+            }
+        });
+    }
+
+    onAll(listener) {
+        this.wildcardListeners.push(listener);
+        return () => {
+            const index = this.wildcardListeners.indexOf(listener);
+            if (index > -1) {
+                this.wildcardListeners.splice(index, 1);
+            }
+        };
+    }
+
+    getStats() {
+        return {
+            ...this.stats,
+            eventTypes: this.events.size,
+            wildcardListeners: this.wildcardListeners.length
+        };
+    }
+
+    clear() {
+        this.events.clear();
+        this.wildcardListeners = [];
+        this.onceEvents.clear();
+        this.stats = { totalEmitted: 0, totalListeners: 0 };
+    }
+}
+
+  /**
+         * Error Handler - Обработка ошибок и уведомления
+         */
+        class ErrorHandler {
+            constructor() {
+                this.errors = [];
+                this.maxErrors = 100;
+                this.notificationContainer = null;
+                this.currentNotifications = new Map();
+                
+                this.init();
+                console.log('🚨 ErrorHandler initialized');
+            }
+
+            init() {
+                // Обработка глобальных ошибок
+                window.addEventListener('error', (event) => {
+                    this.handleError(event.error, {
+                        context: 'Global error',
+                        filename: event.filename,
+                        lineno: event.lineno,
+                        colno: event.colno
+                    });
+                });
+
+                // Обработка неперехваченных промисов
+                window.addEventListener('unhandledrejection', (event) => {
+                    this.handleError(event.reason, {
+                        context: 'Unhandled promise rejection'
+                    });
+                });
+
+                // Создаем контейнер для уведомлений
+                this.createNotificationContainer();
+            }
+
+            /**
+             * Основной метод обработки ошибок
+             */
+            handleError(error, context = {}) {
+                const errorInfo = {
+                    id: this.generateId(),
+                    message: error?.message || String(error),
+                    stack: error?.stack,
+                    context,
+                    timestamp: Date.now(),
+                    severity: this.determineSeverity(error, context)
+                };
+
+                // Добавляем в лог
+                this.addError(errorInfo);
+
+                // Логируем в консоль
+                console.error('💥 Error handled:', errorInfo);
+
+                // Показываем уведомление пользователю
+                this.showNotification(errorInfo);
+
+                // Отправляем событие
+                if (eventBus) {
+                    if (eventBus) eventBus.emit('error:occurred', errorInfo);
+                }
+
             /**
              * Добавляет middleware для обработки actions
              */
@@ -1660,18 +1762,24 @@ class EventBusClass {
                     // Уведомляем подписчиков
                     this.notifyListeners(processedAction);
 
-                    EventBus.emit('state:changed', {
-                        action: processedAction,
-                        prevState,
-                        newState: this.state
-                    });
+                    if (eventBus) {
+                eventBus.emit('state:changed', {
+                    action: processedAction,
+                    prevState,
+                    newState: this.state
+                });
+            }
 
                 } catch (error) {
-                    ErrorHandler.handleError(error, {
-                        context: 'StateManager.dispatch',
-                        action: action
-                    });
-                }
+            if (errorHandler) {
+                errorHandler.handleError(error, {
+                    context: 'StateManager.dispatch',
+                    action: action
+                });
+            } else {
+                console.error('StateManager error:', error);
+            }
+        }
             }
 
        /**
@@ -1765,68 +1873,6 @@ class EventBusClass {
     getState() {
         return this.state;
     }
-
-        /**
-         * Error Handler - Обработка ошибок и уведомления
-         */
-        class ErrorHandlerClass {
-            constructor() {
-                this.errors = [];
-                this.maxErrors = 100;
-                this.notificationContainer = null;
-                this.currentNotifications = new Map();
-                
-                this.init();
-                console.log('🚨 ErrorHandler initialized');
-            }
-
-            init() {
-                // Обработка глобальных ошибок
-                window.addEventListener('error', (event) => {
-                    this.handleError(event.error, {
-                        context: 'Global error',
-                        filename: event.filename,
-                        lineno: event.lineno,
-                        colno: event.colno
-                    });
-                });
-
-                // Обработка неперехваченных промисов
-                window.addEventListener('unhandledrejection', (event) => {
-                    this.handleError(event.reason, {
-                        context: 'Unhandled promise rejection'
-                    });
-                });
-
-                // Создаем контейнер для уведомлений
-                this.createNotificationContainer();
-            }
-
-            /**
-             * Основной метод обработки ошибок
-             */
-            handleError(error, context = {}) {
-                const errorInfo = {
-                    id: this.generateId(),
-                    message: error?.message || String(error),
-                    stack: error?.stack,
-                    context,
-                    timestamp: Date.now(),
-                    severity: this.determineSeverity(error, context)
-                };
-
-                // Добавляем в лог
-                this.addError(errorInfo);
-
-                // Логируем в консоль
-                console.error('💥 Error handled:', errorInfo);
-
-                // Показываем уведомление пользователю
-                this.showNotification(errorInfo);
-
-                // Отправляем событие
-                if (window.EventBus) {
-    window.EventBus.emit('error:occurred', errorInfo);
 }
 
             /**
@@ -1863,7 +1909,7 @@ class EventBusClass {
                         <div class="notification-title">
                             ${icon} ${title}
                         </div>
-                        <button class="notification-close" onclick="ErrorHandler.hideNotification('${errorInfo.id}')">&times;</button>
+                        <button class="notification-close" onclick="if(window.ErrorHandler) window.ErrorHandler.hideNotification('${errorInfo.id}'); else this.parentElement.parentElement.remove();">&times;</button>
                     </div>
                     <div class="notification-message">${this.formatErrorMessage(errorInfo)}</div>
                 `;
@@ -2283,17 +2329,41 @@ class EventBusClass {
             }
 }
 
-       // Создаем экземпляры всех модулей в правильном порядке
-const stateManager = new StateManager();
-const eventBus = new EventBusClass();
-const errorHandler = new ErrorHandlerClass();
-const loadingManager = new LoadingManager();
+// Создаем базовые модули только один раз
+let stateManager, eventBus, errorHandler, loadingManager;
 
-        // Middleware для логирования
-stateManager.use((action, state) => {
-    console.log('🔄 State change:', action.type, 'Current state size:', JSON.stringify(state).length);
-    return action;
-});
+// Проверяем, не созданы ли уже модули
+if (!window.StateManager || !window.EventBus || !window.ErrorHandler) {
+    stateManager = new StateManager();
+    eventBus = new EventBusClass();
+    errorHandler = new ErrorHandler();
+    loadingManager = new LoadingManager();
+    
+    // Сразу делаем их глобально доступными
+    window.StateManager = stateManager;
+    window.EventBus = eventBus; 
+    window.ErrorHandler = errorHandler;
+    window.LoadingManager = loadingManager;
+} else {
+    // Используем уже созданные экземпляры
+    stateManager = window.StateManager;
+    eventBus = window.EventBus;
+    errorHandler = window.ErrorHandler;
+    loadingManager = window.LoadingManager;
+}
+
+// Проверяем, что все базовые модули созданы успешно
+if (!stateManager || !eventBus || !errorHandler || !loadingManager) {
+    console.error('❌ Не удалось создать базовые модули');
+    alert('Ошибка инициализации калькулятора');
+}
+
+// Middleware для логирования (добавляем после создания всех модулей)
+// Пока что отключаем, чтобы не было ошибок
+// stateManager.use((action, state) => {
+//     console.log('🔄 State change:', action.type, 'Current state size:', JSON.stringify(state).length);
+//     return action;
+// });
 
 // Глобальные слушатели для отладки
 eventBus.onAll((event, data) => {
@@ -2302,10 +2372,50 @@ eventBus.onAll((event, data) => {
     }
 });
 
+// Функция для обновления панели разработчика
+function updateDevPanel(state) {
+    const panel = document.getElementById('devPanel');
+    const display = document.getElementById('stateDisplay');
+    
+    if (!panel || !display) return;
+
+    const importantFields = {
+        'Метод': state.pricing?.method,
+        'Ставка': state.pricing?.hourlyRate + ' ₽/ч',
+        'Сложность': state.complexity?.projectComplexity || 'детальная',
+        'Скидка': state.financial?.discountRate + '%',
+        'Налог': state.financial?.taxRate + '%',
+        'Итого': (state.results?.totalCost || 0).toLocaleString('ru-RU') + ' ₽',
+        'Время': (state.results?.totalHours || 0) + ' ч',
+        'Элементов': countActiveElements(state),
+        'Ошибки': errorHandler ? errorHandler.getErrors().length : 0,
+        'События': (eventBus && eventBus.getStats) ? eventBus.getStats().totalListeners : 0
+    };
+
+    display.innerHTML = Object.entries(importantFields)
+        .map(([key, value]) => `
+            <div class="state-item">
+                <span class="state-key">${key}:</span>
+                <span class="state-value">${value}</span>
+            </div>
+        `).join('');
+}
+
+// Вспомогательная функция для подсчета активных элементов
+function countActiveElements(state) {
+    const presets = Object.values(state.presets || {}).reduce((sum, p) => sum + (p.count || 0), 0);
+    const components = Object.keys(state.components || {}).length;
+    const services = Object.keys(state.services || {}).length;
+    const custom = (state.customServices || []).length;
+    return presets + components + services + custom;
+}
+
 // Подписка на изменения состояния для отображения в dev panel
-stateManager.subscribe((state, action) => {
-    updateDevPanel(state);
-});
+if (stateManager) {
+    stateManager.subscribe((state, action) => {
+        updateDevPanel(state);
+    });
+}
 
        /**
  * Advanced Event Handlers - Продвинутые обработчики событий
@@ -2371,7 +2481,7 @@ document.addEventListener('click', (e) => {
     handleGlobalAction(action, params, actionButton);
 });
 
-        // Обработка событий финансовых настроек
+        // Обработка изменений в финансовых настроек
         document.addEventListener('change', (e) => {
             if (e.target.matches('[data-financial]')) {
                 const setting = e.target.dataset.financial;
@@ -2385,7 +2495,7 @@ document.addEventListener('click', (e) => {
                     value = e.target.value;
                 }
                 
-                StateManager.dispatch({
+                stateManager.dispatch({
                     type: 'FINANCIAL_UPDATE',
                     payload: { [setting]: value }
                 });
@@ -2495,13 +2605,13 @@ document.addEventListener('click', (e) => {
                     // Общие действия
                     case 'reset-all':
                         if (confirm('Сбросить все настройки? Это действие нельзя отменить.')) {
-                            StateManager.dispatch({ type: 'STATE_RESET' });
+                            if (stateManager) stateManager.dispatch({ type: 'STATE_RESET' });
                             ErrorHandler.showInfo('Все настройки сброшены');
                         }
                         break;
                         
                     case 'undo':
-                        StateManager.undo();
+                        if (stateManager && stateManager.undo) stateManager.undo();
                         break;
                         
                     case 'show-help':
@@ -3005,297 +3115,10 @@ document.addEventListener('click', (e) => {
             return EventBus.getStats().totalListeners;
         }
 
-// Тестовые функции для кнопок в интерфейсе
-window.testStateManager = function() {
-    console.log('🧪 Testing StateManager...');
-    const state = window.StateManager.getState();
-    console.log('Current state:', state);
-    window.ErrorHandler.showSuccess('StateManager test completed');
-};
-
-window.testEventBus = function() {
-    console.log('🧪 Testing EventBus...');
-    window.EventBus.emit('test-event', { message: 'Test successful' });
-    window.ErrorHandler.showSuccess('EventBus test completed');
-};
-
-window.testErrorHandler = function() {
-    console.log('🧪 Testing ErrorHandler...');
-    window.ErrorHandler.showInfo('Test notification from ErrorHandler');
-    window.ErrorHandler.showSuccess('ErrorHandler test completed');
-};
-
-       /**
-         * Полное тестирование workflow системы
-         */
-        window.testFullWorkflow = function() {
-            console.log('🧪 Testing full workflow...');
-            
-            try {
-                // 1. Применяем шаблон
-                console.log('📋 Applying template...');
-                TemplateSystem.applyTemplate('basicCourse');
-                
-                setTimeout(() => {
-                    try {
-                        // 2. Добавляем кастомную услугу
-                        console.log('⚙️ Adding custom service...');
-                        ComponentManager.addCustomService({
-                            name: 'Тестовая услуга',
-                            description: 'Для тестирования workflow',
-                            hours: 5,
-                            count: 1,
-                            pricePerUnit: 1000
-                        });
-                        
-                        setTimeout(() => {
-                            try {
-                                // 3. Экспортируем результат
-                                console.log('📄 Exporting PDF...');
-                                ExportManager.exportDocument({
-                                    format: 'pdf',
-                                    template: 'commercial',
-                                    options: {
-                                        includeDetails: true,
-                                        includeBranding: false
-                                    }
-                                });
-                                
-                                setTimeout(() => {
-                                    try {
-                                        // 4. Сохраняем как новый шаблон
-                                        console.log('💾 Saving template...');
-                                        TemplateSystem.saveCurrentAsTemplate(
-                                            'Тестовый шаблон', 
-                                            'Создан автоматически в тесте', 
-                                            'custom'
-                                        );
-                                        
-                                        setTimeout(() => {
-                                            try {
-                                                // 5. Тестируем финансовые настройки
-                                                console.log('💰 Applying financial preset...');
-                                                FinancialControls.applyFinancialPreset('corporate');
-                                                
-                                                setTimeout(() => {
-                                                    try {
-                                                        // 6. Экспортируем в разных форматах
-                                                        console.log('📊 Bulk export...');
-                                                        ExportManager.bulkExport({
-                                                            formats: ['pdf', 'excel', 'json'],
-                                                            template: 'technical'
-                                                        });
-                                                        
-                                                        setTimeout(() => {
-                                                            try {
-                                                                // 7. Сохраняем состояние
-                                                                console.log('💾 Saving state...');
-                                                                StorageManager.saveCurrentState('Тест полного workflow');
-                                                                
-                                                                setTimeout(() => {
-                                                                    try {
-                                                                        // 8. Показываем результаты
-                                                                        const state = StateManager.getState();
-                                                                        console.log('✅ Workflow test completed successfully!');
-                                                                        
-                                                                        const results = {
-                                                                            totalCost: state.results.totalCost,
-                                                                            totalHours: state.results.totalHours,
-                                                                            activePresets: Object.keys(state.presets).filter(key => state.presets[key].count > 0),
-                                                                            activeComponents: Object.keys(state.components),
-                                                                            activeServices: Object.keys(state.services),
-                                                                            customServices: state.customServices.length,
-                                                                            templateApplied: 'basicCourse',
-                                                                            financialPreset: 'corporate',
-                                                                            exportsCompleted: ['pdf', 'excel', 'json']
-                                                                        };
-                                                                        
-                                                                        console.log('📊 Final results:', results);
-                                                                        
-                                                                        ErrorHandler.showSuccess('Полный тест workflow завершен успешно!');
-                                                                        
-                                                                        // Генерируем отчет о тестировании
-                                                                        window.workflowTestResults = results;
-                                                                        
-                                                                        // Проверяем валидность результатов
-                                                                        const validation = validateWorkflowResults(results);
-                                                                        if (validation.isValid) {
-                                                                            console.log('✅ All workflow tests passed!');
-                                                                        } else {
-                                                                            console.warn('⚠️ Some workflow tests failed:', validation.errors);
-                                                                        }
-                                                                        
-                                                                    } catch (error) {
-                                                                        console.error('❌ Error in step 8:', error);
-                                                                        ErrorHandler.handleError(error, { context: 'testFullWorkflow.step8' });
-                                                                    }
-                                                                }, 500);
-                                                            } catch (error) {
-                                                                console.error('❌ Error in step 7:', error);
-                                                                ErrorHandler.handleError(error, { context: 'testFullWorkflow.step7' });
-                                                            }
-                                                        }, 1000);
-                                                    } catch (error) {
-                                                        console.error('❌ Error in step 6:', error);
-                                                        ErrorHandler.handleError(error, { context: 'testFullWorkflow.step6' });
-                                                    }
-                                                }, 500);
-                                            } catch (error) {
-                                                console.error('❌ Error in step 5:', error);
-                                                ErrorHandler.handleError(error, { context: 'testFullWorkflow.step5' });
-                                            }
-                                        }, 1000);
-                                    } catch (error) {
-                                        console.error('❌ Error in step 4:', error);
-                                        ErrorHandler.handleError(error, { context: 'testFullWorkflow.step4' });
-                                    }
-                                }, 500);
-                            } catch (error) {
-                                console.error('❌ Error in step 3:', error);
-                                ErrorHandler.handleError(error, { context: 'testFullWorkflow.step3' });
-                            }
-                        }, 1000);
-                    } catch (error) {
-                        console.error('❌ Error in step 2:', error);
-                        ErrorHandler.handleError(error, { context: 'testFullWorkflow.step2' });
-                    }
-                }, 1000);
-            } catch (error) {
-                console.error('❌ Error in step 1:', error);
-                ErrorHandler.handleError(error, { context: 'testFullWorkflow.step1' });
-            }
-        };
-
-        /**
-         * Валидация результатов workflow теста
-         */
-        function validateWorkflowResults(results) {
-            const errors = [];
-            
-            // Проверяем базовые показатели
-            if (!results.totalCost || results.totalCost <= 0) {
-                errors.push('Total cost should be greater than 0');
-            }
-            
-            if (!results.totalHours || results.totalHours <= 0) {
-                errors.push('Total hours should be greater than 0');
-            }
-            
-            // Проверяем активные элементы
-            if (results.activePresets.length === 0) {
-                errors.push('Should have active presets after applying template');
-            }
-            
-            // Проверяем кастомную услугу
-            if (results.customServices !== 1) {
-                errors.push('Should have exactly 1 custom service');
-            }
-            
-            // Проверяем шаблон
-            if (results.templateApplied !== 'basicCourse') {
-                errors.push('Template should be applied correctly');
-            }
-            
-            // Проверяем финансовый пресет
-            if (results.financialPreset !== 'corporate') {
-                errors.push('Financial preset should be applied');
-            }
-            
-            // Проверяем экспорты
-            if (!results.exportsCompleted || results.exportsCompleted.length !== 3) {
-                errors.push('Should complete 3 exports');
-            }
-            
-            return {
-                isValid: errors.length === 0,
-                errors,
-                summary: {
-                    totalTests: 7,
-                    passedTests: 7 - errors.length,
-                    failedTests: errors.length
-                }
-            };
-        }
-        
-        /**
-         * Быстрый тест отдельных компонентов
-         */
-        window.testComponents = function() {
-            console.log('🔧 Testing individual components...');
-            
-            const tests = [
-                {
-                    name: 'StateManager',
-                    test: () => {
-                        const state = StateManager.getState();
-                        return state && typeof state === 'object';
-                    }
-                },
-                {
-                    name: 'EventBus',
-                    test: () => {
-                        let eventFired = false;
-                        const unsubscribe = EventBus.on('test-event', () => eventFired = true);
-                        EventBus.emit('test-event');
-                        unsubscribe();
-                        return eventFired;
-                    }
-                },
-                {
-                    name: 'ErrorHandler',
-                    test: () => {
-                        return typeof ErrorHandler.handleError === 'function';
-                    }
-                },
-                {
-                    name: 'PricingEngine',
-                    test: () => {
-                        return typeof PricingEngine.calculateAndUpdate === 'function';
-                    }
-                },
-                {
-                    name: 'PresetManager',
-                    test: () => {
-                        return typeof PresetManager.activatePreset === 'function';
-                    }
-                },
-                {
-                    name: 'ComponentManager',
-                    test: () => {
-                        return typeof ComponentManager.toggleComponent === 'function';
-                    }
-                },
-                {
-                    name: 'TemplateSystem',
-                    test: () => {
-                        return typeof TemplateSystem.applyTemplate === 'function';
-                    }
-                }
-            ];
-            
-            const results = tests.map(({ name, test }) => {
-                try {
-                    const passed = test();
-                    console.log(passed ? `✅ ${name}` : `❌ ${name}`);
-                    return { name, passed, error: null };
-                } catch (error) {
-                    console.log(`❌ ${name}: ${error.message}`);
-                    return { name, passed: false, error: error.message };
-                }
-            });
-            
-            const passedCount = results.filter(r => r.passed).length;
-            console.log(`📊 Component tests: ${passedCount}/${tests.length} passed`);
-            
-            return results;
-        };
-       
-        /**
  /**
  * PricingEngine.js - Модуль расчета стоимости
  * Содержит всю логику ценообразования калькулятора
  */
-
 class PricingEngine {
     constructor(stateManager, eventBus, errorHandler) {
         this.state = stateManager;
@@ -4400,15 +4223,10 @@ class PricingEngine {
         
         console.log('💰 PricingEngine destroyed');
     }
-}
 
-// Экспорт для использования в других модулях
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = PricingEngine;
-} else if (typeof window !== 'undefined') {
-    window.PricingEngine = PricingEngine;
-}
-        }
+// Класс PricingEngine готов для использования
+// (экспорт не нужен, так как все в одном файле)
+
 
 /**
  * PresetManager.js - Управление пресетами
@@ -5522,12 +5340,8 @@ class PresetManager {
     }
 }
 
-// Экспорт для использования в других модулях
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = PresetManager;
-} else if (typeof window !== 'undefined') {
-    window.PresetManager = PresetManager;
-}
+// Класс PresetManager готов для использования
+// (экспорт не нужен, так как все в одном файле)
 
         /**
  * ComponentManager.js - Управление компонентами и услугами
@@ -6905,18 +6719,12 @@ class ComponentManager {
     }
 }
 
-// Экспорт для использования в других модулях
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ComponentManager;
-} else if (typeof window !== 'undefined') {
-    window.ComponentManager = ComponentManager;
-}
+// Класс ComponentManager готов для использования
 
         /**
  * UIManager.js - Управление интерфейсом
  * Отвечает за рендеринг, обновление и взаимодействие с пользовательским интерфейсом
  */
-
 class UIManager {
     constructor(stateManager, eventBus, errorHandler, pricingEngine, presetManager, componentManager) {
         this.state = stateManager;
@@ -8355,12 +8163,7 @@ class UIManager {
     }
 }
 
-// Экспорт для использования в других модулях
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = UIManager;
-} else if (typeof window !== 'undefined') {
-    window.UIManager = UIManager;
-}
+// Класс UIManager готов для использования
 
         /**
  * FinancialControls.js - Финансовые настройки
@@ -9836,12 +9639,7 @@ class FinancialControls {
     }
 }
 
-// Экспорт для использования в других модулях
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = FinancialControls;
-} else if (typeof window !== 'undefined') {
-    window.FinancialControls = FinancialControls;
-}
+// Класс FinancialControls готов для использования
 
         /**
  * ResultsPanel.js - Панель результатов
@@ -11523,12 +11321,7 @@ class ResultsPanel {
     }
 }
 
-// Экспорт для использования в других модулях
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ResultsPanel;
-} else if (typeof window !== 'undefined') {
-    window.ResultsPanel = ResultsPanel;
-}                
+// Класс ResultsPanel готов для использования                
 
         /**
  * StorageManager.js - Управление данными и автосохранение
@@ -12916,12 +12709,7 @@ class StorageManager {
     }
 }
 
-// Экспорт для использования в других модулях
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = StorageManager;
-} else if (typeof window !== 'undefined') {
-    window.StorageManager = StorageManager;
-}
+
 
         /**
  * ExportManager.js - Расширенные возможности экспорта
@@ -14765,12 +14553,7 @@ class ExportManager {
     }
 }
 
-// Экспорт для использования в других модулях
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ExportManager;
-} else if (typeof window !== 'undefined') {
-    window.ExportManager = ExportManager;
-}
+// Класс ExportManager готов для использования
 
         /**
  * TemplateSystem.js - Система готовых шаблонов проектов
@@ -16491,71 +16274,132 @@ class TemplateSystem {
     }
 }
 
-// Экспорт для использования в других модулях
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TemplateSystem;
-} else if (typeof window !== 'undefined') {
-    window.TemplateSystem = TemplateSystem;
+// Класс TemplateSystem готов для использования
+
+// Ждем, когда DOM будет готов
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeCalculator);
+} else {
+    // DOM уже загружен, запускаем с небольшой задержкой
+    setTimeout(initializeCalculator, 100);
 }
+
+function initializeCalculator() {
+    console.log('🚀 initializeCalculator called');
     
-       // Даем время загрузиться всем модулям, затем инициализируем
-setTimeout(() => {
-    console.log('🚀 Starting final initialization...');
-    
-    try {
-        // Проверяем, что базовые модули доступны
-        if (!stateManager || !eventBus || !errorHandler) {
-            throw new Error('Base modules not initialized');
+    // Показываем alert чтобы убедиться что функция вызывается
+    alert('Начинаем инициализацию калькулятора...');
+
+    // Даем время браузеру загрузить все классы, затем инициализируем
+    setTimeout(() => {
+        console.log('🚀 Starting final initialization...');
+        alert('Запускаем инициализацию модулей...');
+        
+        try {
+            // Проверяем, что базовые модули доступны
+            console.log('Checking base classes...');
+            console.log('StateManager exists:', typeof StateManager);
+            console.log('EventBusClass exists:', typeof EventBusClass);
+            console.log('ErrorHandler exists:', typeof ErrorHandler);
+            
+            if (!window.StateManager && typeof StateManager === 'undefined') {
+                throw new Error('StateManager class not found');
+            }
+            if (!window.EventBus && typeof EventBusClass === 'undefined') {
+                throw new Error('EventBusClass not found'); 
+            }
+            if (!window.ErrorHandler && typeof ErrorHandler === 'undefined') {
+                throw new Error('ErrorHandler class not found');
+            }
+
+            // Проверяем, что экземпляры созданы
+            console.log('Checking instances...');
+            console.log('stateManager exists:', typeof stateManager);
+            console.log('eventBus exists:', typeof eventBus);
+            console.log('errorHandler exists:', typeof errorHandler);
+            
+            if (!stateManager) {
+                throw new Error('stateManager instance not created');
+            }
+            if (!eventBus) {
+                throw new Error('eventBus instance not created');
+            }
+            if (!errorHandler) {
+                throw new Error('errorHandler instance not created');
+            }
+
+            console.log('✅ Base modules verified');
+            alert('Базовые модули проверены успешно!');
+
+            // Устанавливаем глобальные ссылки на базовые модули
+            window.StateManager = stateManager;
+            window.EventBus = eventBus;
+            window.ErrorHandler = errorHandler;
+            window.LoadingManager = loadingManager;
+
+            console.log('✅ Base modules set to window');
+
+            // Переопределяем тестовые функции СРАЗУ
+            window.testStateManager = function() {
+                alert('StateManager тест запущен! Проверьте консоль.');
+                console.log('🧪 Testing StateManager...');
+                try {
+                    if (stateManager) {
+                        const state = stateManager.getState();
+                        console.log('Current state:', state);
+                        alert('StateManager работает! State получен: ' + JSON.stringify(state).substring(0, 100) + '...');
+                    } else {
+                        alert('StateManager не готов');
+                    }
+                } catch (error) {
+                    console.error('StateManager test error:', error);
+                    alert('Ошибка тестирования StateManager: ' + error.message);
+                }
+            };
+
+            window.testEventBus = function() {
+                alert('EventBus тест запущен! Проверьте консоль.');
+                console.log('🧪 Testing EventBus...');
+                try {
+                    if (eventBus) {
+                        eventBus.emit('test-event', { message: 'Test successful' });
+                        alert('EventBus работает! Событие отправлено.');
+                    } else {
+                        alert('EventBus не готов');
+                    }
+                } catch (error) {
+                    console.error('EventBus test error:', error);
+                    alert('Ошибка тестирования EventBus: ' + error.message);
+                }
+            };
+
+            window.testErrorHandler = function() {
+                alert('ErrorHandler тест запущен!');
+                console.log('🧪 Testing ErrorHandler...');
+                try {
+                    if (errorHandler) {
+                        errorHandler.showInfo('Test notification from ErrorHandler');
+                        alert('ErrorHandler работает! Должно появиться уведомление.');
+                    } else {
+                        alert('ErrorHandler не готов');
+                    }
+                } catch (error) {
+                    console.error('ErrorHandler test error:', error);
+                    alert('Ошибка тестирования ErrorHandler: ' + error.message);
+                }
+            };
+
+            console.log('✅ Test functions defined');
+            alert('Тестовые функции определены! Теперь можно тестировать кнопки.');
+
+            console.log('✅ Initialization completed successfully!');
+            
+        } catch (error) {
+            console.error('❌ Failed to initialize:', error);
+            alert('Ошибка инициализации: ' + error.message);
         }
-
-        // Устанавливаем глобальные ссылки на базовые модули
-        window.StateManager = stateManager;
-        window.EventBus = eventBus;
-        window.ErrorHandler = errorHandler;
-        window.LoadingManager = loadingManager;
-
-        console.log('✅ Base modules set to window');
-
-        // Создаем основные движки
-        window.PricingEngine = new PricingEngine(stateManager, eventBus, errorHandler);
-        console.log('✅ PricingEngine created');
-
-        window.PresetManager = new PresetManager(stateManager, eventBus, errorHandler);
-        console.log('✅ PresetManager created');
-
-        window.ComponentManager = new ComponentManager(stateManager, eventBus, errorHandler);
-        console.log('✅ ComponentManager created');
-
-        // Создаем UI и финансовые модули
-        window.UIManager = new UIManager(stateManager, eventBus, errorHandler, window.PricingEngine, window.PresetManager, window.ComponentManager);
-        console.log('✅ UIManager created');
-
-        window.FinancialControls = new FinancialControls(stateManager, eventBus, errorHandler);
-        console.log('✅ FinancialControls created');
-
-        window.ResultsPanel = new ResultsPanel(stateManager, eventBus, errorHandler);
-        console.log('✅ ResultsPanel created');
-
-        // Создаем продвинутые модули
-        window.StorageManager = new StorageManager(stateManager, eventBus, errorHandler);
-        console.log('✅ StorageManager created');
-
-        window.ExportManager = new ExportManager(stateManager, eventBus, errorHandler);
-        console.log('✅ ExportManager created');
-
-        window.TemplateSystem = new TemplateSystem(stateManager, eventBus, errorHandler, window.PresetManager, window.ComponentManager);
-        console.log('✅ TemplateSystem created');
-
-        console.log('✅ All modules initialized successfully!');
-        
-        // Показываем уведомление об успешной инициализации
-        window.ErrorHandler.showSuccess('Калькулятор готов к работе!');
-        
-    } catch (error) {
-        console.error('❌ Failed to initialize modules:', error);
-        alert('Ошибка инициализации калькулятора: ' + error.message);
-    }
-}, 200); // Увеличили время ожидания
+    }, 50);
+}
     </script>
         
 </body>
