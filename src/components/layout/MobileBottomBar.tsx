@@ -29,7 +29,7 @@ export function MobileBottomBar() {
           </div>
         </div>
       )}
-      <div className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 px-4 py-3 lg:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-30 bg-white glass-solid border-t border-gray-200 px-4 py-3 lg:hidden">
         <button
           type="button"
           onClick={() => setExpanded(!expanded)}

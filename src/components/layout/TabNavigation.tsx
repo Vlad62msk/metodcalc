@@ -39,8 +39,8 @@ export function TabNavigation() {
   }, [activeTab])
 
   return (
-    <nav className="border-b border-gray-200 bg-white sticky top-[53px] z-30">
-      <div className="flex overflow-x-auto scrollbar-hide">
+    <nav className="border-b border-gray-200 bg-white glass-solid sticky top-[53px] z-30">
+      <div className="flex justify-center overflow-x-auto scrollbar-hide">
         {TABS.map((tab, idx) => (
           <button
             key={tab.key}

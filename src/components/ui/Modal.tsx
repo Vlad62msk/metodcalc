@@ -24,7 +24,7 @@ export function Modal({ open, onClose, title, children, wide }: ModalProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
       <div
-        className={`relative bg-white rounded-xl shadow-xl max-h-[90vh] overflow-y-auto ${
+        className={`relative bg-white glass-solid rounded-xl shadow-xl max-h-[90vh] overflow-y-auto ${
           wide ? 'w-[90vw] max-w-4xl' : 'w-full max-w-lg'
         } mx-4`}
       >

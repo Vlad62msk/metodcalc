@@ -29,7 +29,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Шапка */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <header className="bg-white glass-solid border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-3">
             <h1 className="text-lg font-bold text-gray-900 whitespace-nowrap">Калькулятор методиста</h1>
