@@ -3,19 +3,24 @@ import { useSettingsStore } from '@/store/useSettingsStore'
 
 const STEPS = [
   {
+    target: '[data-tour="intro"]',
+    title: 'Главная страница',
+    content: 'Здесь — обзор калькулятора и быстрый доступ к каждому шагу. Вы всегда можете вернуться сюда.',
+  },
+  {
     target: '[data-tour="step1"]',
     title: 'Шаг 1: Контекст проекта',
-    content: 'Начните с описания проекта. Параметры влияют на контекстный коэффициент, который учитывается в стоимости.',
+    content: 'Начните с описания проекта. Параметры влияют на контекстный коэффициент, который автоматически учитывается в стоимости.',
   },
   {
     target: '[data-tour="step2"]',
     title: 'Шаг 2: Состав работ',
-    content: 'Добавляйте элементы сметы вручную или из библиотеки готовых шаблонов. Группируйте связанные позиции.',
+    content: 'Добавляйте элементы сметы вручную или из библиотеки готовых шаблонов. Группируйте связанные позиции в контейнеры.',
   },
   {
     target: '[data-tour="library"]',
-    title: 'Библиотека',
-    content: 'Здесь хранятся шаблоны элементов и наборов. Добавляйте готовые блоки одним кликом.',
+    title: 'Библиотека шаблонов',
+    content: 'Здесь хранятся шаблоны элементов и наборов. Добавляйте готовые блоки одним кликом и создавайте свои.',
   },
   {
     target: '[data-tour="step3"]',
@@ -23,14 +28,9 @@ const STEPS = [
     content: 'Укажите ставку, настройте правки, скидки и налоги. Итог рассчитается автоматически.',
   },
   {
-    target: '[data-tour="sidebar"]',
-    title: 'Боковая панель',
-    content: 'Здесь всегда видна итоговая стоимость, разбивка по категориям и диагностика.',
-  },
-  {
     target: '[data-tour="step4"]',
     title: 'Шаг 4: Смета для клиента',
-    content: 'Настройте вид сметы, выберите шаблон отображения и экспортируйте в PDF или XLSX.',
+    content: 'Настройте вид сметы, выберите шаблон отображения и экспортируйте в PDF, XLSX или поделитесь ссылкой.',
   },
 ]
 
@@ -41,29 +41,47 @@ interface Props {
 
 export function OnboardingTour({ open, onClose }: Props) {
   const [step, setStep] = useState(0)
-  const [position, setPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null)
+  const [rect, setRect] = useState<DOMRect | null>(null)
   const updateSettings = useSettingsStore((s) => s.updateSettings)
 
   const updatePosition = useCallback(() => {
     if (!open) return
-    const target = document.querySelector(STEPS[step].target)
+    const currentStep = STEPS[step]
+    if (!currentStep) return
+
+    const target = document.querySelector(currentStep.target)
     if (target) {
-      const rect = target.getBoundingClientRect()
-      setPosition({ top: rect.top, left: rect.left, width: rect.width, height: rect.height })
+      target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
+      // Small delay for scroll to finish
+      requestAnimationFrame(() => {
+        setRect(target.getBoundingClientRect())
+      })
     } else {
-      setPosition(null)
+      setRect(null)
     }
   }, [open, step])
 
   useEffect(() => {
     updatePosition()
+    // Re-measure after a short delay for scroll to settle
+    const timer = setTimeout(updatePosition, 150)
     window.addEventListener('resize', updatePosition)
-    return () => window.removeEventListener('resize', updatePosition)
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      clearTimeout(timer)
+    }
   }, [updatePosition])
+
+  // Reset step when opening
+  useEffect(() => {
+    if (open) setStep(0)
+  }, [open])
 
   if (!open) return null
 
   const current = STEPS[step]
+  if (!current) return null
+
   const isLast = step === STEPS.length - 1
 
   const handleNext = () => {
@@ -80,19 +98,44 @@ export function OnboardingTour({ open, onClose }: Props) {
     onClose()
   }
 
-  // Calculate tooltip position
-  const tooltipStyle: React.CSSProperties = {}
-  if (position) {
-    const isBottom = position.top < 300
-    tooltipStyle.position = 'fixed'
-    tooltipStyle.left = Math.max(16, Math.min(position.left, window.innerWidth - 320))
-    tooltipStyle.zIndex = 60
+  // Calculate tooltip position — ensure it stays in viewport
+  const tooltipStyle: React.CSSProperties = {
+    position: 'fixed',
+    zIndex: 60,
+  }
 
-    if (isBottom) {
-      tooltipStyle.top = position.top + position.height + 12
+  if (rect) {
+    const tooltipWidth = 320
+    const tooltipHeight = 160 // approximate
+    const gap = 12
+    const vw = window.innerWidth
+    const vh = window.innerHeight
+
+    // Horizontal: center on target, clamp to viewport
+    const targetCenterX = rect.left + rect.width / 2
+    let left = targetCenterX - tooltipWidth / 2
+    left = Math.max(12, Math.min(left, vw - tooltipWidth - 12))
+    tooltipStyle.left = left
+    tooltipStyle.width = tooltipWidth
+
+    // Vertical: prefer below, fallback above, fallback center
+    const spaceBelow = vh - (rect.bottom + gap)
+    const spaceAbove = rect.top - gap
+
+    if (spaceBelow >= tooltipHeight) {
+      tooltipStyle.top = rect.bottom + gap
+    } else if (spaceAbove >= tooltipHeight) {
+      tooltipStyle.bottom = vh - rect.top + gap
     } else {
-      tooltipStyle.bottom = window.innerHeight - position.top + 12
+      // Not enough space above or below — place in center of viewport
+      tooltipStyle.top = Math.max(12, (vh - tooltipHeight) / 2)
     }
+  } else {
+    // No target found — center on screen
+    tooltipStyle.top = '50%'
+    tooltipStyle.left = '50%'
+    tooltipStyle.transform = 'translate(-50%, -50%)'
+    tooltipStyle.width = 320
   }
 
   return (
@@ -101,34 +144,46 @@ export function OnboardingTour({ open, onClose }: Props) {
       <div className="fixed inset-0 z-50" onClick={handleSkip} />
 
       {/* Highlight — box-shadow creates the dark surround with a cutout */}
-      {position && (
+      {rect && (
         <div
-          className="fixed z-50 border-2 border-primary-500 rounded-lg pointer-events-none"
+          className="fixed z-50 border-2 border-primary-400 rounded-lg pointer-events-none"
           style={{
-            top: position.top - 4,
-            left: position.left - 4,
-            width: position.width + 8,
-            height: position.height + 8,
-            boxShadow: '0 0 0 9999px rgba(0,0,0,0.45)',
+            top: rect.top - 4,
+            left: rect.left - 4,
+            width: rect.width + 8,
+            height: rect.height + 8,
+            boxShadow: '0 0 0 9999px rgba(0,0,0,0.5)',
           }}
         />
       )}
 
-      {/* Tooltip */}
+      {/* Tooltip — solid white background directly on element */}
       <div
-        className="fixed z-[60] bg-white rounded-xl shadow-xl p-4 w-[300px]"
-        style={tooltipStyle}
+        style={{ ...tooltipStyle, backgroundColor: '#ffffff' }}
+        className="fixed z-[60] rounded-xl p-5"
       >
-        <div className="text-xs text-gray-400 mb-1">
-          {step + 1} / {STEPS.length}
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-medium" style={{ color: '#9333ea' }}>
+            {step + 1} из {STEPS.length}
+          </span>
+          <div className="flex gap-1">
+            {STEPS.map((_, i) => (
+              <div
+                key={i}
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ backgroundColor: i <= step ? '#9333ea' : '#d1d5db' }}
+              />
+            ))}
+          </div>
         </div>
-        <h3 className="text-sm font-bold text-gray-900 mb-1">{current.title}</h3>
-        <p className="text-sm text-gray-600 mb-3">{current.content}</p>
+        <h3 className="text-sm font-bold mb-1.5" style={{ color: '#111827' }}>{current.title}</h3>
+        <p className="text-sm leading-relaxed mb-4" style={{ color: '#4b5563' }}>{current.content}</p>
         <div className="flex items-center justify-between">
           <button
             type="button"
             onClick={handleSkip}
-            className="text-xs text-gray-400 hover:text-gray-600"
+            className="text-xs hover:underline"
+            style={{ color: '#9ca3af' }}
           >
             Пропустить
           </button>
@@ -137,7 +192,8 @@ export function OnboardingTour({ open, onClose }: Props) {
               <button
                 type="button"
                 onClick={() => setStep(step - 1)}
-                className="text-xs text-gray-500 hover:text-gray-700 px-3 py-1.5 border border-gray-200 rounded-lg"
+                className="text-xs px-3 py-1.5 rounded-lg"
+                style={{ color: '#374151', border: '1px solid #d1d5db' }}
               >
                 Назад
               </button>
@@ -145,9 +201,10 @@ export function OnboardingTour({ open, onClose }: Props) {
             <button
               type="button"
               onClick={handleNext}
-              className="text-xs bg-primary-600 text-white px-3 py-1.5 rounded-lg hover:bg-primary-700"
+              className="text-xs px-4 py-1.5 rounded-lg font-medium"
+              style={{ backgroundColor: '#9333ea', color: '#ffffff' }}
             >
-              {isLast ? 'Готово' : 'Далее'}
+              {isLast ? 'Готово!' : 'Далее'}
             </button>
           </div>
         </div>

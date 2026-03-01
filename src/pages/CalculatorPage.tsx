@@ -6,6 +6,7 @@ import { useAutosave } from '@/hooks/useAutosave'
 import { TabNavigation } from '@/components/layout/TabNavigation'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { MobileBottomBar } from '@/components/layout/MobileBottomBar'
+import { Step0Intro } from '@/components/step0/Step0Intro'
 import { Step1Context } from '@/components/step1/Step1Context'
 import { Step2Items } from '@/components/step2/Step2Items'
 import { Step3Pricing } from '@/components/step3/Step3Pricing'
@@ -21,7 +22,7 @@ import { ScenarioBar } from '@/components/scenarios/ScenarioBar'
 import { ShareModal } from '@/components/ui/ShareModal'
 import { useSettingsStore } from '@/store/useSettingsStore'
 
-const steps = [Step1Context, Step2Items, Step3Pricing, Step4Export]
+const steps = [Step0Intro, Step1Context, Step2Items, Step3Pricing, Step4Export]
 
 type SaveStatus = 'saved' | 'saving' | 'unsaved'
 
@@ -115,7 +116,8 @@ export function CalculatorPage() {
     )
   }
 
-  const StepComponent = steps[activeTab]!
+  const StepComponent = steps[activeTab] ?? Step0Intro
+  const isIntroTab = activeTab === 0
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -204,20 +206,22 @@ export function CalculatorPage() {
       </header>
 
       <TabNavigation />
-      <ScenarioBar />
+      {!isIntroTab && <ScenarioBar />}
 
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex gap-6">
           <main className="flex-1 min-w-0">
             <StepComponent />
-            <StepNavigation />
+            {!isIntroTab && <StepNavigation />}
           </main>
 
-          <aside className="hidden lg:block w-80 shrink-0" data-tour="sidebar">
-            <div className="sticky top-[120px]">
-              <Sidebar />
-            </div>
-          </aside>
+          {!isIntroTab && (
+            <aside className="hidden lg:block w-80 shrink-0" data-tour="sidebar">
+              <div className="sticky top-[120px]">
+                <Sidebar />
+              </div>
+            </aside>
+          )}
         </div>
       </div>
 

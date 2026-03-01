@@ -34,8 +34,8 @@ export function useHotkeys() {
 
       const state = useProjectStore.getState()
 
-      // Delete — remove selected item (only on Step 2)
-      if (e.key === 'Delete' && state.activeTab === 1 && state.selectedItemId) {
+      // Delete — remove selected item (only on Step 2, which is tab index 2)
+      if (e.key === 'Delete' && state.activeTab === 2 && state.selectedItemId) {
         e.preventDefault()
         useProjectStore.getState().removeItem(state.selectedItemId)
         useProjectStore.getState().setSelectedItem(null)
