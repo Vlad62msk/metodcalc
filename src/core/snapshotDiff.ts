@@ -1,5 +1,6 @@
 import type { EstimateItem } from '@/types/estimate'
 import type { Snapshot, Pricing, ProjectContext } from '@/types/project'
+import { getCurrencySymbol } from '@/utils/format'
 
 export interface ItemDiff {
   status: 'added' | 'removed' | 'modified' | 'unchanged'
@@ -108,7 +109,7 @@ function diffSettings(oldP: Pricing, newP: Pricing, oldC: ProjectContext, newC: 
     if (oldVal !== newVal) diffs.push({ label, oldValue: oldVal, newValue: newVal })
   }
 
-  check('Ставка (₽/ч)', oldP.hourlyRate, newP.hourlyRate)
+  check(`Ставка (${getCurrencySymbol()}/ч)`, oldP.hourlyRate, newP.hourlyRate)
   check('Правки (%)', Math.round(oldP.revisionPercent * 100), Math.round(newP.revisionPercent * 100))
   check('Налог (%)', oldP.tax.rate, newP.tax.rate)
   check('Коэффициент', oldC.contextMultiplier, newC.contextMultiplier)

@@ -1,6 +1,6 @@
 import { useProjectStore } from '@/store/useProjectStore'
 import { useSettingsStore } from '@/store/useSettingsStore'
-import { formatCurrency } from '@/utils/format'
+import { formatCurrency, getCurrencySymbol } from '@/utils/format'
 import { RateHelper } from './RateHelper'
 import { CostDetail } from './CostDetail'
 import { RevisionSettings } from './RevisionSettings'
@@ -34,7 +34,7 @@ export function Step3Pricing() {
 
       {/* Ставка */}
       <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-2">
-        <label className="text-sm font-medium text-gray-700">Ставка, ₽/час</label>
+        <label className="text-sm font-medium text-gray-700">Ставка, {getCurrencySymbol()}/час</label>
         <div className="flex items-center gap-3">
           <input
             type="number"

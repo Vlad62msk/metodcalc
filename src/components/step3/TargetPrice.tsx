@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useProjectStore } from '@/store/useProjectStore'
-import { formatCurrency, formatNumber } from '@/utils/format'
+import { formatCurrency, formatNumber, getCurrencySymbol } from '@/utils/format'
 import { calcTargetDiff } from '@/core/calculator'
 
 export function TargetPrice() {
@@ -47,7 +47,7 @@ export function TargetPrice() {
               placeholder="Целевая сумма"
               className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm"
             />
-            <span className="text-sm text-gray-500">₽</span>
+            <span className="text-sm text-gray-500">{getCurrencySymbol()}</span>
           </div>
 
           <div className="flex gap-4 text-sm">

@@ -1,9 +1,24 @@
+import { useSettingsStore } from '@/store/useSettingsStore'
+import type { CurrencyConfig } from '@/core/currencies'
+import { formatCurrencyValue, DEFAULT_CURRENCY } from '@/core/currencies'
+
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('ru-RU', {
-    style: 'decimal',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(Math.round(amount)) + ' \u20BD'
+  // Read currency from settings store (works outside React components too)
+  let currency: CurrencyConfig
+  try {
+    currency = useSettingsStore.getState().currency ?? DEFAULT_CURRENCY
+  } catch {
+    currency = DEFAULT_CURRENCY
+  }
+  return formatCurrencyValue(amount, currency)
+}
+
+export function getCurrencySymbol(): string {
+  try {
+    return useSettingsStore.getState().currency?.symbol ?? '₽'
+  } catch {
+    return '₽'
+  }
 }
 
 export function formatNumber(value: number, decimals = 1): string {

@@ -3,6 +3,7 @@ import type { EstimateItem } from '@/types/estimate'
 import type { ProjectState, ProjectContext, Pricing, Presentation } from '@/types/project'
 import type { LibraryElement, LibrarySet, UserLibrary } from '@/types/library'
 import type { UserSettings } from '@/types/settings'
+import { DEFAULT_CURRENCY } from '@/core/currencies'
 
 // === Дефолтный контекст ===
 
@@ -273,6 +274,7 @@ export const DEFAULT_SETTINGS: UserSettings = {
   customPresets: [],
   hasCompletedOnboarding: false,
   lastBackupReminder: '',
+  currency: { ...DEFAULT_CURRENCY },
 }
 
 // === Опции для шага 1 ===

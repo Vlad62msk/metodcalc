@@ -3,7 +3,8 @@ import { useProjectStore } from '@/store/useProjectStore'
 import { useLibraryStore } from '@/store/useLibraryStore'
 import { Collapsible } from '@/components/ui/Collapsible'
 import { TAX_OPTIONS } from '@/core/defaults'
-import { formatCurrency, formatNumber } from '@/utils/format'
+import { formatCurrency, formatNumber, getCurrencySymbol } from '@/utils/format'
+import { CurrencySelector } from '@/components/settings/CurrencySelector'
 
 export function FinancialSettings() {
   const pricing = useProjectStore((s) => s.pricing)
@@ -28,6 +29,9 @@ export function FinancialSettings() {
   return (
     <Collapsible title="Финансовые настройки">
       <div className="space-y-5">
+        {/* Валюта */}
+        <CurrencySelector />
+
         {/* Скидка / Наценка */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Скидка / Наценка</label>
@@ -66,7 +70,7 @@ export function FinancialSettings() {
                 onChange={(e) => setDiscount({ absoluteValue: parseFloat(e.target.value) || 0 })}
                 className="w-28 border border-gray-300 rounded px-2 py-1 text-sm"
               />
-              <span className="text-xs text-gray-400">₽ (отрицательное = скидка)</span>
+              <span className="text-xs text-gray-400">{getCurrencySymbol()} (отрицательное = скидка)</span>
             </div>
           )}
         </div>
@@ -193,7 +197,7 @@ export function FinancialSettings() {
                 onChange={(e) => updateAdjustment(adj.id, { amount: parseFloat(e.target.value) || 0 })}
                 className="w-28 text-sm border border-gray-300 rounded px-2 py-1"
               />
-              <span className="text-xs text-gray-400">₽</span>
+              <span className="text-xs text-gray-400">{getCurrencySymbol()}</span>
               <button
                 type="button"
                 onClick={() => removeAdjustment(adj.id)}

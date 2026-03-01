@@ -1,4 +1,5 @@
 import type { PresentationPreset } from '@/core/presentationPresets'
+import type { CurrencyConfig } from '@/core/currencies'
 
 export type InterfaceMode = 'simple' | 'standard' | 'pro'
 
@@ -39,4 +40,7 @@ export interface UserSettings {
 
   // Бэкап
   lastBackupReminder: string
+
+  // Валюта
+  currency: CurrencyConfig
 }

@@ -20,6 +20,7 @@ import { useHotkeys } from '@/hooks/useHotkeys'
 import { OnboardingTour } from '@/components/onboarding/OnboardingTour'
 import { ScenarioBar } from '@/components/scenarios/ScenarioBar'
 import { ShareModal } from '@/components/ui/ShareModal'
+import { ChecklistModal } from '@/components/checklist/ChecklistModal'
 import { useSettingsStore } from '@/store/useSettingsStore'
 
 const steps = [Step0Intro, Step1Context, Step2Items, Step3Pricing, Step4Export]
@@ -44,6 +45,7 @@ export function CalculatorPage() {
   const [showHotkeys, setShowHotkeys] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [showShare, setShowShare] = useState(false)
+  const [showChecklist, setShowChecklist] = useState(false)
 
   const hasCompletedOnboarding = useSettingsStore((s) => s.hasCompletedOnboarding)
 
@@ -171,6 +173,14 @@ export function CalculatorPage() {
             </button>
             <button
               type="button"
+              onClick={() => setShowChecklist(true)}
+              className="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 border border-gray-200 rounded"
+              title="Чек-лист методиста"
+            >
+              📋
+            </button>
+            <button
+              type="button"
               onClick={() => setShowHotkeys(true)}
               className="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 border border-gray-200 rounded"
               title="Горячие клавиши"
@@ -233,6 +243,7 @@ export function CalculatorPage() {
       <HotkeysModal open={showHotkeys} onClose={() => setShowHotkeys(false)} />
       <OnboardingTour open={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <ShareModal open={showShare} onClose={() => setShowShare(false)} />
+      <ChecklistModal open={showChecklist} onClose={() => setShowChecklist(false)} />
 
       <div className="h-16 lg:hidden" />
     </div>

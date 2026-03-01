@@ -4,6 +4,7 @@ import { ROLE_LABELS, QUALITY_LEVELS, CATEGORY_LABELS, CONFIDENCE_LEVELS } from 
 import { useProjectStore } from '@/store/useProjectStore'
 import { useSettingsStore } from '@/store/useSettingsStore'
 import { useLibraryStore } from '@/store/useLibraryStore'
+import { getCurrencySymbol } from '@/utils/format'
 
 interface ItemSettingsProps {
   item: EstimateItem
@@ -243,7 +244,7 @@ export function ItemSettings({ item, onClose }: ItemSettingsProps) {
             onChange={(e) =>
               updateItem(item.id, { fixedPrice: parseFloat(e.target.value) || 0 })
             }
-            placeholder="Цена, ₽"
+            placeholder={`Цена, ${getCurrencySymbol()}`}
             className="w-32 border border-gray-300 rounded px-2 py-1 mt-1 text-xs"
           />
         )}
@@ -295,7 +296,7 @@ export function ItemSettings({ item, onClose }: ItemSettingsProps) {
               onChange={(e) =>
                 updateItem(item.id, { containerFixedTotal: parseFloat(e.target.value) || 0 })
               }
-              placeholder="Сумма, ₽"
+              placeholder={`Сумма, ${getCurrencySymbol()}`}
               className="w-32 border border-gray-300 rounded px-2 py-1 mt-1 text-xs"
             />
           )}

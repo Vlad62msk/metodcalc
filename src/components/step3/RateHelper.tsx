@@ -1,7 +1,7 @@
 import { useProjectStore } from '@/store/useProjectStore'
 import { useSettingsStore } from '@/store/useSettingsStore'
 import { Collapsible } from '@/components/ui/Collapsible'
-import { formatCurrency } from '@/utils/format'
+import { formatCurrency, getCurrencySymbol } from '@/utils/format'
 import { RATE_PROJECT_TYPES } from '@/core/defaults'
 
 export function RateHelper() {
@@ -35,7 +35,7 @@ export function RateHelper() {
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-xs text-gray-500">Зарплата на руки, ₽/мес</label>
+            <label className="text-xs text-gray-500">Зарплата на руки, {getCurrencySymbol()}/мес</label>
             <input
               type="number"
               value={rateHelper.salary ?? ''}
