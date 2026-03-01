@@ -160,7 +160,7 @@ export function OnboardingTour({ open, onClose }: Props) {
       {/* Tooltip — solid white background directly on element */}
       <div
         style={{ ...tooltipStyle, backgroundColor: '#ffffff' }}
-        className="fixed z-[60] rounded-xl p-5"
+        className="fixed z-[60] rounded-xl p-5 no-text-shadow"
       >
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-medium" style={{ color: '#9333ea' }}>

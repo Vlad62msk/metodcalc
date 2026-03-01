@@ -99,6 +99,11 @@ body {
 input, textarea, select, option, code, pre {
   text-shadow: none;
 }
+/* Solid white/light backgrounds — no text-shadow (modals, onboarding, etc.) */
+.no-text-shadow,
+.no-text-shadow * {
+  text-shadow: none !important;
+}
 
 /* ============================================================
    GLASS SURFACES

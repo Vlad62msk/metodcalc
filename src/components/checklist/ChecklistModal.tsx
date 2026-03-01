@@ -76,7 +76,7 @@ export function ChecklistModal({ open, onClose }: ChecklistModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-      <div className="relative bg-white glass-solid rounded-xl shadow-xl w-[95vw] max-w-4xl h-[90vh] flex flex-col mx-4">
+      <div className="relative bg-white glass-solid rounded-xl shadow-xl w-[95vw] max-w-4xl h-[90vh] flex flex-col mx-4 no-text-shadow">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 shrink-0">
           <div>
