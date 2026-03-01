@@ -53,6 +53,10 @@ export function formatRelativeDate(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date
   const now = new Date()
   const diffMs = now.getTime() - d.getTime()
+
+  // Guard: future dates or invalid
+  if (diffMs < 0) return formatDate(d)
+
   const diffMin = Math.floor(diffMs / 60000)
   const diffHr = Math.floor(diffMs / 3600000)
   const diffDay = Math.floor(diffMs / 86400000)
@@ -66,7 +70,7 @@ export function formatRelativeDate(date: Date | string): string {
 }
 
 export function parseNumber(value: string): number {
-  const cleaned = value.replace(/\s/g, '').replace(',', '.')
+  const cleaned = value.replace(/\s/g, '').replace(/,/g, '.')
   const num = parseFloat(cleaned)
   return isNaN(num) ? 0 : num
 }

@@ -27,7 +27,7 @@ export function useAutosave(
       items: state.items,
       pricing: state.pricing,
       presentation: state.presentation,
-      snapshots: [], // Snapshots stored separately
+      snapshots: state.snapshots ?? [],
       meta: state.meta,
       scenarios: state.scenarios ?? { enabled: false, activeScenarioId: null, list: [] },
     }

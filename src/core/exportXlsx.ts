@@ -2,7 +2,7 @@ import * as XLSX from 'xlsx'
 import type { EstimateItem } from '@/types/estimate'
 import type { Presentation, Pricing, ProjectContext, ProjectMeta } from '@/types/project'
 import { CATEGORY_LABELS } from '@/types/estimate'
-import { calcItemCost, calcContainerCost, calcEffectiveHours, calcGrandTotal, type CategoryTotals } from './calculator'
+import { calcItemCost, calcContainerCost, calcEffectiveHours, calcGrandTotal, calcContextMultiplier, getLeaves, type CategoryTotals } from './calculator'
 import { formatNumber } from '@/utils/format'
 
 interface ExportParams {
@@ -17,7 +17,7 @@ interface ExportParams {
 export function exportToXlsx(params: ExportParams) {
   const { items, pricing, context, presentation, costOverrides, meta } = params
   const hourlyRate = pricing.hourlyRate
-  const contextMultiplier = context.contextMultiplier
+  const contextMultiplier = calcContextMultiplier(context)
 
   const result = calcGrandTotal({
     items,
@@ -91,8 +91,9 @@ export function exportToXlsx(params: ExportParams) {
     if (presentation.showGroupStructure) {
       rootItems.forEach((item) => renderItem(item, 0))
     } else {
-      items
-        .filter((i) => !i.isContainer || i.containerMode === 'fixed_total')
+      // Use getLeaves to properly exclude descendants of fixed_total containers
+      const leaves = getLeaves(items)
+      leaves
         .sort((a, b) => a.sortOrder - b.sortOrder)
         .forEach((item) => renderItem(item, 0))
     }

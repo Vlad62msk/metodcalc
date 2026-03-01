@@ -126,10 +126,10 @@ export function createDefaultItem(overrides: Partial<EstimateItem> = {}): Estima
 
 export function createDefaultProjectState(): ProjectState {
   return {
-    context: { ...DEFAULT_CONTEXT },
+    context: structuredClone(DEFAULT_CONTEXT),
     items: [],
-    pricing: { ...DEFAULT_PRICING },
-    presentation: { ...DEFAULT_PRESENTATION },
+    pricing: structuredClone(DEFAULT_PRICING),
+    presentation: structuredClone(DEFAULT_PRESENTATION),
     snapshots: [],
     meta: {
       id: generateId(),

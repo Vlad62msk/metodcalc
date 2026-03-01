@@ -125,7 +125,7 @@ export interface ProjectMeta {
   name: string
   createdAt: string
   updatedAt: string
-  version: '3.3'
+  version: '3.3' | '4.0'
 }
 
 // === Сценарии ===

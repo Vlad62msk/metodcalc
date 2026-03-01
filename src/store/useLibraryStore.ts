@@ -48,7 +48,11 @@ export const useLibraryStore = create<LibraryStore>()(
         updateElement: (id, changes) =>
           set(produce((s: LibraryStore) => {
             const el = s.elements.find((e) => e.id === id)
-            if (el) Object.assign(el, changes)
+            if (el) {
+              // Protect immutable fields
+              const { id: _id, type: _type, isBuiltIn: _isBuiltIn, ...safeChanges } = changes
+              Object.assign(el, safeChanges)
+            }
             s.meta.lastModified = new Date().toISOString()
           })),
 
@@ -83,7 +87,11 @@ export const useLibraryStore = create<LibraryStore>()(
         updateSet: (id, changes) =>
           set(produce((s: LibraryStore) => {
             const st = s.sets.find((e) => e.id === id)
-            if (st) Object.assign(st, changes)
+            if (st) {
+              // Protect immutable fields
+              const { id: _id, type: _type, isBuiltIn: _isBuiltIn, ...safeChanges } = changes
+              Object.assign(st, safeChanges)
+            }
             s.meta.lastModified = new Date().toISOString()
           })),
 

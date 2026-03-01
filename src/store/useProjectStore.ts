@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { temporal } from 'zundo'
 import { produce } from 'immer'
 import type { EstimateItem } from '@/types/estimate'
-import type { ProjectState, ProjectContext, Pricing, Presentation, Snapshot, Scenario, ScenariosState } from '@/types/project'
+import type { ProjectState, ProjectContext, Pricing, Presentation, Snapshot, Scenario } from '@/types/project'
 import { createDefaultProjectState, createDefaultItem } from '@/core/defaults'
 import { calcContextMultiplier, calcGrandTotal } from '@/core/calculator'
 import { generateId } from '@/utils/id'
@@ -182,8 +182,8 @@ export const useProjectStore = create<ProjectStore>()(
             if (changes.name && !item.clientName) {
               item.clientName = changes.name
             }
+            touchMeta(s)
           }
-          touchMeta(s)
         })),
 
       removeItem: (id) =>
@@ -304,20 +304,29 @@ export const useProjectStore = create<ProjectStore>()(
       },
 
       loadProject: (state) => {
-        const patchedItems = state.items.map((item) => ({
+        // Deep clone incoming state to avoid shared references with IndexedDB
+        const cloned = JSON.parse(JSON.stringify(state))
+        const patchedItems = cloned.items.map((item: Record<string, unknown>) => ({
           ...item,
           confidence: item.confidence ?? null,
           effortRange: item.effortRange ?? null,
           libraryElementId: item.libraryElementId ?? null,
+          overrides: item.overrides ?? {
+            hoursPerUnit: false,
+            qualityLevel: false,
+            roleMultiplier: false,
+            fixedPrice: false,
+            cost: false,
+          },
         }))
         set({
-          context: state.context,
+          context: cloned.context,
           items: patchedItems,
-          pricing: state.pricing,
-          presentation: state.presentation,
-          snapshots: state.snapshots ?? [],
-          meta: state.meta,
-          scenarios: state.scenarios ?? { enabled: false, activeScenarioId: null, list: [] },
+          pricing: cloned.pricing,
+          presentation: cloned.presentation,
+          snapshots: cloned.snapshots ?? [],
+          meta: cloned.meta,
+          scenarios: cloned.scenarios ?? { enabled: false, activeScenarioId: null, list: [] },
           costOverrides: {},
           activeTab: 0,
           selectedItemId: null,
@@ -414,7 +423,8 @@ export const useProjectStore = create<ProjectStore>()(
           }
           s.scenarios.list.push(newScenario)
           s.scenarios.activeScenarioId = newScenario.id
-          s.items = newScenario.items
+          // Deep clone to avoid shared reference between scenario list and active items
+          s.items = JSON.parse(JSON.stringify(newScenario.items))
           touchMeta(s)
         })),
 

@@ -5,10 +5,11 @@ import { calcGrandTotal, calcTotalHours, calcContextMultiplier } from '@/core/ca
 import { createDefaultProjectState } from '@/core/defaults'
 
 function computeCachedFields(state: ProjectState) {
+  const cm = calcContextMultiplier(state.context)
   const result = calcGrandTotal({
     items: state.items,
     hourlyRate: state.pricing.hourlyRate,
-    contextMultiplier: state.context.contextMultiplier,
+    contextMultiplier: cm,
     costOverrides: {},
     revisionPercent: state.pricing.revisionPercent,
     discount: state.pricing.discount,
@@ -40,10 +41,11 @@ export async function saveProject(
   const cached = computeCachedFields(state)
   // Recompute with costOverrides for accuracy
   if (Object.keys(costOverrides).length > 0) {
+    const cm2 = calcContextMultiplier(state.context)
     const result = calcGrandTotal({
       items: state.items,
       hourlyRate: state.pricing.hourlyRate,
-      contextMultiplier: state.context.contextMultiplier,
+      contextMultiplier: cm2,
       costOverrides,
       revisionPercent: state.pricing.revisionPercent,
       discount: state.pricing.discount,
@@ -127,6 +129,10 @@ export async function createProject(name?: string): Promise<string> {
       if (saved?.rateHoursPerMonth) state.pricing.rateHelper.hoursPerMonth = saved.rateHoursPerMonth
       if (saved?.rateProjectType) state.pricing.rateHelper.projectType = saved.rateProjectType
       if (saved?.rateMultiplier) state.pricing.rateHelper.multiplier = saved.rateMultiplier
+      if (saved?.defaultTaxRate != null) state.pricing.tax.rate = saved.defaultTaxRate
+      if (saved?.defaultTaxShowSeparately != null) state.pricing.tax.showSeparately = saved.defaultTaxShowSeparately
+      if (saved?.signatureName) state.presentation.signatureName = saved.signatureName
+      if (saved?.signatureContact) state.presentation.signatureContact = saved.signatureContact
     }
   } catch { /* ignore */ }
 
@@ -204,6 +210,13 @@ export async function importProject(json: string): Promise<string | null> {
       confidence: item.confidence ?? null,
       effortRange: item.effortRange ?? null,
       libraryElementId: item.libraryElementId ?? null,
+      overrides: item.overrides ?? {
+        hoursPerUnit: false,
+        qualityLevel: false,
+        roleMultiplier: false,
+        fixedPrice: false,
+        cost: false,
+      },
     }))
 
     // Ensure scenarios exists

@@ -13,7 +13,7 @@ const ITEM_KEYS: Record<string, string> = {
   id: 'i', parentId: 'p', sortOrder: 'so', name: 'n', quantity: 'q',
   hoursPerUnit: 'h', unit: 'u', category: 'c', role: 'r', roleMultiplier: 'rm',
   qualityLevel: 'ql', revisionable: 'rv', pricingModel: 'pm', fixedPrice: 'fp',
-  isContainer: 'ic', containerMode: 'cm', containerFixedTotal: 'cft',
+  isContainer: 'ic', containerMode: 'cmo', containerFixedTotal: 'cft',
   source: 's', libraryElementId: 'lid', notes: 'nt', clientName: 'cn',
   effortRange: 'er', confidence: 'cf', overrides: 'ov',
 }
@@ -50,7 +50,15 @@ function minifyOption(opt: { value: string; label: string; multiplier?: number; 
   return r
 }
 
-function expandOption(o: Record<string, unknown>): { value: string; label: string; multiplier: number; defaultRevisionPercent: number } {
+function expandContextOption(o: Record<string, unknown>): { value: string; label: string; multiplier: number } {
+  return {
+    value: String(o.v ?? ''),
+    label: String(o.l ?? ''),
+    multiplier: Number(o.x ?? 1),
+  }
+}
+
+function expandClientOption(o: Record<string, unknown>): { value: string; label: string; multiplier: number; defaultRevisionPercent: number } {
   return {
     value: String(o.v ?? ''),
     label: String(o.l ?? ''),
@@ -202,10 +210,10 @@ export function expandState(compressed: string): ExpandedSharedState | null {
     const ptObj = ctx[CTX_KEYS.projectType] as Record<string, unknown>
     const context: ProjectContext = {
       projectType: { value: String(ptObj?.v ?? ''), label: String(ptObj?.l ?? '') },
-      domain: expandOption(ctx[CTX_KEYS.domain] as Record<string, unknown> ?? {}),
-      methodology: expandOption(ctx[CTX_KEYS.methodology] as Record<string, unknown> ?? {}),
-      client: expandOption(ctx[CTX_KEYS.client] as Record<string, unknown> ?? {}),
-      deadline: expandOption(ctx[CTX_KEYS.deadline] as Record<string, unknown> ?? {}),
+      domain: expandContextOption(ctx[CTX_KEYS.domain] as Record<string, unknown> ?? {}),
+      methodology: expandContextOption(ctx[CTX_KEYS.methodology] as Record<string, unknown> ?? {}),
+      client: expandClientOption(ctx[CTX_KEYS.client] as Record<string, unknown> ?? {}),
+      deadline: expandContextOption(ctx[CTX_KEYS.deadline] as Record<string, unknown> ?? {}),
       contextMultiplier: Number(ctx[CTX_KEYS.contextMultiplier] ?? 1),
       contextMultiplierIsManual: ctx[CTX_KEYS.contextMultiplierIsManual] === 1,
       estimateConfidence: (ctx[CTX_KEYS.estimateConfidence] as ProjectContext['estimateConfidence']) ?? null,
@@ -231,7 +239,7 @@ export function expandState(compressed: string): ExpandedSharedState | null {
       additionalAdjustments: aaArr
         ? aaArr.map((a, i) => ({ id: `adj_${i}`, label: String(a.l ?? ''), amount: Number(a.a ?? 0) }))
         : [],
-      targetPrice: { enabled: false, value: 0, includesTax: false },
+      targetPrice: { enabled: false, value: 0, includesTax: true },
     }
 
     return { context, items, pricing }

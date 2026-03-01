@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useProjectStore } from '@/store/useProjectStore'
 import { formatCurrency, formatHours, formatNumber } from '@/utils/format'
-import { calcContainerCost, calcItemCost, calcEffectiveHours } from '@/core/calculator'
+import { calcContainerCost, calcItemCost, calcEffectiveHours, calcContextMultiplier } from '@/core/calculator'
 import { exportToXlsx } from '@/core/exportXlsx'
 import type { EstimateItem } from '@/types/estimate'
 
@@ -21,7 +21,7 @@ export function ExportButtons() {
   const buildPlainText = (): string => {
     const result = getGrandTotal()
     const hourlyRate = pricing.hourlyRate
-    const contextMultiplier = context.contextMultiplier
+    const contextMultiplier = calcContextMultiplier(context)
 
     const getItemCost = (item: EstimateItem): number => {
       if (item.overrides.cost && costOverrides[item.id] != null) return costOverrides[item.id]!
@@ -112,7 +112,7 @@ export function ExportButtons() {
 
   const handleExportJson = () => {
     const state = {
-      version: '3.3',
+      version: '4.0',
       meta,
       context,
       items,

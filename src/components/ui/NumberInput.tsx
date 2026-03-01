@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 
 interface NumberInputProps {
   value: number
@@ -24,9 +24,16 @@ export function NumberInput({
   const [localValue, setLocalValue] = useState(String(value))
   const [focused, setFocused] = useState(false)
 
+  // Sync localValue when external value changes (undo/redo, scenario switch, etc.)
+  useEffect(() => {
+    if (!focused) {
+      setLocalValue(String(value))
+    }
+  }, [value, focused])
+
   const handleBlur = useCallback(() => {
     setFocused(false)
-    const cleaned = localValue.replace(/\s/g, '').replace(',', '.')
+    const cleaned = localValue.replace(/\s/g, '').replace(/,/g, '.')
     let num = parseFloat(cleaned)
     if (isNaN(num)) num = 0
     if (min !== undefined) num = Math.max(min, num)

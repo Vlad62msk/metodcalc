@@ -8,15 +8,17 @@ export function useHotkeys() {
       const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
       const ctrl = e.ctrlKey || e.metaKey
 
-      // Ctrl+Z — Undo (works even in inputs)
+      // Ctrl+Z — Undo (skip if user is editing text in input/textarea)
       if (ctrl && !e.shiftKey && e.key === 'z') {
+        if (isInput) return // Let browser handle native undo in inputs
         e.preventDefault()
         useProjectStore.temporal.getState().undo()
         return
       }
 
-      // Ctrl+Shift+Z or Ctrl+Y — Redo (works even in inputs)
+      // Ctrl+Shift+Z or Ctrl+Y — Redo (skip if in input/textarea)
       if ((ctrl && e.shiftKey && e.key === 'z') || (ctrl && e.key === 'y')) {
+        if (isInput) return // Let browser handle native redo in inputs
         e.preventDefault()
         useProjectStore.temporal.getState().redo()
         return

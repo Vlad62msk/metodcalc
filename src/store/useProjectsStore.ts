@@ -61,44 +61,74 @@ export const useProjectsStore = create<ProjectsStore>()((set) => ({
   },
 
   createProject: async (name) => {
-    const id = await projectsDb.createProject(name)
-    const projects = await projectsDb.listProjects()
-    set({ projects: projects.map(toSummary) })
-    return id
+    try {
+      const id = await projectsDb.createProject(name)
+      const projects = await projectsDb.listProjects()
+      set({ projects: projects.map(toSummary) })
+      return id
+    } catch (e) {
+      console.error('Failed to create project:', e)
+      throw e
+    }
   },
 
   deleteProject: async (id) => {
-    await projectsDb.deleteProject(id)
-    const projects = await projectsDb.listProjects()
-    set({ projects: projects.map(toSummary) })
+    try {
+      await projectsDb.deleteProject(id)
+      const projects = await projectsDb.listProjects()
+      set({ projects: projects.map(toSummary) })
+    } catch (e) {
+      console.error('Failed to delete project:', e)
+      throw e
+    }
   },
 
   duplicateProject: async (id) => {
-    const newId = await projectsDb.duplicateProject(id)
-    if (newId) {
-      const projects = await projectsDb.listProjects()
-      set({ projects: projects.map(toSummary) })
+    try {
+      const newId = await projectsDb.duplicateProject(id)
+      if (newId) {
+        const projects = await projectsDb.listProjects()
+        set({ projects: projects.map(toSummary) })
+      }
+      return newId
+    } catch (e) {
+      console.error('Failed to duplicate project:', e)
+      return null
     }
-    return newId
   },
 
   renameProject: async (id, name) => {
-    await projectsDb.renameProject(id, name)
-    const projects = await projectsDb.listProjects()
-    set({ projects: projects.map(toSummary) })
+    try {
+      await projectsDb.renameProject(id, name)
+      const projects = await projectsDb.listProjects()
+      set({ projects: projects.map(toSummary) })
+    } catch (e) {
+      console.error('Failed to rename project:', e)
+      throw e
+    }
   },
 
   importProject: async (json) => {
-    const id = await projectsDb.importProject(json)
-    if (id) {
-      const projects = await projectsDb.listProjects()
-      set({ projects: projects.map(toSummary) })
+    try {
+      const id = await projectsDb.importProject(json)
+      if (id) {
+        const projects = await projectsDb.listProjects()
+        set({ projects: projects.map(toSummary) })
+      }
+      return id
+    } catch (e) {
+      console.error('Failed to import project:', e)
+      return null
     }
-    return id
   },
 
   exportProject: async (id) => {
-    return projectsDb.exportProject(id)
+    try {
+      return await projectsDb.exportProject(id)
+    } catch (e) {
+      console.error('Failed to export project:', e)
+      return null
+    }
   },
 
   exportAllData: async () => {

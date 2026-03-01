@@ -98,17 +98,25 @@ export function getLeaves(items: EstimateItem[]): EstimateItem[] {
       .map((i) => i.id),
   )
 
-  return items.filter((item) => {
-    // Потомок fixed_total контейнера — исключаем
-    if (item.parentId && fixedTotalIds.has(item.parentId)) {
-      return false
+  // Build a parentId→item map for efficient ancestor walking
+  const itemMap = new Map(items.map((i) => [i.id, i]))
+
+  // Check if item is a descendant of any fixed_total container (iterative walk)
+  function isDescendantOfFixedTotal(item: EstimateItem): boolean {
+    let current = item
+    while (current.parentId) {
+      if (fixedTotalIds.has(current.parentId)) return true
+      const parent = itemMap.get(current.parentId)
+      if (!parent) break
+      current = parent
     }
-    // Также проверяем «дедушку»
-    if (item.parentId) {
-      const parent = items.find((i) => i.id === item.parentId)
-      if (parent?.parentId && fixedTotalIds.has(parent.parentId)) {
-        return false
-      }
+    return false
+  }
+
+  return items.filter((item) => {
+    // Потомок fixed_total контейнера — исключаем (any depth)
+    if (isDescendantOfFixedTotal(item)) {
+      return false
     }
 
     // fixed_total контейнер — это лист

@@ -48,6 +48,13 @@ export async function migrateFromLocalStorage(): Promise<string | null> {
       confidence: item.confidence ?? null,
       effortRange: item.effortRange ?? null,
       libraryElementId: item.libraryElementId ?? null,
+      overrides: item.overrides ?? {
+        hoursPerUnit: false,
+        qualityLevel: false,
+        roleMultiplier: false,
+        fixedPrice: false,
+        cost: false,
+      },
     }))
 
     // Extract costOverrides if present
