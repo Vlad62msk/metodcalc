@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useProjectStore } from '@/store/useProjectStore'
 import { formatCurrency } from '@/utils/format'
-import { calcGrandTotal } from '@/core/calculator'
+import { calcGrandTotal, calcContextMultiplier } from '@/core/calculator'
 import { ScenarioCompareModal } from './ScenarioCompareModal'
 
 export function ScenarioBar() {
@@ -40,7 +40,7 @@ export function ScenarioBar() {
     const result = calcGrandTotal({
       items: scenarioItems,
       hourlyRate: pricing.hourlyRate,
-      contextMultiplier: context.contextMultiplier,
+      contextMultiplier: calcContextMultiplier(context),
       costOverrides,
       revisionPercent: pricing.revisionPercent,
       discount: pricing.discount,

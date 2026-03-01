@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useProjectStore } from '@/store/useProjectStore'
 import { Modal } from '@/components/ui/Modal'
-import { calcGrandTotal } from '@/core/calculator'
+import { calcGrandTotal, calcContextMultiplier } from '@/core/calculator'
 import { formatCurrency, formatHours } from '@/utils/format'
 
 interface Props {
@@ -24,7 +24,7 @@ export function ScenarioCompareModal({ open, onClose }: Props) {
       const result = calcGrandTotal({
         items: scenarioItems,
         hourlyRate: pricing.hourlyRate,
-        contextMultiplier: context.contextMultiplier,
+        contextMultiplier: calcContextMultiplier(context),
         costOverrides,
         revisionPercent: pricing.revisionPercent,
         discount: pricing.discount,

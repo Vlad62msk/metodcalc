@@ -308,6 +308,8 @@ export const useProjectStore = create<ProjectStore>()(
         const cloned = JSON.parse(JSON.stringify(state))
         const patchedItems = cloned.items.map((item: Record<string, unknown>) => ({
           ...item,
+          roleMultiplier: item.roleMultiplier ?? 1.0,
+          qualityLevel: item.qualityLevel ?? 1.0,
           confidence: item.confidence ?? null,
           effortRange: item.effortRange ?? null,
           libraryElementId: item.libraryElementId ?? null,
@@ -319,6 +321,8 @@ export const useProjectStore = create<ProjectStore>()(
             cost: false,
           },
         }))
+        // Ensure contextMultiplier is in sync with sub-factors
+        recalcMultiplier(cloned.context)
         set({
           context: cloned.context,
           items: patchedItems,
@@ -358,8 +362,10 @@ export const useProjectStore = create<ProjectStore>()(
         const s = get()
         const snapshot = s.snapshots.find((sn) => sn.id === snapshotId)
         if (snapshot) {
+          const restoredContext = JSON.parse(JSON.stringify(snapshot.state.context))
+          recalcMultiplier(restoredContext)
           set({
-            context: JSON.parse(JSON.stringify(snapshot.state.context)),
+            context: restoredContext,
             items: JSON.parse(JSON.stringify(snapshot.state.items)),
             pricing: JSON.parse(JSON.stringify(snapshot.state.pricing)),
             presentation: JSON.parse(JSON.stringify(snapshot.state.presentation)),
