@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { useProjectStore } from '@/store/useProjectStore'
+import { ChecklistModal } from '@/components/checklist/ChecklistModal'
 import { OptionSelector } from './OptionSelector'
 import { CoefficientDisplay } from './CoefficientDisplay'
 import {
@@ -16,14 +18,27 @@ export function Step1Context() {
   const setMethodology = useProjectStore((s) => s.setMethodology)
   const setClient = useProjectStore((s) => s.setClient)
   const setDeadline = useProjectStore((s) => s.setDeadline)
+  const [showChecklist, setShowChecklist] = useState(false)
 
   return (
     <div className="space-y-6 max-w-2xl">
       <h2 className="text-xl font-semibold text-gray-900">Что за проект?</h2>
-      <p className="text-sm text-gray-500">
-        Выберите параметры проекта. Каждый параметр влияет на контекстный коэффициент — он автоматически
-        учтётся в стоимости. Если ни один вариант не подходит, выберите «Другое» и задайте свои значения.
-      </p>
+      <div className="text-sm text-gray-500 space-y-1.5">
+        <p>
+          Выберите параметры проекта. Каждый параметр влияет на контекстный коэффициент — он автоматически
+          учтётся в стоимости. Если ни один вариант не подходит, выберите «Другое» и задайте свои значения.
+        </p>
+        <p>
+          Если у вас есть затруднения в определении состава работ, используйте{' '}
+          <button
+            type="button"
+            onClick={() => setShowChecklist(true)}
+            className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 font-medium"
+          >
+            📋 чек-лист методиста
+          </button>
+        </p>
+      </div>
 
       <OptionSelector
         label="Тип проекта"
@@ -71,6 +86,8 @@ export function Step1Context() {
       />
 
       <CoefficientDisplay />
+
+      <ChecklistModal open={showChecklist} onClose={() => setShowChecklist(false)} />
     </div>
   )
 }

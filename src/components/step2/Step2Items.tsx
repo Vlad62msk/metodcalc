@@ -6,14 +6,12 @@ import { ItemTree } from './ItemTree'
 import { AddItemForm } from './AddItemForm'
 import { LibraryPanel } from './LibraryPanel'
 import { ImportFromProjectModal } from './ImportFromProjectModal'
-import { ChecklistModal } from '@/components/checklist/ChecklistModal'
 
 export function Step2Items() {
   const { id: projectId } = useParams<{ id: string }>()
   const addItem = useProjectStore((s) => s.addItem)
   const [showLibrary, setShowLibrary] = useState(false)
   const [showImport, setShowImport] = useState(false)
-  const [showChecklist, setShowChecklist] = useState(false)
 
   const { undo, redo, pastStates, futureStates } = useStore(useProjectStore.temporal)
   const canUndo = pastStates.length > 0
@@ -53,22 +51,10 @@ export function Step2Items() {
           </button>
         </div>
       </div>
-      <div className="text-sm text-gray-500 space-y-1.5">
-        <p>
-          Соберите список работ. Добавляйте элементы вручную или из библиотеки готовых шаблонов.
-          Группируйте связанные позиции. Для каждого элемента укажите количество и трудоёмкость в часах.
-        </p>
-        <p>
-          Если у вас есть затруднения в определении состава работ, используйте{' '}
-          <button
-            type="button"
-            onClick={() => setShowChecklist(true)}
-            className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 font-medium"
-          >
-            📋 чек-лист методиста
-          </button>
-        </p>
-      </div>
+      <p className="text-sm text-gray-500">
+        Соберите список работ. Добавляйте элементы вручную или из библиотеки готовых шаблонов.
+        Группируйте связанные позиции. Для каждого элемента укажите количество и трудоёмкость в часах.
+      </p>
 
       <ItemTree />
 
@@ -106,7 +92,6 @@ export function Step2Items() {
         onClose={() => setShowImport(false)}
         currentProjectId={projectId}
       />
-      <ChecklistModal open={showChecklist} onClose={() => setShowChecklist(false)} />
     </div>
   )
 }
