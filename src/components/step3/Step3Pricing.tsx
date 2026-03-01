@@ -25,12 +25,18 @@ export function Step3Pricing() {
     <div className="space-y-6">
       <h2 className="text-xl font-semibold text-gray-900">Сколько стоит?</h2>
       <p className="text-sm text-gray-500">
-        Задайте вашу часовую ставку (или рассчитайте через помощник). Проверьте детализацию — стоимость
-        каждой позиции можно скорректировать вручную. Ниже — финансовые настройки: правки, скидки, налоги.
+        Проверьте детализацию стоимости. Задайте ставку вручную или рассчитайте через помощник.
+        Ниже — финансовые настройки: правки, скидки, налоги.
       </p>
 
-      {/* Помощник ставки */}
-      <RateHelper />
+      {/* Детализация стоимости */}
+      {hasItems && <CostDetail />}
+
+      {!hasItems && (
+        <div className="text-sm text-gray-400 text-center py-8 border border-dashed border-gray-300 rounded-lg">
+          Добавьте элементы на шаге 2, чтобы увидеть детализацию
+        </div>
+      )}
 
       {/* Ставка */}
       <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-2">
@@ -52,31 +58,25 @@ export function Step3Pricing() {
         </div>
         {hourlyRate === 0 && (
           <p className="text-xs text-amber-600">
-            Укажите ставку или воспользуйтесь помощником выше.
+            Укажите ставку или воспользуйтесь помощником ниже.
           </p>
         )}
       </div>
 
-      {/* Детализация */}
-      {hasItems && <CostDetail />}
+      {/* Хочу рассчитать ставку от зарплаты */}
+      <RateHelper />
 
-      {!hasItems && (
-        <div className="text-sm text-gray-400 text-center py-8 border border-dashed border-gray-300 rounded-lg">
-          Добавьте элементы на шаге 2, чтобы увидеть детализацию
-        </div>
-      )}
-
-      {/* Правки */}
+      {/* Правки и доработки */}
       <RevisionSettings />
-
-      {/* Целевая цена */}
-      <TargetPrice />
-
-      {/* Бюджет времени */}
-      <ResourceBudget />
 
       {/* Финансовые настройки */}
       <FinancialSettings />
+
+      {/* Цена, предложенная клиентом */}
+      <TargetPrice />
+
+      {/* Расчёт бюджета от временных затрат */}
+      <ResourceBudget />
     </div>
   )
 }

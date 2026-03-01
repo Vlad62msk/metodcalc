@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useProjectStore } from '@/store/useProjectStore'
-import { calcContainerCost, calcItemCost, calcEffectiveHours } from '@/core/calculator'
+import { calcContainerCost, calcItemCost, calcEffectiveHours, calcContextMultiplier, getLeaves } from '@/core/calculator'
 import { formatCurrency, formatHours, formatNumber } from '@/utils/format'
 import type { EstimateItem } from '@/types/estimate'
 import { CATEGORY_LABELS } from '@/types/estimate'
@@ -20,7 +20,7 @@ export function EstimatePreview() {
     [getGrandTotal, items, pricing, context, costOverrides],
   )
   const hourlyRate = pricing.hourlyRate
-  const contextMultiplier = context.contextMultiplier
+  const contextMultiplier = calcContextMultiplier(context)
 
   const getItemCost = (item: EstimateItem): number => {
     if (item.overrides.cost && costOverrides[item.id] != null) {
@@ -144,8 +144,7 @@ export function EstimatePreview() {
         ) : presentation.showGroupStructure ? (
           rootItems.map((item) => renderItemRow(item, 0))
         ) : (
-          items
-            .filter((i) => !i.isContainer || i.containerMode === 'fixed_total')
+          getLeaves(items)
             .sort((a, b) => a.sortOrder - b.sortOrder)
             .map((item) => renderItemRow(item, 0))
         )}

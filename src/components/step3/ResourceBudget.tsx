@@ -29,7 +29,7 @@ export function ResourceBudget() {
   return (
     <div className="border border-gray-200 rounded-lg p-4 space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-700">Бюджет времени</span>
+        <span className="text-sm font-medium text-gray-700">Расчёт бюджета от временных затрат</span>
         <label className="flex items-center gap-2">
           <input
             type="checkbox"

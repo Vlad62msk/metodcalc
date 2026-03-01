@@ -11,7 +11,7 @@ const STEPS_INFO = [
     num: 2,
     tab: 2,
     title: 'Состав работ',
-    desc: 'Добавляйте позиции сметы вручную или из библиотеки шаблонов. Группируйте связанные элементы в контейнеры, настраивайте количество и трудоёмкость.',
+    desc: 'Добавляйте позиции сметы вручную или из библиотеки обучающих форматов. Группируйте связанные элементы в контейнеры, настраивайте количество и трудоёмкость.',
   },
   {
     num: 3,
@@ -28,7 +28,7 @@ const STEPS_INFO = [
 ]
 
 const FEATURES = [
-  { title: 'Библиотека шаблонов', desc: 'Готовые элементы сметы — добавляйте в один клик и создавайте свои.' },
+  { title: 'Библиотека обучающих форматов', desc: 'Готовые элементы сметы — добавляйте в один клик и создавайте свои.' },
   { title: 'Сценарии «а что если»', desc: 'Сравнивайте варианты состава работ в рамках одного проекта.' },
   { title: 'Версии и откат', desc: 'Сохраняйте снимки проекта, сравнивайте и возвращайтесь к предыдущим.' },
   { title: 'Поделиться ссылкой', desc: 'Отправьте клиенту ссылку на смету — без регистрации и серверов.' },
@@ -89,7 +89,7 @@ export function Step0Intro() {
         <h3 className="text-sm font-semibold text-gray-700 mb-3">Возможности калькулятора</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {FEATURES.map((f) => (
-            <div key={f.title} className="bg-white border border-gray-100 rounded-lg px-4 py-3">
+            <div key={f.title} className="bg-primary-50/30 border border-primary-200/30 rounded-lg px-4 py-3">
               <div className="text-sm font-medium text-gray-800 mb-1">{f.title}</div>
               <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
             </div>

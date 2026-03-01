@@ -159,11 +159,11 @@ function TargetPriceIndicator({
   let rangeHint: { text: string; color: string } | null = null
   if (costRange) {
     if (targetValue < costRange.minCost) {
-      rangeHint = { text: 'Целевая цена ниже минимума диапазона', color: 'text-red-600' }
+      rangeHint = { text: 'Цена клиента ниже минимума диапазона', color: 'text-red-600' }
     } else if (targetValue > costRange.maxCost) {
-      rangeHint = { text: 'Целевая цена выше максимума диапазона', color: 'text-yellow-600' }
+      rangeHint = { text: 'Цена клиента выше максимума диапазона', color: 'text-yellow-600' }
     } else {
-      rangeHint = { text: 'Целевая цена попадает в диапазон', color: 'text-green-600' }
+      rangeHint = { text: 'Цена клиента попадает в диапазон', color: 'text-green-600' }
     }
   }
 

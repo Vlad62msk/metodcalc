@@ -25,7 +25,7 @@ export function TargetPrice() {
   return (
     <div className="border border-gray-200 rounded-lg p-4 space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-700">Целевая цена</span>
+        <span className="text-sm font-medium text-gray-700">Цена, предложенная клиентом</span>
         <label className="flex items-center gap-2">
           <input
             type="checkbox"

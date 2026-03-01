@@ -63,7 +63,7 @@ export function DisplaySettings() {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-medium text-gray-700">Настройки отображения</h3>
+      <h3 className="text-sm font-medium text-gray-700">Что дополнительно отобразить в смете</h3>
 
       {/* Preset buttons */}
       <div className="flex flex-wrap gap-2">

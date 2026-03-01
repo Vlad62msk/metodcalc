@@ -77,7 +77,7 @@ export function LibraryManager({ open, onClose }: LibraryManagerProps) {
   }
 
   return (
-    <Modal open={open} onClose={onClose} title="Управление библиотекой" wide>
+    <Modal open={open} onClose={onClose} title="Библиотека обучающих форматов" wide>
       {editMode.type === 'element' ? (
         <ElementEditor
           element={editMode.element}

@@ -13,7 +13,7 @@ const FEATURES = [
   {
     icon: '2',
     title: 'Состав работ',
-    desc: 'Добавляйте позиции вручную или из библиотеки шаблонов, группируйте в контейнеры',
+    desc: 'Добавляйте позиции вручную или из библиотеки обучающих форматов, группируйте в контейнеры',
   },
   {
     icon: '3',
@@ -88,7 +88,7 @@ export function ProjectListPage() {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {FEATURES.map((f) => (
-              <div key={f.icon} className="rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }}>
+              <div key={f.icon} className="rounded-lg px-4 py-3" style={{ backgroundColor: 'rgba(255,255,255,0.06)' }}>
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="w-6 h-6 rounded-full bg-primary-500 text-white text-xs font-bold flex items-center justify-center shrink-0">
                     {f.icon}

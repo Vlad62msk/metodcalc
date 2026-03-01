@@ -31,7 +31,7 @@ export function RateHelper() {
   }
 
   return (
-    <Collapsible title="Помощник ставки" defaultOpen={true}>
+    <Collapsible title="Хочу рассчитать ставку от зарплаты" defaultOpen={true}>
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>

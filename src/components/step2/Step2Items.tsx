@@ -52,7 +52,7 @@ export function Step2Items() {
         </div>
       </div>
       <p className="text-sm text-gray-500">
-        Соберите список работ. Добавляйте элементы вручную или из библиотеки готовых шаблонов.
+        Соберите список работ. Добавляйте обучающие форматы из библиотеки или создавайте элементы вручную.
         Группируйте связанные позиции. Для каждого элемента укажите количество и трудоёмкость в часах.
       </p>
 
@@ -72,17 +72,23 @@ export function Step2Items() {
         </button>
         <button
           type="button"
-          onClick={() => setShowLibrary(!showLibrary)}
-          className="text-sm text-primary-600 border border-primary-300 rounded px-3 py-1.5 hover:bg-primary-50"
-        >
-          Из библиотеки
-        </button>
-        <button
-          type="button"
           onClick={() => setShowImport(true)}
           className="text-sm text-gray-600 border border-gray-300 rounded px-3 py-1.5 hover:bg-gray-50"
         >
           Из проекта
+        </button>
+      </div>
+
+      <div className="space-y-2 pt-2 border-t border-gray-100">
+        <p className="text-xs text-gray-400">
+          Добавляйте готовые обучающие форматы из библиотеки или создавайте свои элементы вручную через поле выше.
+        </p>
+        <button
+          type="button"
+          onClick={() => setShowLibrary(!showLibrary)}
+          className="text-sm text-primary-600 border border-primary-300 rounded px-3 py-1.5 hover:bg-primary-50"
+        >
+          Из библиотеки форматов
         </button>
       </div>
 

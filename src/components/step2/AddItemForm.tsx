@@ -81,7 +81,7 @@ export function AddItemForm({ parentId = null, compact = false }: AddItemFormPro
           onChange={(e) => handleNameChange(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-          placeholder="+ Добавить элемент..."
+          placeholder="Добавить свой элемент..."
           className="w-full text-xs text-gray-500 bg-transparent border-0 focus:outline-none focus:ring-1 focus:ring-primary-300 rounded px-1 py-1"
         />
         {showSuggestions && (
@@ -109,7 +109,7 @@ export function AddItemForm({ parentId = null, compact = false }: AddItemFormPro
           onClick={addManual}
           className="text-sm bg-primary-600 text-white px-4 py-2 rounded hover:bg-primary-700"
         >
-          + Добавить
+          Добавить своё
         </button>
       </div>
       {showSuggestions && (
