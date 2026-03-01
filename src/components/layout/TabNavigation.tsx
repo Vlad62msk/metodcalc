@@ -4,10 +4,10 @@ import { formatCurrency, formatHours, formatMultiplier } from '@/utils/format'
 import { Badge } from '@/components/ui/Badge'
 
 const TABS = [
-  { label: 'Что за проект?', shortLabel: 'Проект', key: 'context' },
-  { label: 'Что делаем?', shortLabel: 'Работы', key: 'items' },
-  { label: 'Сколько стоит?', shortLabel: 'Цена', key: 'pricing' },
-  { label: 'Смета для клиента', shortLabel: 'Экспорт', key: 'export' },
+  { label: 'Что за проект?', shortLabel: 'Проект', key: 'context', tour: 'step1' },
+  { label: 'Что делаем?', shortLabel: 'Работы', key: 'items', tour: 'step2' },
+  { label: 'Сколько стоит?', shortLabel: 'Цена', key: 'pricing', tour: 'step3' },
+  { label: 'Смета для клиента', shortLabel: 'Экспорт', key: 'export', tour: 'step4' },
 ] as const
 
 export function TabNavigation() {
@@ -47,6 +47,7 @@ export function TabNavigation() {
             ref={(el) => { tabRefs.current[idx] = el }}
             type="button"
             onClick={() => setActiveTab(idx)}
+            data-tour={tab.tour}
             className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
               activeTab === idx
                 ? 'border-primary-500 text-primary-600'

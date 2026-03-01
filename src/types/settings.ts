@@ -1,3 +1,5 @@
+import type { PresentationPreset } from '@/core/presentationPresets'
+
 export type InterfaceMode = 'simple' | 'standard' | 'pro'
 
 export interface UserSettings {
@@ -28,6 +30,12 @@ export interface UserSettings {
 
   // Скидки
   volumeDiscountMode: 'by_element' | 'by_category'
+
+  // Пресеты отображения
+  customPresets: PresentationPreset[]
+
+  // Онбординг
+  hasCompletedOnboarding: boolean
 
   // Бэкап
   lastBackupReminder: string

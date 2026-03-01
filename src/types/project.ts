@@ -101,6 +101,7 @@ export interface Presentation {
   showGroupStructure: boolean
   showTaxSeparately: boolean
   showDiscountSeparately: boolean
+  aggregateByCategory: boolean
   showConditions: boolean
   conditionsText: string
   showSignature: boolean
@@ -127,6 +128,27 @@ export interface ProjectMeta {
   version: '3.3'
 }
 
+// === Сценарии ===
+
+export interface Scenario {
+  id: string
+  name: string
+  description: string
+  createdAt: string
+  items: EstimateItem[]
+  pricingOverrides: {
+    hourlyRate?: number
+    revisionPercent?: number
+    discount?: Discount
+  }
+}
+
+export interface ScenariosState {
+  enabled: boolean
+  activeScenarioId: string | null
+  list: Scenario[]
+}
+
 // === Полное состояние проекта ===
 
 export interface ProjectState {
@@ -136,4 +158,5 @@ export interface ProjectState {
   presentation: Presentation
   snapshots: Snapshot[]
   meta: ProjectMeta
+  scenarios: ScenariosState
 }

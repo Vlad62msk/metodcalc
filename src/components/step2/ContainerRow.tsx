@@ -101,7 +101,7 @@ export function ContainerRow({
         <button
           type="button"
           onClick={() => setShowSettings(!showSettings)}
-          className="text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100"
+          className="text-gray-400 hover:text-gray-600 sm:opacity-0 sm:group-hover:opacity-100"
           title="Настройки"
         >
           ⚙️
@@ -110,7 +110,7 @@ export function ContainerRow({
         <button
           type="button"
           onClick={() => removeItem(container.id)}
-          className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100"
+          className="text-gray-400 hover:text-red-500 sm:opacity-0 sm:group-hover:opacity-100"
           title="Удалить группу"
         >
           ×

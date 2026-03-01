@@ -3,6 +3,7 @@ import { useProjectStore } from '@/store/useProjectStore'
 import { calcContainerCost, calcItemCost, calcEffectiveHours } from '@/core/calculator'
 import { formatCurrency, formatHours, formatNumber } from '@/utils/format'
 import type { EstimateItem } from '@/types/estimate'
+import { CATEGORY_LABELS } from '@/types/estimate'
 
 export function EstimatePreview() {
   const items = useProjectStore((s) => s.items)
@@ -117,22 +118,37 @@ export function EstimatePreview() {
 
       {/* Заголовок таблицы */}
       <div className="flex items-center gap-3 text-xs text-gray-400 font-medium border-b border-gray-100 pb-2">
-        <div className="flex-1">Позиция</div>
-        {presentation.showQuantity && <div className="hidden sm:block w-12 text-right">Кол-во</div>}
-        {presentation.showHours && <div className="hidden sm:block w-16 text-right">Часы</div>}
-        {presentation.showPricePerUnit && <div className="hidden sm:block w-24 text-right">За ед.</div>}
+        <div className="flex-1">{presentation.aggregateByCategory ? 'Категория' : 'Позиция'}</div>
+        {!presentation.aggregateByCategory && presentation.showQuantity && <div className="hidden sm:block w-12 text-right">Кол-во</div>}
+        {!presentation.aggregateByCategory && presentation.showHours && <div className="hidden sm:block w-16 text-right">Часы</div>}
+        {!presentation.aggregateByCategory && presentation.showPricePerUnit && <div className="hidden sm:block w-24 text-right">За ед.</div>}
         <div className="w-28 text-right">Стоимость</div>
       </div>
 
       {/* Строки */}
       <div className="divide-y divide-gray-50">
-        {presentation.showGroupStructure
-          ? rootItems.map((item) => renderItemRow(item, 0))
-          : items
-              .filter((i) => !i.isContainer || i.containerMode === 'fixed_total')
-              .sort((a, b) => a.sortOrder - b.sortOrder)
-              .map((item) => renderItemRow(item, 0))
-        }
+        {presentation.aggregateByCategory ? (
+          // Category aggregation mode
+          Object.entries(result.categoryTotals)
+            .filter(([, amount]) => amount > 0)
+            .map(([key, amount]) => (
+              <div key={key} className="flex items-center gap-3 py-2">
+                <div className="flex-1 text-sm font-medium">
+                  {CATEGORY_LABELS[key as keyof typeof CATEGORY_LABELS] || key}
+                </div>
+                <div className="text-sm font-medium text-gray-800 w-28 text-right shrink-0">
+                  {formatCurrency(amount)}
+                </div>
+              </div>
+            ))
+        ) : presentation.showGroupStructure ? (
+          rootItems.map((item) => renderItemRow(item, 0))
+        ) : (
+          items
+            .filter((i) => !i.isContainer || i.containerMode === 'fixed_total')
+            .sort((a, b) => a.sortOrder - b.sortOrder)
+            .map((item) => renderItemRow(item, 0))
+        )}
       </div>
 
       {/* Итоги */}

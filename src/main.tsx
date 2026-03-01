@@ -10,8 +10,13 @@ import { useSettingsStore } from './store/useSettingsStore'
 useLibraryStore.getState()
 useSettingsStore.getState()
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// Run migration from localStorage to IndexedDB, then render
+import { migrateFromLocalStorage } from './storage/migration'
+
+migrateFromLocalStorage().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  )
+})

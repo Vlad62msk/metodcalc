@@ -288,6 +288,8 @@ export function calcContainerCost(
 export interface CostRange {
   minCost: number
   maxCost: number
+  minHours: number
+  maxHours: number
 }
 
 export function calcCostRange(
@@ -300,6 +302,8 @@ export function calcCostRange(
   let hasActiveRange = false
   let minTotal = 0
   let maxTotal = 0
+  let minHoursTotal = 0
+  let maxHoursTotal = 0
 
   for (const item of leaves) {
     // Cost override — фиксированная стоимость
@@ -326,18 +330,23 @@ export function calcCostRange(
     const range = item.effortRange
     if (!item.overrides.hoursPerUnit && range?.min != null && range?.max != null) {
       hasActiveRange = true
-      const minHours = range.min * item.roleMultiplier * item.qualityLevel * item.quantity
-      const maxHours = range.max * item.roleMultiplier * item.qualityLevel * item.quantity
-      minTotal += minHours * hourlyRate * contextMultiplier
-      maxTotal += maxHours * hourlyRate * contextMultiplier
+      const minH = range.min * item.roleMultiplier * item.qualityLevel * item.quantity
+      const maxH = range.max * item.roleMultiplier * item.qualityLevel * item.quantity
+      minHoursTotal += minH
+      maxHoursTotal += maxH
+      minTotal += minH * hourlyRate * contextMultiplier
+      maxTotal += maxH * hourlyRate * contextMultiplier
     } else {
       const c = calcItemCost(item, hourlyRate, contextMultiplier)
+      const h = calcEffectiveHours(item) * item.quantity
       minTotal += c
       maxTotal += c
+      minHoursTotal += h
+      maxHoursTotal += h
     }
   }
 
-  return hasActiveRange ? { minCost: minTotal, maxCost: maxTotal } : null
+  return hasActiveRange ? { minCost: minTotal, maxCost: maxTotal, minHours: minHoursTotal, maxHours: maxHoursTotal } : null
 }
 
 // === Breakdown объёмных скидок ===
@@ -431,6 +440,7 @@ export interface GrandTotalResult {
   taxAmount: number
   grandTotal: number
   costRange: CostRange | null
+  aggregateConfidence: number | null  // Средневзвешенная 1-5 по стоимости
 }
 
 export function calcGrandTotal(params: GrandTotalParams): GrandTotalResult {
@@ -462,6 +472,22 @@ export function calcGrandTotal(params: GrandTotalParams): GrandTotalResult {
 
   // Диапазон стоимости
   const costRange = calcCostRange(items, hourlyRate, contextMultiplier, costOverrides)
+
+  // Агрегированная уверенность (средневзвешенная по стоимости)
+  let aggregateConfidence: number | null = null
+  {
+    let weightedSum = 0
+    let totalWeight = 0
+    for (const lc of leafCosts) {
+      if (lc.item.confidence != null && lc.cost > 0) {
+        weightedSum += lc.item.confidence * lc.cost
+        totalWeight += lc.cost
+      }
+    }
+    if (totalWeight > 0) {
+      aggregateConfidence = weightedSum / totalWeight
+    }
+  }
 
   const afterVolumeDiscounts = baseTotal - volumeDiscountAmount
 
@@ -505,6 +531,7 @@ export function calcGrandTotal(params: GrandTotalParams): GrandTotalResult {
     taxAmount,
     grandTotal,
     costRange,
+    aggregateConfidence,
   }
 }
 

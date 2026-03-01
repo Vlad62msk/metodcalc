@@ -126,7 +126,7 @@ export function ItemRow({ item, depth, hourlyRate, contextMultiplier }: ItemRowP
         <button
           type="button"
           onClick={() => setShowSettings(!showSettings)}
-          className="text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="text-gray-400 hover:text-gray-600 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
           title="Настройки"
         >
           ⚙️
@@ -136,7 +136,7 @@ export function ItemRow({ item, depth, hourlyRate, contextMultiplier }: ItemRowP
         <button
           type="button"
           onClick={() => removeItem(item.id)}
-          className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="text-gray-400 hover:text-red-500 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
           title="Удалить"
         >
           ×

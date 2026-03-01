@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useProjectStore } from '@/store/useProjectStore'
 import { Modal } from '@/components/ui/Modal'
 import { formatDate, formatCurrency } from '@/utils/format'
+import { SnapshotDiffModal } from './SnapshotDiffModal'
 
 interface SnapshotManagerProps {
   open: boolean
@@ -10,6 +11,7 @@ interface SnapshotManagerProps {
 
 export function SnapshotManager({ open, onClose }: SnapshotManagerProps) {
   const [label, setLabel] = useState('')
+  const [showDiff, setShowDiff] = useState(false)
   const snapshots = useProjectStore((s) => s.snapshots)
   const saveSnapshot = useProjectStore((s) => s.saveSnapshot)
   const restoreSnapshot = useProjectStore((s) => s.restoreSnapshot)
@@ -92,10 +94,22 @@ export function SnapshotManager({ open, onClose }: SnapshotManagerProps) {
           </div>
         )}
 
+        {snapshots.length >= 2 && (
+          <button
+            type="button"
+            onClick={() => setShowDiff(true)}
+            className="w-full text-sm text-primary-600 hover:text-primary-700 border border-primary-200 rounded-lg px-4 py-2"
+          >
+            Сравнить версии
+          </button>
+        )}
+
         <p className="text-xs text-gray-400">
           Хранится до 20 последних версий. Старые версии удаляются автоматически.
         </p>
       </div>
+
+      <SnapshotDiffModal open={showDiff} onClose={() => setShowDiff(false)} snapshots={snapshots} />
     </Modal>
   )
 }

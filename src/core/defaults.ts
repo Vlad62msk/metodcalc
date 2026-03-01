@@ -74,6 +74,7 @@ export const DEFAULT_PRESENTATION: Presentation = {
   showGroupStructure: false,
   showTaxSeparately: false,
   showDiscountSeparately: false,
+  aggregateByCategory: false,
   showConditions: true,
   conditionsText:
     '• Оплата по факту выполнения этапов\n• Сроки уточняются при заключении договора\n• Расчёт действителен 30 дней',
@@ -135,6 +136,11 @@ export function createDefaultProjectState(): ProjectState {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       version: '3.3',
+    },
+    scenarios: {
+      enabled: false,
+      activeScenarioId: null,
+      list: [],
     },
   }
 }
@@ -264,6 +270,8 @@ export const DEFAULT_SETTINGS: UserSettings = {
     reviewer: 0.3,
   },
   volumeDiscountMode: 'by_element',
+  customPresets: [],
+  hasCompletedOnboarding: false,
   lastBackupReminder: '',
 }
 

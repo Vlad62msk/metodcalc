@@ -47,9 +47,11 @@ export function NumberInput({
       inputMode="decimal"
       value={displayValue}
       onChange={(e) => setLocalValue(e.target.value)}
-      onFocus={() => {
+      onFocus={(e) => {
         setFocused(true)
         setLocalValue(String(value))
+        const input = e.target
+        requestAnimationFrame(() => input.select())
       }}
       onBlur={handleBlur}
       step={step}

@@ -4,7 +4,7 @@ import { formatCurrency, formatHours, formatMultiplier, formatNumber } from '@/u
 import { calcTargetDiff, calcResourceBudget, getContextWarning } from '@/core/calculator'
 import type { CostRange } from '@/core/calculator'
 import { OverrideIndicator } from '@/components/ui/OverrideIndicator'
-import { CATEGORY_LABELS } from '@/types/estimate'
+import { CATEGORY_LABELS, CONFIDENCE_LEVELS } from '@/types/estimate'
 
 export function Sidebar() {
   const context = useProjectStore((s) => s.context)
@@ -34,9 +34,13 @@ export function Sidebar() {
         <div className="text-2xl font-bold text-gray-900">{formatCurrency(result.grandTotal)}</div>
         <div className="text-sm text-gray-500 mt-1">Трудозатраты: {formatHours(result.totalHours)}</div>
         {result.costRange && (
-          <div className="text-xs text-gray-400 mt-0.5">
-            Диапазон: {formatCurrency(result.costRange.minCost)} — {formatCurrency(result.costRange.maxCost)}
+          <div className="text-xs text-gray-400 mt-0.5 space-y-0.5">
+            <div>Часы: {formatNumber(result.costRange.minHours, 0)}–{formatNumber(result.costRange.maxHours, 0)} ч</div>
+            <div>Диапазон: {formatCurrency(result.costRange.minCost)} — {formatCurrency(result.costRange.maxCost)}</div>
           </div>
+        )}
+        {result.aggregateConfidence != null && (
+          <ConfidenceIndicator value={result.aggregateConfidence} />
         )}
       </div>
 
@@ -205,6 +209,27 @@ function ResourceBudgetIndicator({
       <div className={`font-medium ${colorMap[rb.fitsInBudget]}`}>
         {iconMap[rb.fitsInBudget]} Смета {formatNumber(estimateHours, 0)} ч — {labelMap[rb.fitsInBudget]}
       </div>
+    </div>
+  )
+}
+
+function ConfidenceIndicator({ value }: { value: number }) {
+  const rounded = Math.round(value)
+  const level = CONFIDENCE_LEVELS[Math.max(0, Math.min(4, rounded - 1))]
+
+  return (
+    <div className="flex items-center gap-1.5 mt-1.5">
+      <div className="flex gap-0.5">
+        {CONFIDENCE_LEVELS.map((l, i) => (
+          <div
+            key={i}
+            className={`w-2 h-2 rounded-full ${i < rounded ? level.color : 'bg-gray-200'}`}
+          />
+        ))}
+      </div>
+      <span className="text-xs text-gray-500">
+        {value.toFixed(1)}/5 — {level.label}
+      </span>
     </div>
   )
 }
