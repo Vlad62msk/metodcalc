@@ -29,6 +29,7 @@ export function useAutosave(
       presentation: state.presentation,
       snapshots: [], // Snapshots stored separately
       meta: state.meta,
+      scenarios: state.scenarios ?? { enabled: false, activeScenarioId: null, list: [] },
     }
     setStatus('saving')
     try {
@@ -73,6 +74,7 @@ export function useAutosave(
           presentation: state.presentation,
           snapshots: [],
           meta: state.meta,
+          scenarios: state.scenarios ?? { enabled: false, activeScenarioId: null, list: [] },
         }
         // Dexie transactions are async, but we trigger the save
         saveProject(projectId, projectState, state.costOverrides)

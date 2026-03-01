@@ -300,7 +300,7 @@ export const useProjectStore = create<ProjectStore>()(
 
       resetProject: () => {
         const fresh = createDefaultProjectState()
-        set({ ...fresh, activeTab: 0, costOverrides: {} } as Partial<ProjectStore>)
+        set({ ...fresh, activeTab: 0, costOverrides: {}, selectedItemId: null } as Partial<ProjectStore>)
       },
 
       loadProject: (state) => {
@@ -320,6 +320,7 @@ export const useProjectStore = create<ProjectStore>()(
           scenarios: state.scenarios ?? { enabled: false, activeScenarioId: null, list: [] },
           costOverrides: {},
           activeTab: 0,
+          selectedItemId: null,
         } as Partial<ProjectStore>)
       },
 

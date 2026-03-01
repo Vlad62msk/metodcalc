@@ -25,7 +25,8 @@ export function useHotkeys() {
       // Ctrl+S — Save snapshot (works even in inputs)
       if (ctrl && e.key === 's') {
         e.preventDefault()
-        useProjectStore.getState().saveSnapshot('')
+        const snapCount = useProjectStore.getState().snapshots.length
+        useProjectStore.getState().saveSnapshot(`Быстрое сохранение ${snapCount + 1}`)
         return
       }
 

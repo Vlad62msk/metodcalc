@@ -61,28 +61,20 @@ export function SharedProjectPage() {
   const handleCopyToSelf = async () => {
     const id = generateId()
     const now = new Date().toISOString()
-    await saveProject({
-      id,
-      updatedAt: now,
-      state: {
-        context,
-        items,
-        pricing,
-        presentation: {
-          showHours: true, showPricePerUnit: true, showQuantity: true,
-          showUnits: true, showGroupStructure: true, showTaxSeparately: false,
-          showDiscountSeparately: false, aggregateByCategory: false,
-          showConditions: false, conditionsText: '', showSignature: false,
-          signatureName: '', signatureContact: '',
-        },
-        snapshots: [],
-        meta: { id, name: `${context.projectType.label} (получено)`, createdAt: now, updatedAt: now, version: '3.3' },
-        scenarios: { enabled: false, activeScenarioId: null, list: [] },
+    await saveProject(id, {
+      context,
+      items,
+      pricing,
+      presentation: {
+        showHours: true, showPricePerUnit: true, showQuantity: true,
+        showUnits: true, showGroupStructure: true, showTaxSeparately: false,
+        showDiscountSeparately: false, aggregateByCategory: false,
+        showConditions: false, conditionsText: '', showSignature: false,
+        signatureName: '', signatureContact: '',
       },
-      totalAmount: result.grandTotal,
-      totalHours: result.totalHours,
-      contextMultiplier: context.contextMultiplier,
-      categoryBreakdown: result.categoryTotals,
+      snapshots: [],
+      meta: { id, name: `${context.projectType.label} (получено)`, createdAt: now, updatedAt: now, version: '4.0' },
+      scenarios: { enabled: false, activeScenarioId: null, list: [] },
     })
     navigate(`/project/${id}`)
   }

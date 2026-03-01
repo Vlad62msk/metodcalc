@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useProjectStore } from '@/store/useProjectStore'
 import { Modal } from '@/components/ui/Modal'
 import { getShareUrl } from '@/core/sharing'
@@ -13,6 +13,11 @@ export function ShareModal({ open, onClose }: Props) {
   const context = useProjectStore((s) => s.context)
   const items = useProjectStore((s) => s.items)
   const pricing = useProjectStore((s) => s.pricing)
+
+  // Reset copied state when modal reopens
+  useEffect(() => {
+    if (open) setCopied(false)
+  }, [open])
 
   const shareUrl = useMemo(() => {
     if (!open) return ''

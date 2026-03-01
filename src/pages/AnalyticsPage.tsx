@@ -24,10 +24,15 @@ export function AnalyticsPage() {
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
 
   useEffect(() => {
-    listProjects().then((all) => {
-      setProjects(all)
-      setLoading(false)
-    })
+    listProjects()
+      .then((all) => {
+        setProjects(all)
+        setLoading(false)
+      })
+      .catch((e) => {
+        console.error('Failed to load projects for analytics:', e)
+        setLoading(false)
+      })
   }, [])
 
   if (loading) {

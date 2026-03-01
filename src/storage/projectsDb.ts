@@ -103,9 +103,11 @@ export async function duplicateProject(id: string): Promise<string | null> {
 export async function renameProject(id: string, name: string): Promise<void> {
   const project = await db.projects.get(id)
   if (!project) return
+  const now = new Date().toISOString()
   project.name = name
   project.state.meta.name = name
-  project.updatedAt = new Date().toISOString()
+  project.state.meta.updatedAt = now
+  project.updatedAt = now
   await db.projects.put(project)
 }
 
@@ -203,6 +205,11 @@ export async function importProject(json: string): Promise<string | null> {
       effortRange: item.effortRange ?? null,
       libraryElementId: item.libraryElementId ?? null,
     }))
+
+    // Ensure scenarios exists
+    if (!state.scenarios) {
+      state.scenarios = { enabled: false, activeScenarioId: null, list: [] }
+    }
 
     await saveProject(newId, state)
 

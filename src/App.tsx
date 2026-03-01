@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ProjectListPage } from '@/pages/ProjectListPage'
 import { CalculatorPage } from '@/pages/CalculatorPage'
 import { AnalyticsPage } from '@/pages/AnalyticsPage'
@@ -21,6 +21,7 @@ export default function App() {
         <Route path="/project/:id" element={<CalculatorPage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/shared/:data" element={<SharedProjectPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <UpdatePrompt />
     </HashRouter>

@@ -51,8 +51,13 @@ export const useProjectsStore = create<ProjectsStore>()((set) => ({
 
   loadProjects: async () => {
     set({ loading: true })
-    const projects = await projectsDb.listProjects()
-    set({ projects: projects.map(toSummary), loading: false })
+    try {
+      const projects = await projectsDb.listProjects()
+      set({ projects: projects.map(toSummary), loading: false })
+    } catch (e) {
+      console.error('Failed to load projects:', e)
+      set({ loading: false })
+    }
   },
 
   createProject: async (name) => {

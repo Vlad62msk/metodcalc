@@ -26,7 +26,7 @@ const PRICING_KEYS: Record<string, string> = {
 
 // Default values for comparison (skip if matches default)
 const DEFAULT_ITEM_VALUES: Record<string, unknown> = {
-  parentId: null, quantity: 1, unit: 'шт.', category: 'content',
+  parentId: null, quantity: 1, unit: '', category: 'content',
   role: 'author', roleMultiplier: 1, qualityLevel: 1, revisionable: true,
   pricingModel: 'time_based', fixedPrice: null, isContainer: false,
   containerMode: 'sum_children', containerFixedTotal: null,
@@ -219,8 +219,8 @@ export function expandState(compressed: string): ExpandedSharedState | null {
 
     const pricing: Pricing = {
       hourlyRate: Number(pr[PRICING_KEYS.hourlyRate] ?? 0),
-      rateHelper: { salary: null, hoursPerMonth: 160, projectType: '', multiplier: 1 },
-      resourceBudget: { enabled: false, periodMonthsMin: 1, periodMonthsMax: 3, hoursPerWeekMin: 10, hoursPerWeekMax: 40 },
+      rateHelper: { salary: null, hoursPerMonth: 160, projectType: 'freelance', multiplier: 1.5 },
+      resourceBudget: { enabled: false, periodMonthsMin: 1, periodMonthsMax: 2, hoursPerWeekMin: 10, hoursPerWeekMax: 20 },
       revisionPercent: Number(pr[PRICING_KEYS.revisionPercent] ?? 0),
       revisionPercentIsManual: pr[PRICING_KEYS.revisionPercentIsManual] === 1,
       discount: expandDiscount(pr[PRICING_KEYS.discount] as Record<string, unknown> | null ?? null),

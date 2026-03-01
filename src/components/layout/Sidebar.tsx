@@ -3,8 +3,16 @@ import { useProjectStore } from '@/store/useProjectStore'
 import { formatCurrency, formatHours, formatMultiplier, formatNumber } from '@/utils/format'
 import { calcTargetDiff, calcResourceBudget, getContextWarning } from '@/core/calculator'
 import type { CostRange } from '@/core/calculator'
-import { OverrideIndicator } from '@/components/ui/OverrideIndicator'
 import { CATEGORY_LABELS, CONFIDENCE_LEVELS } from '@/types/estimate'
+
+function pluralize(n: number, one: string, few: string, many: string): string {
+  const abs = Math.abs(n) % 100
+  const lastDigit = abs % 10
+  if (abs > 10 && abs < 20) return many
+  if (lastDigit > 1 && lastDigit < 5) return few
+  if (lastDigit === 1) return one
+  return many
+}
 
 export function Sidebar() {
   const context = useProjectStore((s) => s.context)
@@ -120,10 +128,10 @@ export function Sidebar() {
 
       {overrideCount > 0 && (
         <div className="border-t border-gray-100 pt-3 text-sm text-amber-600 flex items-center gap-1">
-          <OverrideIndicator onReset={() => {}} />
+          <span className="text-amber-500">⚙</span>
           <span>
-            {overrideCount} значени{overrideCount === 1 ? 'е' : overrideCount < 5 ? 'я' : 'й'}{' '}
-            изменен{overrideCount === 1 ? 'о' : 'ы'} вручную
+            {overrideCount} {pluralize(overrideCount, 'значение', 'значения', 'значений')}{' '}
+            {pluralize(overrideCount, 'изменено', 'изменены', 'изменено')} вручную
           </span>
         </div>
       )}
@@ -214,8 +222,10 @@ function ResourceBudgetIndicator({
 }
 
 function ConfidenceIndicator({ value }: { value: number }) {
+  if (!Number.isFinite(value)) return null
   const rounded = Math.round(value)
-  const level = CONFIDENCE_LEVELS[Math.max(0, Math.min(4, rounded - 1))]
+  const clampedIndex = Math.max(0, Math.min(4, rounded - 1))
+  const level = CONFIDENCE_LEVELS[clampedIndex] ?? CONFIDENCE_LEVELS[0]
 
   return (
     <div className="flex items-center gap-1.5 mt-1.5">

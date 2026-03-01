@@ -72,10 +72,26 @@ export function OnboardingTour({ open, onClose }: Props) {
     }
   }, [updatePosition])
 
-  // Reset step when opening
+  // Reset step when opening + scroll-lock + Escape handler
   useEffect(() => {
-    if (open) setStep(0)
-  }, [open])
+    if (open) {
+      setStep(0)
+      document.body.style.overflow = 'hidden'
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          updateSettings({ hasCompletedOnboarding: true })
+          onClose()
+        }
+      }
+      window.addEventListener('keydown', handleKeyDown)
+
+      return () => {
+        document.body.style.overflow = ''
+        window.removeEventListener('keydown', handleKeyDown)
+      }
+    }
+  }, [open, onClose, updateSettings])
 
   if (!open) return null
 

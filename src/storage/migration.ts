@@ -30,8 +30,13 @@ export async function migrateFromLocalStorage(): Promise<string | null> {
         name: 'Imported project',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        version: '3.3',
+        version: '4.0',
       }
+    }
+
+    // Ensure scenarios exists
+    if (!state.scenarios) {
+      (state as any).scenarios = { enabled: false, activeScenarioId: null, list: [] }
     }
 
     const projectId = state.meta.id || generateId()
@@ -69,7 +74,7 @@ export async function migrateFromLocalStorage(): Promise<string | null> {
     return projectId
   } catch (e) {
     console.error('Migration failed:', e)
-    localStorage.setItem(MIGRATION_FLAG, 'true')
+    // Don't set migration flag on error — allow retry on next load
     return null
   }
 }

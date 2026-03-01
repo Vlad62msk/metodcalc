@@ -136,7 +136,7 @@ export function createDefaultProjectState(): ProjectState {
       name: 'Новый проект',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      version: '3.3',
+      version: '4.0',
     },
     scenarios: {
       enabled: false,
