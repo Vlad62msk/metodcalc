@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useProjectStore } from '@/store/useProjectStore'
 import { getProject } from '@/storage/projectsDb'
@@ -46,8 +46,22 @@ export function CalculatorPage() {
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [showShare, setShowShare] = useState(false)
   const [showChecklist, setShowChecklist] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   const hasCompletedOnboarding = useSettingsStore((s) => s.hasCompletedOnboarding)
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!showMenu) return
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [showMenu])
 
   useHotkeys()
 
@@ -156,23 +170,6 @@ export function CalculatorPage() {
             </span>
             <button
               type="button"
-              onClick={() => setShowSnapshots(true)}
-              className="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 border border-gray-200 rounded"
-              title="Версии проекта"
-            >
-              Версии
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowLibrary(true)}
-              className="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 border border-gray-200 rounded"
-              title="Управление библиотекой"
-              data-tour="library"
-            >
-              Библиотека
-            </button>
-            <button
-              type="button"
               onClick={() => setShowChecklist(true)}
               className="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 border border-gray-200 rounded"
               title="Чек-лист методиста"
@@ -197,20 +194,57 @@ export function CalculatorPage() {
             </button>
             <button
               type="button"
-              onClick={() => setShowShare(true)}
-              className="text-xs text-primary-600 hover:text-primary-700 px-2 py-1 border border-primary-200 rounded"
-              title="Поделиться"
-            >
-              Поделиться
-            </button>
-            <button
-              type="button"
               onClick={() => setShowHelp(true)}
               className="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 border border-gray-200 rounded"
               title="Инструкция"
             >
               ?
             </button>
+            <div className="relative" ref={menuRef} data-tour="library">
+              <button
+                type="button"
+                onClick={() => setShowMenu(!showMenu)}
+                className="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 border border-gray-200 rounded"
+                title="Действия"
+              >
+                ⋯
+              </button>
+              {showMenu && (
+                <div className="absolute right-0 top-full mt-1 w-56 bg-white glass-solid rounded-lg shadow-xl border border-gray-200/30 py-1 z-50 no-text-shadow">
+                  <button
+                    type="button"
+                    onClick={() => { setShowSnapshots(true); setShowMenu(false) }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100/50 flex items-center gap-2"
+                  >
+                    🕘 Версии проекта
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setShowLibrary(true); setShowMenu(false) }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100/50 flex items-center gap-2"
+                  >
+                    📚 Библиотека шаблонов
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setShowShare(true); setShowMenu(false) }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100/50 flex items-center gap-2"
+                  >
+                    🔗 Поделиться этой сметой
+                  </button>
+                  <div className="border-t border-gray-200/30 my-1" />
+                  <a
+                    href="https://vladimirkruglov.notion.site/f673b9a0ddbd467ba5f37f31b137b4bf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100/50 flex items-center gap-2"
+                    onClick={() => setShowMenu(false)}
+                  >
+                    👤 Разработчик
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
