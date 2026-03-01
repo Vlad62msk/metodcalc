@@ -24,13 +24,13 @@ export function ScenarioBar() {
 
   if (!scenarios.enabled) {
     return (
-      <div className="bg-white border-b border-gray-200 px-4 py-2">
+      <div className="flex justify-end mb-2">
         <button
           type="button"
           onClick={enableScenarios}
-          className="text-xs text-gray-500 hover:text-primary-600"
+          className="text-xs text-gray-400 hover:text-primary-600 transition-colors"
         >
-          + Включить сценарии «а что если»
+          + Сценарии «а что если»
         </button>
       </div>
     )
@@ -77,7 +77,7 @@ export function ScenarioBar() {
 
   return (
     <>
-      <div className="bg-white border-b border-gray-200 px-4 py-2 flex items-center gap-2 overflow-x-auto scrollbar-hide">
+      <div className="bg-white border border-gray-200 rounded-lg px-3 py-2 mb-4 flex items-center gap-2 overflow-x-auto scrollbar-hide">
         {scenarios.list.map((sc) => {
           const isActive = sc.id === scenarios.activeScenarioId
           const total = isActive ? getScenarioTotal(items) : getScenarioTotal(sc.items)

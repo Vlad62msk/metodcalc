@@ -257,11 +257,11 @@ export function CalculatorPage() {
       </header>
 
       <TabNavigation />
-      {!isIntroTab && <ScenarioBar />}
 
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex gap-6">
           <main className="flex-1 min-w-0">
+            {!isIntroTab && <ScenarioBar />}
             <StepComponent />
             {!isIntroTab && <StepNavigation />}
           </main>
